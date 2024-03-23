@@ -5,6 +5,7 @@ import { auth } from "./Firebase";
 import { onAuthStateChanged } from "firebase/auth"
 import Login from "./pages/Login";
 import Home from "./pages/Home";
+import JobList from './pages/JobList';
 function App() {
     const [user, setUser] = useState(null)
 
@@ -15,7 +16,7 @@ function App() {
     return (
         <div className="App">
             { user ?
-                <Home />
+                <JobList />
                 :
                 <Login />
             }
