@@ -25,3 +25,100 @@
     color: #007bff;
     text-decoration: none;
 }
+
+.job-list-container {
+    display: flex;
+    /* If you want fixed widths, adjust as necessary */
+    min-height: 100vh; /* Full height of the viewport */
+}
+  
+.job-listings {
+    flex: 1; /* Takes up 1 fraction of the available space */
+    overflow-y: scroll; /* Makes this part scrollable */
+    border-right: 1px solid #ccc; /* Just for visual separation */
+}
+
+.job-details {
+    flex: 2; /* Takes up 2 fractions of the available space */
+    padding: 20px;
+}
+  
+.main-container {
+    display: flex;   
+    min-height: 100vh;
+}
+
+.job-listings {
+    flex: 1;
+    overflow-y: auto; /* Enable scrolling for the job list */
+}
+
+.job-details {
+    flex: 2;
+}
+
+.job {
+    cursor: pointer;
+}
+  
+job-description {
+    white-space: normal;  /* Allows text wrapping */
+    overflow: visible;    /* Show overflow content */
+    text-overflow: clip;  /* Default, clips text */
+}
+
+/* .body, html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; 
+    height: 100%; 
+} */
+  
+html, body {
+    margin: 0;
+    padding: 0;
+    /* Prevents default scrolling */
+    overflow: hidden;
+}
+
+.main-container {
+    display: flex;
+    height: 100vh; /* This will make the container take up the full viewport height */
+    overflow: hidden; /* This prevents the main container from scrolling */
+}
+
+.job-listings {
+    border: 1px solid black; /* add a black border */
+    margin-top: 0; /* move it higher up */
+    width: 50%; /* Adjust the width as needed */
+    height: 100%; /* This will make the job listings container take up the full height of its parent */
+    overflow-y: auto; /* This allows this container to be scrollable independently */
+}   
+
+.job-details {
+    border: 1px solid black; /* add a black border */
+    width: 50%; /* Adjust the width as needed */
+}
+
+.filter-container {
+    display: flex;
+    justify-content: center; /* Aligns items on the main axis (horizontally) */
+    align-items: center; /* Aligns items on the cross axis (vertically) */
+    flex-wrap: wrap; /* Allows items to wrap onto multiple lines */
+    gap: 10px; /* Space between items */
+    padding-bottom: 10px;
+}
+
+.filter-item {
+    flex-basis: calc(50% - 10px); /* Adjust width to fit two items per line, accounting for gap */    
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center; /* Aligns checkbox label horizontally with checkbox */
+}
+
+.fetch-jobs-button {
+    flex-grow: 1; /* Button grows to fill the space */
+    margin-top: auto; /* Aligns button to the bottom of the container if using wrap */
+}

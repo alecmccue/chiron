@@ -1,6 +1,6 @@
 const PORT = 3001;
 
-export function getJob(country = "us", resultsPerPage = "5", page = "1", what = "software engineering",fullTime = "1") {
+export function getJob(country = "us", resultsPerPage = "10", page = "1", what = "software engineering",fullTime = "1") {
     const queryParams = new URLSearchParams({
         country, 
         resultsPerPage, 
