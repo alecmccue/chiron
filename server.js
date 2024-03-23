@@ -29,7 +29,7 @@ const rl = readline.createInterface({
 
 app.get('/getJobs', async (req, res) => {    
     const country = req.query.country || 'us';
-    const resultsPerPage = req.query.resultsPerPage || '5';
+    const resultsPerPage = req.query.resultsPerPage || '10';
     const page = req.query.page || '1';
     const what = req.query.what || 'Software Engineer';
     const fullTime = req.query.fullTime || '1';
