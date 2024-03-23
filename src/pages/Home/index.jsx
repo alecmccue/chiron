@@ -1,43 +1,45 @@
-import {  signOut } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import { auth } from "../../Firebase";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import InterviewModal from "../InterviewModal";
 import { Button } from "@mui/material";
 import { useState } from "react";
+import Navbar from "../../components/Navbar";
 
 const Home = () => {
-    const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
-    const handleOpen = () => {
-        setOpen(true);
-    };
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
-    const handleClose = () => {
-        setOpen(false);
-    };
-    const handleLogout = async () => {
-        try {
-            await signOut(auth);
-        } catch (error) {
-            console.error(error);
-        }
-    };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  return (
+    <div>
+      <Navbar signOut={handleLogout} auth={auth} />
+      <Link to="/login" onClick={handleLogout}>
+        Logout
+      </Link>
+      <Button variant="contained" onClick={handleOpen}>
+        New Interview
+      </Button>
+      <InterviewModal open={open} onClose={handleClose}>
+        <h2 id="modal-modal-title">Centered Modal</h2>
+        <p id="modal-modal-description">
+          This modal is centered in the middle of the screen.
+        </p>
+      </InterviewModal>
+    </div>
+  );
+};
 
-    return (
-        <div>
-            hi
-            <Link to="/login" onClick={handleLogout}>
-                Logout
-            </Link>
-            <Button variant="contained" onClick={handleOpen}>
-                Open Modal
-            </Button>
-            <InterviewModal open={open} onClose={handleClose}>
-                <h2 id="modal-modal-title">Centered Modal</h2>
-                <p id="modal-modal-description">This modal is centered in the middle of the screen.</p>
-            </InterviewModal>
-        </div>
-    )
-}
-
-export default Home
+export default Home;
