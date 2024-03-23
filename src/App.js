@@ -3,7 +3,7 @@ import { useState } from "react";
 import { auth } from "./Firebase";
 import { onAuthStateChanged } from "firebase/auth"
 import Home from "./pages/Home";
-import CreateInterview from "./pages/CreateInterview";
+import InterviewModal from "./pages/InterviewModal";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 
@@ -21,7 +21,7 @@ function App() {
                 <div className="content">
                     <Routes>
                         <Route path="/" element={<Home />} />
-                        <Route path="/create" element={<CreateInterview />} />
+                        <Route path="/create" element={<InterviewModal />} />
                         <Route path="/login" element={<Login />} />
                     </Routes>
                 </div>
