@@ -15,6 +15,7 @@ function App() {
     return (
         <div className="App">
             <Login />
+            {user ? user.email : null}
         </div>
     );
 }
