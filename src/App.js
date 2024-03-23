@@ -22,7 +22,6 @@ function App() {
             <div className="App">
                 <div className="content">
                     <Routes>
-                    <Route path="/" element={<Home />} />
                         <Route path="/" element={<Home />} />
                         <Route path="/joblist" element={<JobList />} />
                         <Route path="/chat" element={<Chat />} />
