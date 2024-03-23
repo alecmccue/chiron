@@ -20,7 +20,7 @@ function App() {
             <div className="App">
                 <div className="content">
                     <Routes>
-                        <Route path="/" element={<Home />} />
+                        <Route path="/" element={user? <Home /> : <Login />} />
                         <Route path="/create" element={<InterviewModal />} />
                         <Route path="/login" element={<Login />} />
                     </Routes>

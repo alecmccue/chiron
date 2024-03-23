@@ -26,13 +26,12 @@ const Home = () => {
 
   return (
     <div>
-        <Navbar handleLogout={handleLogout} />
-      <h1 className="text-3xl font-bold underline bg-red-50">Hello world!</h1>
+      <Navbar signOut={handleLogout} auth={auth} />
       <Link to="/login" onClick={handleLogout}>
         Logout
       </Link>
       <Button variant="contained" onClick={handleOpen}>
-        Open Modal
+        New Interview
       </Button>
       <InterviewModal open={open} onClose={handleClose}>
         <h2 id="modal-modal-title">Centered Modal</h2>
