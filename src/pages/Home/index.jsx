@@ -23,7 +23,6 @@ const Home = () => {
       console.error(error);
     }
   };
-
   return (
     <div>
       <Navbar signOut={handleLogout} auth={auth} />
