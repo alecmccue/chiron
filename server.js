@@ -3,11 +3,28 @@ const express = require('express');
 const axios = require('axios');
 const cors = require('cors')
 
+// For Accessing Job Listing
 const PORT = 3001; 
 const apiKey = process.env.ADZUNA_API_KEY;
 const apiID = process.env.ADZUNA_API_ID;
 const app = express();
+
+const chatRoutes = require('./routes/chatRoutes');
+app.use(express.json());
 app.use(cors());
+app.use(chatRoutes);
+
+// For Querying to OpenAI 
+const { OpenAI } = require('openai');
+const readline = require('readline');
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+});
 
 
 app.get('/getJobs', async (req, res) => {    
