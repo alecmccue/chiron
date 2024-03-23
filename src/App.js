@@ -1,10 +1,10 @@
 import logo from './logo.svg';
 import './App.css';
-import Login from "./pages/Login";
 import { useState } from "react";
 import { auth } from "./Firebase";
 import { onAuthStateChanged } from "firebase/auth"
-
+import Login from "./pages/Login";
+import Home from "./pages/Home";
 function App() {
     const [user, setUser] = useState(null)
 
@@ -14,7 +14,11 @@ function App() {
 
     return (
         <div className="App">
-            <Login />
+            { user ?
+                <Home />
+                :
+                <Login />
+            }
         </div>
     );
 }
