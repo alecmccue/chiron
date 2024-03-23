@@ -31,9 +31,11 @@ app.get('/getJobs', async (req, res) => {
     const country = req.query.country || 'us';
     const resultsPerPage = req.query.resultsPerPage || '5';
     const page = req.query.page || '1';
+    const what = req.query.what || 'Software Engineer';
+    const fullTime = req.query.fullTime || '1';
 
     // Construct the API URL with these parameters
-    const apiUrl = `https://api.adzuna.com/v1/api/jobs/${country}/search/${page}?app_id=${apiID}&app_key=${apiKey}&results_per_page=${resultsPerPage}`;
+    const apiUrl = `https://api.adzuna.com/v1/api/jobs/${country}/search/${page}?app_id=${apiID}&app_key=${apiKey}&results_per_page=${resultsPerPage}&what=${encodeURIComponent(what)}&full_time=${fullTime}`;
 
     try {
         const response = await axios.get(apiUrl);

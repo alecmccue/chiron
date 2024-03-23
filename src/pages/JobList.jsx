@@ -6,10 +6,13 @@ const JobList = () => {
     const [country, setCountry] = useState('us');
     const [resultsPerPage, setResultsPerPage] = useState('5');
     const [page, setPage] = useState('1');
+    const [what, setWhat] = useState(''); // For job title or category
+    const [fullTime, setFullTime] = useState(false); // Boolean to indicate full-time jobs
+
     const [jobs, setJobs] = useState([]); // State to store the job listings
 
     const handleGetJobs = () => {
-        getJob(country, resultsPerPage, page)
+        getJob(country, resultsPerPage, page, what, fullTime)
             .then(response => {
                 setJobs(response.results); // Assuming the response has a 'results' field with the job listings
             })
@@ -50,6 +53,27 @@ const JobList = () => {
                 />
             </div>
 
+            <div>
+                <label htmlFor="whatInput">What:</label>
+                <input 
+                    type="text" 
+                    id="whatInput" 
+                    value={what}
+                    onChange={(e) => setWhat(e.target.value)}
+                />
+            </div>
+
+            <div>
+                <label>
+                    <input 
+                        type="checkbox" 
+                        checked={fullTime}
+                        onChange={(e) => setFullTime(e.target.checked)}
+                    />
+                    Full Time Only
+                </label>
+            </div>
+
             <button onClick={handleGetJobs}>Fetch Jobs</button>
 
             <div className="job-listings">
@@ -59,7 +83,7 @@ const JobList = () => {
                         <h3>{job.company.display_name}</h3>
                         <p>Location: {job.location.display_name}</p>
                         <p>Salary Range: ${job.salary_min} - ${job.salary_max}</p>
-                        <p>Type: {job.contract_time} / {job.contract_type}</p>
+                        <p>Type: {job.contract_time}</p>
                         <a href={job.redirect_url} target="_blank" rel="noopener noreferrer">View Job</a>
                     </div>
                 ))}

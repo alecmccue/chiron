@@ -1,10 +1,12 @@
 const PORT = 3001;
 
-export function getJob(country = "us", resultsPerPage = 5, page = 1) {
+export function getJob(country = "us", resultsPerPage = "5", page = "1", what = "software engineering",fullTime = "1") {
     const queryParams = new URLSearchParams({
         country, 
         resultsPerPage, 
-        page
+        page,
+        what,
+        fullTime
     }).toString();
 
     return fetch(`http://localhost:${PORT}/getJobs?${queryParams}`)
