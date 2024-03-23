@@ -1,10 +1,12 @@
-import logo from './logo.svg';
 import './App.css';
 import { useState } from "react";
 import { auth } from "./Firebase";
 import { onAuthStateChanged } from "firebase/auth"
-import Login from "./pages/Login";
 import Home from "./pages/Home";
+import CreateInterview from "./pages/CreateInterview";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import Login from "./pages/Login";
+
 import JobList from './pages/JobList';
 function App() {
     const [user, setUser] = useState(null)
@@ -14,13 +16,17 @@ function App() {
     })
 
     return (
-        <div className="App">
-            { user ?
-                <JobList />
-                :
-                <Login />
-            }
-        </div>
+        <Router>
+            <div className="App">
+                <div className="content">
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/create" element={<CreateInterview />} />
+                        <Route path="/login" element={<Login />} />
+                    </Routes>
+                </div>
+            </div>
+        </Router>
     );
 }
 
