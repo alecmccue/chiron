@@ -15,6 +15,7 @@ const Home = () => {
     const handleClose = () => {
         setOpen(false);
     };
+
     const handleLogout = async () => {
         try {
             await signOut(auth);

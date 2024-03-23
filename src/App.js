@@ -8,6 +8,7 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 
 import JobList from './pages/JobList';
+import Interview from "./pages/Interview";
 function App() {
     const [user, setUser] = useState(null)
 
@@ -23,6 +24,7 @@ function App() {
                         <Route path="/" element={<Home />} />
                         <Route path="/create" element={<InterviewModal />} />
                         <Route path="/login" element={<Login />} />
+                        <Route path="/interview" element={<Interview />} />
                     </Routes>
                 </div>
             </div>
