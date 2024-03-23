@@ -42,7 +42,7 @@ const Home = () => {
               direction="column"
               justifyContent="center"
               alignItems="center"
-              className="p-6 bg-gradient-to-br from-[#C5D5EA] to-[#7392B7] text-white"
+              className="p-6 bg-gradient-to-br from-isabelline to-onyx text-white"
             >
               <div>
                 <VideoChatIcon size={48} className="mb-4" />
