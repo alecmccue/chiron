@@ -7,6 +7,7 @@ import CreateInterview from "./pages/CreateInterview";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 
+import JobList from './pages/JobList';
 function App() {
     const [user, setUser] = useState(null)
 
