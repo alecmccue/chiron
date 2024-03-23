@@ -20,7 +20,7 @@ app.get('/getJobs', async (req, res) => {
 
     try {
         const response = await axios.get(apiUrl);
-        console.log(response.data);
+        // console.log(response.data);
         // Send the data back to the client
         res.json(response.data);
     } catch (error) {
