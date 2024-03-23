@@ -1,197 +1,110 @@
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, Typography, Grid, Avatar } from '@mui/material';
+import * as faceapi from "face-api.js";
+import { deepPurple } from '@mui/material/colors';
+import './interview.css';
 
 const Interview = () => {
+    const [modelsLoaded, setModelsLoaded] = useState(false);
+    const [question, setQuestion] = useState('');
+
+    const videoRef = React.useRef();
+    const canvasRef = React.useRef();
+    const intervalRef = React.useRef();
+
+    useEffect(() => {
+        const loadModels = async () => {
+            const MODEL_URL = process.env.PUBLIC_URL + '/models';
+
+            await Promise.all([
+                faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
+                faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+                faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
+                faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
+            ]);
+            setModelsLoaded(true);
+            startVideo();
+        };
+
+        loadModels();
+
+        return () => {
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+            }
+        };
+    }, []);
+
+    const startVideo = () => {
+        navigator.mediaDevices
+            .getUserMedia({ video: { width: '100%' } }) // Set width to '100%' for maximum width
+            .then(stream => {
+                let video = videoRef.current;
+                video.srcObject = stream;
+                video.play();
+            })
+            .catch(err => {
+                console.error("error:", err);
+            });
+    };
+
+    const handleVideoOnPlay = () => {
+        intervalRef.current = setInterval(async () => {
+            if (canvasRef && canvasRef.current) {
+                canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(videoRef.current);
+                const displaySize = { width: videoRef.current.videoWidth, height: videoRef.current.videoHeight }; // Use videoWidth and videoHeight
+                faceapi.matchDimensions(canvasRef.current, displaySize);
+
+                const detections = await faceapi.detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
+                const resizedDetections = faceapi.resizeResults(detections, displaySize);
+
+                if (resizedDetections.length > 0) {
+                    const emotions = resizedDetections.map(detection => {
+                        const expressions = detection.expressions;
+                        let emotion = '';
+                        let maxConfidence = 0;
+                        for (const [emotionName, confidence] of Object.entries(expressions)) {
+                            if (confidence > maxConfidence) {
+                                maxConfidence = confidence;
+                                emotion = emotionName;
+                            }
+                        }
+                        return emotion;
+                    });
+                    console.log('Emotions detected:', emotions);
+                }
+
+                canvasRef.current.getContext('2d').clearRect(0, 0, displaySize.width, displaySize.height);
+            }
+        }, 100);
+    };
+
     return (
-        <div>
-
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+            <Grid container spacing={3} style={{ maxWidth: '100%' }}>
+                <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <Card sx={{ width: 'fit-content' }}>
+                        <CardContent style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                            <Typography variant="h5" gutterBottom>
+                                Interviewer
+                            </Typography>
+                            <Avatar sx={{ bgcolor: deepPurple[500] }}>OP</Avatar>
+                        </CardContent>
+                    </Card>
+                </Grid>
+                <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <div style={{ position: 'relative', width: '100%', paddingTop: '56.25%' }}>
+                        {modelsLoaded ? (
+                            <video ref={videoRef} onPlay={handleVideoOnPlay} style={{ position: 'absolute', width: '100%', height: '100%', objectFit: 'cover' }} />
+                        ) : (
+                            <div style={{ width: '100%', height: '100%', borderRadius: '10px', backgroundColor: 'black' }}></div>
+                        )}
+                        <canvas ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
+                    </div>
+                </Grid>
+            </Grid>
         </div>
-//         <>
-//             <Box sx={{ display: 'flex', width: '100%' }}>
-//         <Box
-//             sx={{
-//                 maxWidth: '80%',
-//                 maxHeight: '80.98px',
-//                 display: 'flex',
-//                 flexDirection: 'column-reverse',
-//             }}
-//         >
-//             <Box
-//                 height={5}
-//                 mb={4}
-//                 mt={2}
-//                 width='6rem'
-//                 bgcolor='primary.main'
-//                 borderRadius={1}
-//             >
-//                 &#8203;
-//             </Box>
-//             <Typography variant='h2'>
-//                 <TextTransition className='transition'>
-//                     {questionDisplay}
-//                 </TextTransition>
-//             </Typography>
-//         </Box>
-//         <Box
-//             sx={{
-//                 marginLeft: 'auto',
-//                 bgcolor: '#E6F3ED',
-//                 borderRadius: '0.5rem',
-//                 display: 'flex',
-//                 alignItems: 'center',
-//                 justifyContent: 'center',
-//                 height: '3rem',
-//                 width: '10.45rem',
-//             }}
-//         >
-//             <Typography
-//                 sx={{
-//                     color: '#8FC0A9',
-//                     fontWeight: 700,
-//                 }}
-//             >
-//                 {questions.length - questionsAnswered}{' '}
-//                 {questions.length - questionsAnswered == 1
-//                     ? 'question'
-//                     : 'questions'}{' '}
-//                 left
-//             </Typography>
-//         </Box>
-//     </Box>
-//
-//     <Grid container spacing={3}>
-//         <Grid item xs={4} sx={{ position: 'relative' }}>
-//             <Box
-//                 sx={{
-//                     height: '100%',
-//                     width: '100%',
-//                     bgcolor: '#E1E1E1',
-//                     borderRadius: '1.25rem',
-//                     display: 'flex',
-//                     alignItems: 'center',
-//                     justifyContent: 'center',
-//                 }}
-//             >
-//                 <Player
-//                     loop
-//                     src='/Interviewer.json'
-//                     style={{ width: '25rem' }}
-//                     ref={interviewerPlayer}
-//                     speed={1.25}
-//                 ></Player>
-//             </Box>
-//             <Chip
-//                 icon={
-//                     <PersonIcon sx={{ '&.MuiChip-icon': { color: '#FFFFFF8A' } }} />
-//                 }
-//                 label='Chandler Bing'
-//                 sx={{
-//                     position: 'absolute',
-//                     zIndex: 5,
-//                     bottom: '1rem',
-//                     left: '2.5rem',
-//                     backgroundColor: '#00000052',
-//                     color: '#FFFFFFA1',
-//                     fontWeight: 700,
-//                 }}
-//             ></Chip>
-//         </Grid>
-//         <Grid item xs={8} sx={{ position: 'relative' }}>
-//             <Chip
-//                 icon={
-//                     <GraphicEqRoundedIcon
-//                         sx={{ '&.MuiChip-icon': { color: '#AF6161 !important' } }}
-//                     />
-//                 }
-//                 label='Please wait for the interviewer to finish speaking'
-//                 sx={{
-//                     position: 'absolute',
-//                     zIndex: 5,
-//                     top: '2.5rem',
-//                     right: '1rem',
-//                     backgroundColor: '#FB2D2D54',
-//                     transition: '0.5s',
-//                     opacity: interviewerTalking ? '100%' : '0%',
-//                 }}
-//             ></Chip>
-//             <Chip
-//                 icon={
-//                     <GraphicEqRoundedIcon
-//                         sx={{ '&.MuiChip-icon': { color: '#799D8C !important' } }}
-//                     />
-//                 }
-//                 label='You may answer the question now'
-//                 sx={{
-//                     position: 'absolute',
-//                     zIndex: 5,
-//                     top: '2.5rem',
-//                     right: '1rem',
-//                     backgroundColor: '#28C17B4D',
-//                     transition: '0.5s',
-//                     opacity: isRecording ? '100%' : '0%',
-//                 }}
-//             ></Chip>
-//             <Chip
-//                 icon={
-//                     <PersonIcon sx={{ '&.MuiChip-icon': { color: '#FFFFFF8A' } }} />
-//                 }
-//                 label={userDetails.name}
-//                 sx={{
-//                     position: 'absolute',
-//                     zIndex: 5,
-//                     bottom: '1rem',
-//                     left: '2.5rem',
-//                     backgroundColor: '#00000052',
-//                     color: '#FFFFFFA1',
-//                     fontWeight: 700,
-//                 }}
-//             ></Chip>
-//
-//             <WebCamera />
-//         </Grid>
-//     </Grid>
-//     <Box
-//         sx={{
-//             display: 'flex',
-//             flexDirection: 'row',
-//             justifyContent: 'space-between',
-//             width: '100%',
-//         }}
-//     >
-//         <Box width='18rem'></Box>
-//         <Image src={'controls.svg'} width={350} height={120} alt='controls' />
-//         {/*<Box mt={4}>*/}
-//         {/*    <Button*/}
-//         {/*        variant='error'*/}
-//         {/*        disabled={isRecording ? false : true}*/}
-//         {/*        startIcon={<ReplayIcon />}*/}
-//         {/*        onClick={redoQuestion}*/}
-//         {/*    >*/}
-//         {/*        Redo*/}
-//         {/*    </Button>*/}
-//         {/*    <Button*/}
-//         {/*        disabled={isRecording || interviewComplete ? false : true}*/}
-//         {/*        variant='outlined'*/}
-//         {/*        onClick={*/}
-//         {/*            interviewComplete ? () => router.push('/feedback') : stopRecording*/}
-//         {/*        }*/}
-//         {/*        endIcon={*/}
-//         {/*            questionsAnswered == questions.length ? null : <ArrowForward />*/}
-//         {/*        }*/}
-//         {/*        startIcon={*/}
-//         {/*            questionsAnswered == questions.length ? (*/}
-//         {/*                <CallEndRoundedIcon />*/}
-//         {/*            ) : null*/}
-//         {/*        }*/}
-//         {/*        sx={{ padding: '.5rem 1.5rem', boxShadow: 'none', ml: 2 }}*/}
-//         {/*    >*/}
-//         {/*        {questionsAnswered == questions.length*/}
-//         {/*            ? 'End Interview'*/}
-//         {/*            : 'Submit Answer'}*/}
-//         {/*    </Button>*/}
-//         {/*</Box>*/}
-//     </Box>
-// </>
-    )
-}
+    );
+};
 
-
-export default Interview
+export default Interview;
