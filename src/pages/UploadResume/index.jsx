@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { pdfjs } from 'react-pdf';
-import { Box, Button, Modal } from "@mui/material";
-import { Link } from 'react-router-dom';
+import { Box, Button, Modal, Typography, IconButton, TextField } from "@mui/material";
+import { Close } from '@mui/icons-material';
+import { getAuth } from "firebase/auth"
+import { doc, setDoc } from "firebase/firestore";
+import { firestore } from "../../Firebase";
+
 
 // Configure PDFJS worker
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
-const UploadResume = () => {
+const UploadResume = ({ open, onClose, onSubmit }) => {
     const [file, setFile] = useState(null);
     const [extractedText, setExtractedText] = useState("");
-    const [open, setOpen] = useState(false);
+
+    const auth = getAuth();
+    const user = auth.currentUser;
 
     useEffect(() => {
         handleExtractText();
@@ -45,37 +51,73 @@ const UploadResume = () => {
         }
     };
 
-    const handleOpen = () => {
-        setOpen(true);
+    const handleReset = () => {
+        setFile(null);
+        setExtractedText("");
     };
 
-    const handleClose = () => {
-        setOpen(false);
-    };
+    const handleSubmit = async() => {
+        if(file) {
+            await setDoc(doc(firestore, "resumes", user.uid), {
+                resume_string: extractedText
+            });
+        }
+        onClose()
+    }
 
     return (
-        <Modal open={open} onClose={handleClose}>
-            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 400, bgcolor: 'background.paper', border: '2px solid #000', boxShadow: 24, p: 4 }}>
-                <input type="file" onChange={onFileChange} />
-                {file && (
-                    <div>
-                        <button onClick={handleExtractText}>Extract Text</button>
-                    </div>
-                )}
-                {extractedText && (
-                    <div>
-                        <h2>Extracted Text:</h2>
-                        <p>{extractedText}</p>
-                    </div>
-                )}
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end', pr: 1, pt: 1 }}>
-                    <Link to="/interview">
-                        <Button color="primary">
-                            Next
-                        </Button>
-                    </Link>
+        <Modal
+            open={open}
+            onClose={onClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+            style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}
+        >
+            <Box
+                sx={{
+                    position: 'absolute',
+                    width: 600,
+                    maxWidth: '90%',
+                    bgcolor: 'background.paper',
+                    boxShadow: 24,
+                    borderRadius: 4,
+                    p: 3,
+                }}
+            >
+                <IconButton
+                    aria-label="close"
+                    onClick={onClose}
+                    sx={{
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                    }}
+                >
+                    <Close />
+                </IconButton>
+                <Typography variant="h5" gutterBottom>
+                    Upload File
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                    Upload file to Chiron to save for interviews
+                </Typography>
+                <TextField
+                    type="file"
+                    onChange={onFileChange}
+                    variant="outlined"
+                    fullWidth
+                    sx={{ mt: 2 }}
+                />
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+                    <Button onClick={handleSubmit} variant="contained" color="primary">
+                        Submit
+                    </Button>
                 </Box>
-            </div>
+            </Box>
         </Modal>
     );
 };
