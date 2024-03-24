@@ -6,7 +6,7 @@ import EnterJob from "./components/EnterJob";
 import Index from "../UploadResume";
 import ModalStart from "./components/ModalStart";
 
-const InterviewModal = ({ open, onClose, children }) => {
+const InterviewModal = ({ open, onClose, setJob, setRequirements, setCompany }) => {
     const [currentComponent, setCurrentComponent] = useState(1);
 
     const setNextComponent = (comp) => {
@@ -26,7 +26,10 @@ const InterviewModal = ({ open, onClose, children }) => {
             case 1:
                 return <ModalStart handleNext={handleNext}/>;
             case 2:
-                return <AdzunaSearch handleNext={handleNext}/>;
+                return <AdzunaSearch handleNext={handleNext}
+                                     setJob={setJob}
+                                     setCompany={setCompany}
+                                     setRequirements={setRequirements}/>;
             case 3:
                 return <EnterJob handleNext={handleNext}/>;
             case 4:

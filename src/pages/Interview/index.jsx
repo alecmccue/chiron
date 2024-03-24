@@ -8,6 +8,7 @@ import BubblingAvatar from "../../components/BubblingAvatar";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
+import { sendMessageToChat } from "../../chat";
 
 const questions = [
   "Given the emphasis on cloud-based solution development in this role, can you describe a project where you designed, developed, and deployed a software solution on a cloud platform such as AWS, GCP, or Azure? Please walk us through your decision-making process in choosing the technology stack, how you ensured the application's scalability and security, and any challenges you faced during the deployment.",
@@ -15,7 +16,7 @@ const questions = [
   "Considering the importance of Agile development practices and team collaboration for this role, how have you contributed to a positive team dynamic in a past software engineering project? Discuss how you participated in Agile processes, any challenges you and your team faced, how you overcame them, and how you have mentored or shared knowledge with fellow team members to improve project outcomes.",
 ];
 
-const Interview = () => {
+const Interview = ({ questions, job, company, message, requirements, setChatHistory }) => {
   const auth = getAuth();
   const user = auth.currentUser;
   const [modelsLoaded, setModelsLoaded] = useState(false);
@@ -110,12 +111,12 @@ const Interview = () => {
 
     loadModels();
 
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, []);
+        return () => {
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+            }
+        };
+    }, []);
 
   // Inside startVideo function
   const startVideo = () => {

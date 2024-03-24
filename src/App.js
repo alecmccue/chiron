@@ -10,8 +10,15 @@ import JobList from './pages/JobList';
 import Chat from './pages/Chat';
 
 import Interview from "./pages/Interview";
+import AdzunaSearch from "./pages/InterviewModal/components/AdzunaSearch";
 function App() {
     const [user, setUser] = useState(null)
+    const [message, setMessage] = useState(null)
+    const [job, setJob] = useState(null)
+    const [company, setCompany] = useState(null)
+    const [requirements, setRequirements] = useState(null)
+    const [questions, setQuestions] = useState(null)
+    const [chatHistory, setChatHistory] = useState([]);
 
     onAuthStateChanged(auth, (user) => {
         setUser(user)
@@ -22,12 +29,27 @@ function App() {
             <div className="App">
                 <div className="content">
                     <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/joblist" element={<JobList />} />
+                        <Route path="/" element={
+                            <Home
+                                setJob={setJob}
+                                setCompany={setCompany}
+                                setRequirements={setRequirements}
+                            />
+                        } />
                         <Route path="/chat" element={<Chat />} />
                         <Route path="/create" element={<InterviewModal />} />
                         <Route path="/login" element={<Login />} />
-                        <Route path="/interview" element={<Interview />} />
+                        <Route path="/interview" element={
+                            <Interview
+                                user={user}
+                                message={message}
+                                job={job}
+                                company={company}
+                                requirements={requirements}
+                                questions={questions}
+                                setChatHistory={setChatHistory}
+                            />
+                        } />
                     </Routes>
                 </div>
             </div>

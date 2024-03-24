@@ -85,10 +85,12 @@ router.post('/chat', async (req, res) => {
         // Content prompt directly instructing the AI on its role and expectations
         const contentPrompt = `The candidate has applied for the position of ${job} at ${company}, 
             which requires skills such as ${requirements}. The interview questions should test these areas. 
-            Remember to provide feedback that is insightful and constructive, helping the candidate to understand areas of improvement. Make sure to ask only question at a time. 
+            Remember to provide feedback that is insightful and constructive, helping the candidate to understand areas of improvement. Make sure to ask exactly three questions at time. 
             If the user prompts something other than asking you to ask a question, then do not ask a question, just answer as the interviewer.
             Phrase the question like this:
-            Question: *question content*`;
+            Question 1: *question content* endquestion/
+            Question 2: *question content* endquestion/
+            Question 3: *question content* endquestion/`;
 
         conversationHistories[userID] = [
             { role: 'system', content: `${rolePrompt} ${contentPrompt}` },
