@@ -70,8 +70,8 @@ const Charts = () => {
   { Clarity: 20, Score: 100 },
   { Clarity: 27, Score: 40 },
   ];
-  data.push(getData())
-  data.sort()
+  // data.push(getData())
+  // data.sort()
   console.log(data)
 
   return (
