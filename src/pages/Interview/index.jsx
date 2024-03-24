@@ -393,8 +393,11 @@ const Interview = ({ setChatHistory }) => {
                   gradeResponse(0, transcript)
                   .then(gradingFeedback => {
                       const feedback = gradingFeedback.gradingFeedback;
+                      console.log(feedback)
                       const str = feedback.substring(8, feedback.length - 3)
+                      console.log(str)
                       const feedbackJSON = JSON.parse(str)
+                      console.log(feedbackJSON)
                       feedbackJSON.time = serverTimestamp()
                       setDoc(doc(firestore, "feedback", user.uid), { feedbackJSON });
                   })

@@ -67,6 +67,7 @@ const Home = ({ setJob, setRequirements, setCompany }) => {
                 </Button>
                 <InterviewModal open={openInterviewModal} onClose={handleJobModalClose} />
 
+                <Link to="/summary">Test</Link>
                 <Button
                   variant="contained"
                   onClick={() => setUploadResumeModal(true)}
