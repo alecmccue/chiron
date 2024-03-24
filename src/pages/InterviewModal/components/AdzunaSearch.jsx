@@ -7,7 +7,7 @@ import { FaMoneyCheck } from "react-icons/fa";
 import { RiSuitcaseFill } from "react-icons/ri";
 import { FaPlaneArrival } from "react-icons/fa";
 import { Card, Input, Typography,Button } from "@mui/material";
-import { Search } from "@mui/icons-material";
+import { AddLocation, Paid, Search } from "@mui/icons-material";
 import { getJob } from "../../../jobListing";
 import { Link, useNavigate } from "react-router-dom";
 import { doc, setDoc } from "firebase/firestore";
@@ -90,9 +90,9 @@ const AdzunaSearch = ({ setJob, setRequirements, setCompany, handleClose }) => {
         <>
             <h1
                 style={{ fontFamily: "Montserrat, sans-serif" }}
-                className="text-3xl font-bold bg-seashell text-onyx pt-1 pl-8"
+                className="text-3xl font-bold bg-seashell text-onyx pt-1 pl-9 ml-1"
             >
-                Chiron - Adzuna Job Search
+                Adzuna Job Search
             </h1>
             <div
                 style={{ fontFamily: "Montserrat, sans-serif" }}
@@ -103,6 +103,7 @@ const AdzunaSearch = ({ setJob, setRequirements, setCompany, handleClose }) => {
                         <label htmlFor="countryInput">Country:</label>
                         <Input
                             type="text"
+                            variant = "outlined"
                             id="countryInput"
                             value={country}
                             onChange={(e) => setCountry(e.target.value.toLowerCase())}
@@ -140,7 +141,7 @@ const AdzunaSearch = ({ setJob, setRequirements, setCompany, handleClose }) => {
                     onClick={handleGetJobs}
                     style={{ fontFamily: "Open Sans, sans-serif" }}
                     variant="outlined"
-                    className="border-2 border-onyx bg-current text-seasalt hover:bg-onyx  font-bold px-3 py-1 mt-2 rounded-lg p-2"
+                    className="border-2 border-onyx bg-sienna hover:bg-onyx text-seasalt  font-bold px-3 py-1 mt-2 rounded-lg p-2"
                 >
                     <Typography>
                         <Search /> Search
@@ -159,13 +160,13 @@ const AdzunaSearch = ({ setJob, setRequirements, setCompany, handleClose }) => {
                             <Typography className="text-onyx text-2xl font-bold">
                                 {job.title}
                             </Typography>
-                            <Typography className="text-current text-2xl font-bold">
+                            <Typography className="text-current text-xl font-bold">
                                 {job.company.display_name}
                             </Typography>
-                            <Typography className="text-onyx font-bold ">
+                            <Typography className="text-onyx font-medium ">
                                 Location: {job.location.display_name}
                             </Typography>
-                            <Typography className="text-onyx font-bold text-sm">
+                            <Typography className="text-onyx font-meidum">
                                 {job.salary_min !== job.salary_max
                                     ? `Salary Range: ${new Intl.NumberFormat("en-US").format(
                                         Math.round(job.salary_min)
@@ -204,7 +205,7 @@ const AdzunaSearch = ({ setJob, setRequirements, setCompany, handleClose }) => {
 
                         {/* LOCATION */}
                         <div className="icon-box">
-                            <FaPlaneArrival style={{ color: "#156064", fontSize: "3rem" }} />
+                            <AddLocation style={{ color: "#156064", fontSize: "3rem" }} />
                             <Typography
                                 style={{
                                     fontSize: "1.2rem",
@@ -218,7 +219,7 @@ const AdzunaSearch = ({ setJob, setRequirements, setCompany, handleClose }) => {
 
                         {/* SALARY */}
                         <div className="icon-box">
-                            <FaMoneyCheck style={{ color: "#156064", fontSize: "3rem" }} />
+                            <Paid style={{ color: "#156064", fontSize: "3rem" }} />
                             <Typography
                                 style={{
                                     fontSize: "1.2rem",
@@ -258,12 +259,11 @@ const AdzunaSearch = ({ setJob, setRequirements, setCompany, handleClose }) => {
                             </Typography>
                         </div>
                         <div className="grid grid-row-2">
-                            {/*<Link to="/interview" onClick={(e) => createMockInterview(e)} style={{ fontSize: "1rem", fontFamily: "Open Sans, sans-serif" }}*/}
-                            {/*      className="bg-current text-seasalt font-bold border-onyx border-2 px-2 py-2 rounded-lg hover:bg-onyx mt-2"*/}
-                            {/*>*/}
-                            {/*        Create Mock Interview*/}
-                            {/*</Link>*/}
-                            <Button onClick={createMockInterview}>Mock</Button>
+                            <Button onClick={createMockInterview} 
+                                style={{ fontSize: "1rem", fontFamily: "Open Sans, sans-serif", alignItems:"center", textAlign:"center"}} 
+                                className="bg-sienna text-seasalt font-bold border-onyx border-2 px-2 py-2 rounded-lg hover:bg-onyx mt-2">
+                                    Mock
+                            </Button>
                             <button
                                 onClick={() =>
                                     window.open(
@@ -272,15 +272,14 @@ const AdzunaSearch = ({ setJob, setRequirements, setCompany, handleClose }) => {
                                         "noopener,noreferrer"
                                     )
                                 }
-                                style={{ fontSize: "1rem", fontFamily: "Open Sans, sans-serif" }}
-                                className="bg-current text-seasalt font-bold border-onyx border-2 px-2 py-2 rounded-lg hover:bg-onyx mt-2"
+                                style={{ fontSize: "1rem", fontFamily: "Open Sans, sans-serif", alignItems:"center", textAlign:"center"}}
+                                className="bg-sienna text-seasalt font-bold border-onyx border-2 px-2 py-2 rounded-lg hover:bg-onyx mt-2"
                             >
                                 Apply For Positon
                             </button>
 
                         </div>
-
-                        {/* JOB DESCRIPTION */}
+                        <div className="mt-3 p-1">
                         <Typography
                             className="job-description mt-2"
                             style={{
@@ -304,6 +303,8 @@ const AdzunaSearch = ({ setJob, setRequirements, setCompany, handleClose }) => {
                                 selectedJob.description
                             )}
                         </Typography>
+
+                        </div>
                     </Card>
                 )}
             </div>
