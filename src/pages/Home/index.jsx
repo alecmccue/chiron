@@ -6,16 +6,17 @@ import VideoChatIcon from "@mui/icons-material/VideoChat";
 import { Button, Grid, Icon, Typography } from "@mui/material";
 import { useState } from "react";
 import Navbar from "../../components/Navbar";
+import UploadResume from "../UploadResume";
 
 const Home = () => {
-  const [open, setOpen] = useState(false);
-
-  const handleOpen = () => {
-    setOpen(true);
+  const [openInterviewModal, setOpenInterviewModal] = useState(false);
+  const [uploadResumeModal, setUploadResumeModal] = useState(false);
+  const handleJobModalOpen = () => {
+    setOpenInterviewModal(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleJobModalClose = () => {
+    setOpenInterviewModal(false);
   };
   const handleLogout = async () => {
     try {
@@ -195,11 +196,18 @@ const Home = () => {
             </Grid>
           </div>
           <div className="flex justify-center">
-            <Button variant="outlined" onClick={handleOpen} size="large">
+            <Button variant="outlined" onClick={handleJobModalOpen} size="large">
               Create New Interview!
             </Button>
-            <InterviewModal open={open} onClose={handleClose}>
+            <InterviewModal open={openInterviewModal} onClose={handleJobModalClose}>
             </InterviewModal>
+          </div>
+          <div className="flex justify-center">
+            <Button variant="outlined" onClick={() => setUploadResumeModal(true)} size="large">
+              Upload your Resume
+            </Button>
+            <UploadResume open={uploadResumeModal} onClose={() => setUploadResumeModal(false)}>
+            </UploadResume>
           </div>
         </div>
       </div>

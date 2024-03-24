@@ -91,7 +91,7 @@ const Interview = () => {
 
 
     return (
-        <div className="container">
+        <div className="container-interview">
             <div className="inner-container">
                 <div className="question-title">
                     <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '10px' }}>Question Title</Typography>

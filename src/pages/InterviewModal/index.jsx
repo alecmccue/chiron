@@ -3,7 +3,7 @@ import { Modal, Box, Button, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import AdzunaSearch from "./components/AdzunaSearch";
 import EnterJob from "./components/EnterJob";
-import UploadResume from "./components/UploadResume";
+import Index from "../UploadResume";
 import ModalStart from "./components/ModalStart";
 
 const InterviewModal = ({ open, onClose, children }) => {
@@ -30,7 +30,7 @@ const InterviewModal = ({ open, onClose, children }) => {
             case 3:
                 return <EnterJob handleNext={handleNext}/>;
             case 4:
-                return <UploadResume handleNext={handleNext}/>;
+                return <Index handleNext={handleNext}/>;
             default:
                 return null;
         }
@@ -48,7 +48,6 @@ const InterviewModal = ({ open, onClose, children }) => {
                 justifyContent: 'center',
             }}
         >
-
             <Box
                 sx={{
                     position: 'absolute',

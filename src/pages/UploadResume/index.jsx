@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { pdfjs } from 'react-pdf';
-import { Box, Button } from "@mui/material";
+import { Box, Button, Modal } from "@mui/material";
 import { Link } from 'react-router-dom';
 
 // Configure PDFJS worker
@@ -9,10 +9,12 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 const UploadResume = () => {
     const [file, setFile] = useState(null);
     const [extractedText, setExtractedText] = useState("");
+    const [open, setOpen] = useState(false);
 
     useEffect(() => {
-        handleExtractText()
-    }, [file])
+        handleExtractText();
+    }, [file]);
+
     const onFileChange = (e) => {
         const selectedFile = e.target.files[0];
         setFile(selectedFile);
@@ -43,28 +45,38 @@ const UploadResume = () => {
         }
     };
 
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     return (
-        <div>
-            <input type="file" onChange={onFileChange} />
-            {file && (
-                <div>
-                    <button onClick={handleExtractText}>Extract Text</button>
-                </div>
-            )}
-            {extractedText && (
-                <div>
-                    <h2>Extracted Text:</h2>
-                    <p>{extractedText}</p>
-                </div>
-            )}
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', pr: 1, pt: 1 }}>
-                <Link to="/interview">
-                    <Button color="primary">
-                        Next
-                    </Button>
-                </Link>
-            </Box>
-        </div>
+        <Modal open={open} onClose={handleClose}>
+            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 400, bgcolor: 'background.paper', border: '2px solid #000', boxShadow: 24, p: 4 }}>
+                <input type="file" onChange={onFileChange} />
+                {file && (
+                    <div>
+                        <button onClick={handleExtractText}>Extract Text</button>
+                    </div>
+                )}
+                {extractedText && (
+                    <div>
+                        <h2>Extracted Text:</h2>
+                        <p>{extractedText}</p>
+                    </div>
+                )}
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end', pr: 1, pt: 1 }}>
+                    <Link to="/interview">
+                        <Button color="primary">
+                            Next
+                        </Button>
+                    </Link>
+                </Box>
+            </div>
+        </Modal>
     );
 };
 
