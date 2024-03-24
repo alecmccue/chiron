@@ -392,33 +392,10 @@ const Interview = ({ setChatHistory }) => {
                   
                   gradeResponse(0, transcript)
                   .then(gradingFeedback => {
-                      console.log('Grading feedback:', gradingFeedback);
                       const feedback = gradingFeedback.gradingFeedback;
-                      console.log(feedback)
-                      const clarityRegex = /Clarity:([\s\S]+?)Relevance:/;
-                      const relevanceRegex = /Relevance:([\s\S]+?)Depth:/;
-                      const depthRegex = /Depth:([\s\S]+?)Final score:/;
-                      const scoreRegex = /Final score: (\d+) out of 100/;
-
-                      // Execute regular expressions to extract information
-                      const clarityMatch = clarityRegex.exec(feedback);
-                      const relevanceMatch = relevanceRegex.exec(feedback);
-                      const depthMatch = depthRegex.exec(feedback);
-                      const scoreMatch = scoreRegex.exec(feedback);
-
-                      // Extract the captured groups
-                      const clarity = clarityMatch ? clarityMatch[1].trim() : "N/A";
-                      const relevance = relevanceMatch ? relevanceMatch[1].trim() : "N/A";
-                      const depth = depthMatch ? depthMatch[1].trim() : "N/A";
-                      const score = scoreMatch ? parseInt(scoreMatch[1]) : "N/A";
-
-                      setDoc(doc(firestore, "feedback", user.uid), {
-                          "clarity": clarity,
-                          "relevance": relevance,
-                          "depth": depth,
-                          "score": score,
-                          "time": serverTimestamp()
-                      });
+                      const str = feedback.substring(8, feedback.length - 3)
+                      const feedbackJSON = JSON.parse(str)
+                      setDoc(doc(firestore, "feedback", user.uid), { feedbackJSON });
                   })
                     handlePlay();
                 }
