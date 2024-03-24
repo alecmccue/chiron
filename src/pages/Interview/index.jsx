@@ -29,6 +29,7 @@ const q = [
     "Considering the importance of Agile development practices and team collaboration for this role, how have you contributed to a positive team dynamic in a past software engineering project? Discuss how you participated in Agile processes, any challenges you and your team faced, how you overcame them, and how you have mentored or shared knowledge with fellow team members to improve project outcomes."
 ];
 
+var feedbackArray = [];
 
 const Interview = ({ setChatHistory }) => {
     const auth = getAuth();
@@ -383,12 +384,29 @@ const Interview = ({ setChatHistory }) => {
               color="primary"
               onClick={() => {
                 if (isLastQuestion()) {
-                  navigate("/");
                   handleStop();
                   stopListening();
+
+
+                  gradeResponse(0, transcript)
+                  .then(gradingFeedback => {
+                    console.log('Grade response received:', gradingFeedback);
+                    feedbackArray.push(gradingFeedback);
+                    // Additional processing if needed...
+                    console.log('Navigating to login...');
+                    navigate('/login', { state: { feedback: feedbackArray } });
+                  })
+                  .catch(error => {
+                    console.error('Error grading response:', error);
+                  });
+
+                  // Access it in your component using useLocation
+                  // const location = useLocation();
+                  // const queryParams = new URLSearchParams(location.search);
+                  // const data = queryParams.get('data');
                 } else {
                   setQuestionDisplayIndex((prevIndex) => prevIndex + 1);
-                  gradeResponse(transcript)
+
                   
                   gradeResponse(0, transcript)
                   .then(gradingFeedback => {
@@ -401,6 +419,8 @@ const Interview = ({ setChatHistory }) => {
                       feedbackJSON.time = serverTimestamp()
                       setDoc(doc(firestore, "feedback", user.uid), { feedbackJSON });
                   })
+
+                  resetTranscript();
                 }
                 handlePlay();
               }}
