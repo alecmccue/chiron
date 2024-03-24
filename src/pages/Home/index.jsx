@@ -199,10 +199,6 @@ const Home = () => {
               Create New Interview!
             </Button>
             <InterviewModal open={open} onClose={handleClose}>
-              <h2 id="modal-modal-title">Centered Modal</h2>
-              <p id="modal-modal-description">
-                This modal is centered in the middle of the screen.
-              </p>
             </InterviewModal>
           </div>
         </div>
