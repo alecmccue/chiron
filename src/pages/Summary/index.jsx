@@ -3,6 +3,7 @@ import { getAuth } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { Card, CardContent, CircularProgress, Grid, Typography } from "@mui/material"; // Import Material-UI components
 import { auth, firestore } from "../../Firebase";
+import Navbar from "../../components/Navbar";
 
 const Summary = () => {
     const [feedback, setFeedback] = useState(null);
@@ -29,27 +30,30 @@ const Summary = () => {
     }, [user]); // Only run the effect if user changes
 
     return (
-        <Card sx={{ maxWidth: 800, margin: "auto", marginTop: 20, padding: 10 }}>
-            <CardContent>
-                {feedback ? (
-                    <Grid container spacing={2} alignItems="center">
-                        <Grid item xs={12}>
-                            <Typography variant="h5" component="h2" align="center">Interview Feedback</Typography>
+        <>
+            <Navbar />
+            <Card sx={{ maxWidth: 800, margin: "auto", marginTop: 20, padding: 10 }}>
+                <CardContent>
+                    {feedback ? (
+                        <Grid container spacing={2} alignItems="center">
+                            <Grid item xs={12}>
+                                <Typography variant="h5" component="h2" align="center">Interview Feedback</Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Typography variant="body1"><strong>Score:</strong> {feedback.score}%</Typography>
+                                <Typography variant="body1"><strong>Clarity:</strong> {feedback.clarity}</Typography>
+                                <Typography variant="body1"><strong>Depth:</strong> {feedback.depth}</Typography>
+                                <Typography variant="body1"><strong>Relevance:</strong> {feedback.relevance}</Typography>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="body1"><strong>Score:</strong> {feedback.score}%</Typography>
-                            <Typography variant="body1"><strong>Clarity:</strong> {feedback.clarity}</Typography>
-                            <Typography variant="body1"><strong>Depth:</strong> {feedback.depth}</Typography>
-                            <Typography variant="body1"><strong>Relevance:</strong> {feedback.relevance}</Typography>
+                    ) : (
+                        <Grid container justifyContent="center">
+                            <CircularProgress />
                         </Grid>
-                    </Grid>
-                ) : (
-                    <Grid container justifyContent="center">
-                        <CircularProgress />
-                    </Grid>
-                )}
-            </CardContent>
-        </Card>
+                    )}
+                </CardContent>
+            </Card>
+        </>
     );
 };
 
