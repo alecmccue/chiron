@@ -437,10 +437,12 @@ const Interview = ({ setChatHistory }) => {
               onClick={() => {
                 if (isLastQuestion()) {
                   navigate("/");
+                  handleStop();
+                  stopListening();
                 } else {
                   setQuestionDisplayIndex((prevIndex) => prevIndex + 1);
+                    handlePlay();
                 }
-                handlePlay();
               }}
             >
               {isLastQuestion() ? "End Call" : "Next Question"}
