@@ -89,7 +89,7 @@ router.post('/grade', async (req, res) => {
 
     // Define a grading prompt based on the response and possibly the conversation context
     const gradingPrompt = `Given the role of a critical interviewer, grade the following response by the candidate: "${response}". Provide a detailed assessment that is quite harsh based on clarity, relevance, and depth. 
-    At the end, MAKE SURE to also provide a numerical grade (out of 100) in the format final score: *grade out of 100*`;
+    At the end, make to also provide a numerical grade (out of 100) in the format final score: *grade out of 100* To Format the clarity, relevance, depth, and score, make sure to include /start and /end to signify the start and end of these four`;
 
     const messagesWithGradingPrompt = [        
         { 
@@ -110,8 +110,7 @@ router.post('/grade', async (req, res) => {
         });
 
         const gradingFeedback = gradingCompletion.choices[0].message.content;
-
-        console.log("ABSHIDHABSHDBAHSUBUHDAU");
+        
         console.log(gradingFeedback);
 
         // Respond with the grading feedback

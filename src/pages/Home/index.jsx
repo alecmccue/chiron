@@ -61,9 +61,9 @@ const Home = ({ setJob, setRequirements, setCompany }) => {
                       className="p-8 bg-gradient-to-br from-DB6C53 to-onyx text-onyx rounded-lg shadow-xl"
                   >
                     <div className="flex">
-                      <div className="container float-left w-[20%]">
+                      <div className="icon-container float-left w-[20%]">
                         <svg
-                            className="w-10 h-10 text-gray-800 dark:text-onyx"
+                            className="w-10 h-22 text-gray-800 dark:text-onyx"
                             aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg"
                             width="3rem"
@@ -80,7 +80,7 @@ const Home = ({ setJob, setRequirements, setCompany }) => {
                           />
                         </svg>
                       </div>
-                      <div className=" container float-right" align="center">
+                      <div className="container float-right" align="center">
                         <Typography variant="h6" className="mb-2 font-bold">
                           Feedback And Results
                         </Typography>
@@ -99,7 +99,7 @@ const Home = ({ setJob, setRequirements, setCompany }) => {
                       className="p-8 bg-gradient-to-bl from-DB6C53 to-onyx text-onyx rounded-lg shadow-xl"
                   >
                     <div className="flex">
-                      <div className="container float-left w-[20%]">
+                      <div className="icon-container float-left w-[20%]">
                         <svg
                             className="w-15 h-15 text-gray-800 dark:text-onyx float-start"
                             aria-hidden="true"
@@ -107,9 +107,10 @@ const Home = ({ setJob, setRequirements, setCompany }) => {
                             width="3rem"
                             height="3rem"
                             fill="none"
-                            viewBox="0 0 24 24"
+                            viewBox="0 0 24 24"                          
                         >
                           <path
+                              
                               stroke="currentColor"
                               stroke-linecap="round"
                               stroke-width="2"
@@ -136,7 +137,7 @@ const Home = ({ setJob, setRequirements, setCompany }) => {
                       className="p-8 bg-gradient-to-tr from-DB6C53 to-onyx text-onyx rounded-lg shadow-xl"
                   >
                     <div className="flex">
-                      <div className="container float-left w-[20%]">
+                      <div className="icon-container float-left w-[20%]">
                         <svg
                             className="w-15 h-15 text-gray-800 dark:text-onyx float-start"
                             aria-hidden="true"
@@ -171,7 +172,7 @@ const Home = ({ setJob, setRequirements, setCompany }) => {
                       className="p-8 bg-gradient-to-tl from- to-onyx text-onyx rounded-lg shadow-xl"
                   >
                     <div className="flex">
-                      <div className="container float-left w-[20%]">
+                      <div className="icon-container float-left w-[20%]">
                         <svg
                             className="w-10 h-10 text-gray-800 dark:text-onyx"
                             aria-hidden="true"
