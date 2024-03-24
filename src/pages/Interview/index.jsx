@@ -31,16 +31,17 @@ const q = [
     "Considering the importance of Agile development practices and team collaboration for this role, how have you contributed to a positive team dynamic in a past software engineering project? Discuss how you participated in Agile processes, any challenges you and your team faced, how you overcame them, and how you have mentored or shared knowledge with fellow team members to improve project outcomes."
 ];
 
-const Interview = ({ questions, message, setChatHistory }) => {
+const Interview = ({ setChatHistory }) => {
     const auth = getAuth();
     const user = auth.currentUser;
     const [modelsLoaded, setModelsLoaded] = useState(false);
     const [questionsAnswered, setQuestionsAnswered] = useState([])
     const [questionDisplayIndex, setQuestionDisplayIndex] = useState(0);
-    const [jobsData, setJobsData] = useState([]); // State to hold the jobs data
+    const [questions, setQuestions] = useState([]); // State to hold the jobs data
     const [job, setJob] = useState("")
     const [company, setCompany] = useState("")
     const [requirements, setRequirements] = useState("")
+    const [message, setMessage] = useState("")
 
     const [recognizedText, setRecognizedText] = useState("");
     const [listening, setListening] = useState(false);
@@ -53,8 +54,8 @@ const Interview = ({ questions, message, setChatHistory }) => {
 
     useEffect(() => {
         const synth = window.speechSynthesis;
-        console.log(q[questionDisplayIndex]);
-        const u = new SpeechSynthesisUtterance(q[questionDisplayIndex]);
+        console.log(questions[questionDisplayIndex]);
+        const u = new SpeechSynthesisUtterance(questions[questionDisplayIndex]);
 
         setUtterance(u);
 
@@ -114,45 +115,18 @@ const Interview = ({ questions, message, setChatHistory }) => {
   };
   const navigate = useNavigate();
 
-    // Function to fetch jobs data
-    const fetchJobs = async () => {
-        try {
-            console.log(user.uid)
-            const d = await getDoc(doc(firestore, "job", user.uid))
-            console.log(d.data().company)
-            setJob(d.data().job)
-            setRequirements(d.data().requirements)
-            setCompany(d.data().company)
-        } catch (error) {
-            console.error('Error fetching jobs:', error);
-        }
-
-    };
+    const fetchQuestions = async () => {
+        const d = await getDoc(doc(firestore, "questions", user.uid))
+        console.log(d.data().questions_array)
+        // setReady(d.data().ready)
+        setQuestions(d.data().questions_array)
+    }
 
 
     const isLastQuestion = () => {
-        return questionDisplayIndex === q.length - 1
+        return questionDisplayIndex === questions.length - 1
     }
 
-    // const sendMessage = () => {
-    //     console.log(job)
-    //     console.log(company)
-
-    //         sendMessageToChat(user, message, job, company, requirements, questions)
-    //             .then(response => {
-    //                 console.log(message)
-    //                 const aiMessage = response.message;
-
-    //                 console.log(aiMessage);
-
-    //                 setChatHistory(prevHistory => [
-    //                     ...prevHistory,
-    //                     { sender: 'User', content: message },
-    //                     { sender: 'AI', content: aiMessage },
-    //                 ]);
-    //             })
-    //             .catch(error => console.error('Error:', error));
-    //     };
 
     useEffect(() => {
         const loadModels = async () => {
@@ -168,17 +142,8 @@ const Interview = ({ questions, message, setChatHistory }) => {
             await setModelsLoaded(true);
             startVideo();
         };
-        fetchJobs()
         loadModels();
-        // sendMessage()
-
-
-
-        return () => {
-            if (intervalRef.current) {
-                clearInterval(intervalRef.current);
-            }
-        };
+        fetchQuestions()
     }, []);
   let previousEmotions = [];
   let toastTimeout = null;
@@ -260,7 +225,7 @@ const Interview = ({ questions, message, setChatHistory }) => {
           ).length;
           const sadCount = previousEmotions.filter((e) => e === "sad" || e !== "angry").length;
 
-          clearTimeout(toastTimeout); 
+          clearTimeout(toastTimeout);
 
           if (sadCount > 2  && happyCount === 0) {
             toastTimeout = setTimeout(() => {
@@ -303,12 +268,12 @@ const Interview = ({ questions, message, setChatHistory }) => {
                 fontSize: "0.75rem",
               }}
             >
-              {q[questionDisplayIndex]}
+              {questions[questionDisplayIndex]}
             </Typography>
           </Card>
           <div style={{ marginTop: "auto" }}>
             <Chip
-              label={`Questions Left: ${q.length - questionDisplayIndex - 1}`}
+              label={`Questions Left: ${questions.length - questionDisplayIndex - 1}`}
               sx={{
                 backgroundColor: "#C8E6C9",
                 color: "black",
