@@ -25,13 +25,15 @@ const Home = ({ setJob, setRequirements, setCompany }) => {
   const handleLogout = async () => {
     try {
       await signOut(auth);
+      
     } catch (error) {
       console.error(error);
     }
   };
+
   return (
       <>
-        <Navbar signOut={handleLogout} auth={auth}/>
+        <Navbar signOut={handleLogout} onClick={handleLogout} auth={auth}/>        
 
         <div
             style={{
@@ -227,7 +229,8 @@ const Home = ({ setJob, setRequirements, setCompany }) => {
                   </Grid>
                 </div>
               </div>
-              <Link to="/login" onClick={handleLogout}>
+              <Link to="/login" onClick={handleLogout} className="bg-DB6C53 text-onyx font-bold py-7 px-7 text-2x1"
+                  sx={{fontWeight: 'bold', padding: '1rem', background: '#DB6C53'}}>
                 Logout
               </Link>
             </div>
