@@ -63,7 +63,8 @@ const Home = ({ setJob, setRequirements, setCompany }) => {
                     <div className="flex">
                       <div className="icon-container float-left w-[20%]">
                         <svg
-                            className="w-10 h-22 text-gray-800 dark:text-onyx"
+                            style={{ color: 'gray', position: 'relative', top: '30px' }}
+                            className="w-15 h-15 text-gray-800 dark:text-onyx"                            
                             aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg"
                             width="3rem"
@@ -174,7 +175,7 @@ const Home = ({ setJob, setRequirements, setCompany }) => {
                     <div className="flex">
                       <div className="icon-container float-left w-[20%]">
                         <svg
-                            className="w-10 h-10 text-gray-800 dark:text-onyx"
+                            className="w-10 h-10 text-gray-800 dark:text-onyx float-start"
                             aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg"
                             width="3rem"
