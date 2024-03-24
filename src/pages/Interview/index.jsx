@@ -419,10 +419,8 @@ const Interview = ({ setChatHistory }) => {
                       feedbackJSON.time = serverTimestamp()
                       setDoc(doc(firestore, "feedback", user.uid), { feedbackJSON });
                   })
-
                   resetTranscript();
-                }
-                handlePlay();
+                }                
               }}
             >
               {isLastQuestion() ? "End Call" : "Next Question"}
