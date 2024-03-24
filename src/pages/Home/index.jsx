@@ -212,7 +212,7 @@ const Home = ({ setJob, setRequirements, setCompany }) => {
                 </div>
                 <div className="flex justify-left">
                   <Button variant="contained" onClick={() => setUploadResumeModal(true)} size="large"
-                          sx={{fontWeight: 'bold', padding: '0.5rem', background: '#DB6C53', marginBottom: '10rem', color: '#32373B' }}>
+                          sx={{fontWeight: 'bold', padding: '0.5rem', background: '#DB6C53', marginBottom: '10rem', color: '#32373B', paddingRight: '17px'}}>
                     Upload your Resume
                   </Button>
                   <UploadResume open={uploadResumeModal} onClose={() => setUploadResumeModal(false)}>
