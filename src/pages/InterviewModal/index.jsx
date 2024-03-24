@@ -52,7 +52,7 @@ const InterviewModal = ({ open, onClose, children }) => {
             <Box
                 sx={{
                     position: 'absolute',
-                    width: 600, // Adjust the width as needed
+                    width: 800, // Adjust the width as needed
                     maxWidth: '90%', // Ensure it's responsive
                     maxHeight: '90vh', // Set max height
                     overflowY: 'auto', // Enable vertical scroll if needed
