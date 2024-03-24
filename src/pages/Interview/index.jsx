@@ -132,25 +132,25 @@ const Interview = ({ questions, message, setChatHistory }) => {
         return questionDisplayIndex === q.length - 1
     }
 
-    const sendMessage = () => {
-        console.log(job)
-        console.log(company)
+    // const sendMessage = () => {
+    //     console.log(job)
+    //     console.log(company)
 
-            sendMessageToChat(user, message, job, company, requirements, questions)
-                .then(response => {
-                    console.log(message)
-                    const aiMessage = response.message;
+    //         sendMessageToChat(user, message, job, company, requirements, questions)
+    //             .then(response => {
+    //                 console.log(message)
+    //                 const aiMessage = response.message;
 
-                    console.log(aiMessage);
+    //                 console.log(aiMessage);
 
-                    setChatHistory(prevHistory => [
-                        ...prevHistory,
-                        { sender: 'User', content: message },
-                        { sender: 'AI', content: aiMessage },
-                    ]);
-                })
-                .catch(error => console.error('Error:', error));
-        };
+    //                 setChatHistory(prevHistory => [
+    //                     ...prevHistory,
+    //                     { sender: 'User', content: message },
+    //                     { sender: 'AI', content: aiMessage },
+    //                 ]);
+    //             })
+    //             .catch(error => console.error('Error:', error));
+    //     };
 
     useEffect(() => {
         const loadModels = async () => {
@@ -168,7 +168,7 @@ const Interview = ({ questions, message, setChatHistory }) => {
         };
         fetchJobs()
         loadModels();
-        sendMessage()
+        // sendMessage()
 
 
 
