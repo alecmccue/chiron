@@ -207,14 +207,14 @@ const Home = () => {
             </Grid>
           </div>
           <div className="flex justify-center">
-            <Button variant="outlined" onClick={handleJobModalOpen} size="large">
+            <Button variant="contained" onClick={handleJobModalOpen} size="large" sx={{fontWeight:'bold', padding:'0.5rem', background:'#DB6C53', marginBottom:'1rem'}}>
               Create New Interview!
             </Button>
             <InterviewModal open={openInterviewModal} onClose={handleJobModalClose}>
             </InterviewModal>
           </div>
           <div className="flex justify-center">
-            <Button variant="outlined" onClick={() => setUploadResumeModal(true)} size="large">
+            <Button variant="contained" onClick={() => setUploadResumeModal(true)} size="large" sx={{fontWeight:'bold', padding:'0.5rem', background:'#DB6C53'}}>
               Upload your Resume
             </Button>
             <UploadResume open={uploadResumeModal} onClose={() => setUploadResumeModal(false)}>
