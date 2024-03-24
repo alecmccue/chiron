@@ -4,7 +4,6 @@ import * as faceapi from "face-api.js";
 import "./interview.css";
 import PersonIcon from "@mui/icons-material/Person";
 import { getAuth } from "firebase/auth";
-import BubblingAvatar from "../../components/BubblingAvatar";
 import Avatar from "@mui/material/Avatar";
 import SpeechRecognition, {
   useSpeechRecognition,
@@ -19,7 +18,7 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import StopIcon from "@mui/icons-material/Stop";
 import { useNavigate } from "react-router-dom";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { firestore } from "../../Firebase";
 import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore'; // Importing necessary Firestore functions
 
@@ -393,9 +392,33 @@ const Interview = ({ setChatHistory }) => {
                   
                   gradeResponse(0, transcript)
                   .then(gradingFeedback => {
-                  console.log('Grading feedback:', gradingFeedback);
-                  const feedback = gradingFeedback;
-                  console.log(feedback);
+                      console.log('Grading feedback:', gradingFeedback);
+                      const feedback = gradingFeedback.gradingFeedback;
+                      console.log(feedback)
+                      const clarityRegex = /Clarity:([\s\S]+?)Relevance:/;
+                      const relevanceRegex = /Relevance:([\s\S]+?)Depth:/;
+                      const depthRegex = /Depth:([\s\S]+?)Final score:/;
+                      const scoreRegex = /Final score: (\d+) out of 100/;
+
+                      // Execute regular expressions to extract information
+                      const clarityMatch = clarityRegex.exec(feedback);
+                      const relevanceMatch = relevanceRegex.exec(feedback);
+                      const depthMatch = depthRegex.exec(feedback);
+                      const scoreMatch = scoreRegex.exec(feedback);
+
+                      // Extract the captured groups
+                      const clarity = clarityMatch ? clarityMatch[1].trim() : "N/A";
+                      const relevance = relevanceMatch ? relevanceMatch[1].trim() : "N/A";
+                      const depth = depthMatch ? depthMatch[1].trim() : "N/A";
+                      const score = scoreMatch ? parseInt(scoreMatch[1]) : "N/A";
+
+                      setDoc(doc(firestore, "feedback", user.uid), {
+                          "clarity": clarity,
+                          "relevance": relevance,
+                          "depth": depth,
+                          "score": score,
+                          "time": serverTimestamp()
+                      });
                   })
                     handlePlay();
                 }
