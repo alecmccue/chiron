@@ -51,7 +51,7 @@ function Navbar({handleLogout}) {
                 <Tooltip title="Open settings">
                   <div>
                     <IconButton onClick={handleMenuOpen} sx={{ p: 0 }}>
-                      <Avatar className="w-1" sx={{ width: 30, height: 30 }} />
+                      <Avatar className="w-8" sx={{ width: 30, height: 30 }} />
                     </IconButton>
                   </div>
                 </Tooltip>

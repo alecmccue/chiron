@@ -195,7 +195,7 @@ const Home = () => {
             </Grid>
           </div>
           <div className="flex justify-center">
-            <Button variant="contained" onClick={handleOpen} size="large">
+            <Button variant="outlined" onClick={handleOpen} size="large">
               Create New Interview!
             </Button>
             <InterviewModal open={open} onClose={handleClose}>
