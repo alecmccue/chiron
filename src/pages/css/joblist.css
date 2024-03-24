@@ -105,3 +105,10 @@ job-description {
     justify-content: left;
     gap: 40px;  
 }
+
+.icon-container {
+    display: flex; /* Establishes this container as a flex container */    
+    align-items: center; /* Vertically centers children in the container */
+    width: 100%; /* Full width of the parent container */
+    height: 100%; /* Full height of the parent container */
+}
