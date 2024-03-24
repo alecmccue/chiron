@@ -46,11 +46,36 @@ const Home = ({ setJob, setRequirements, setCompany }) => {
           <div
               className="container mx-auto w-[75rem]"
           >
-            <div className="container mx-auto rounded-lg overflow-hidden">
+            <div className="container mx-auto rounded-lg overflow-hidden min-h-screen">
               <div className="py-8 px-4">
-                <Typography variant="h1" align="left" className="mb-4 text-onyx font-bold">
+                
+
+              <div className="flex items-center justify-start space-x-4 ">
+                <Typography variant = "h1" className="text-onyx font-bold ">
                   Chiron.
                 </Typography>
+                <Button
+                  variant="contained"
+                  onClick={handleJobModalOpen}
+                  size="large"
+                  className="bg-DB6C53 text-onyx font-bold py-5 px-5"
+                  sx={{fontWeight: 'bold', padding: '1rem', background: '#DB6C53'}}
+                >
+                  Create New Interview
+                </Button>
+                <InterviewModal open={openInterviewModal} onClose={handleJobModalClose} />
+
+                <Button
+                  variant="contained"
+                  onClick={() => setUploadResumeModal(true)}
+                  size="large"
+                  className="bg-DB6C53 text-onyx font-bold py-5 px-5"
+                  sx={{fontWeight: 'bold', padding: '1rem', background: '#DB6C53'}}
+                >
+                  Upload your Resume
+                </Button>
+                <UploadResume open={uploadResumeModal} onClose={() => setUploadResumeModal(false)} />
+              </div>
 
                 <div className="grid grid-cols-2 gap-20 mb-10 mt-10">
                   <Grid
@@ -200,22 +225,6 @@ const Home = ({ setJob, setRequirements, setCompany }) => {
                       </div>
                     </div>
                   </Grid>
-                </div>
-                <div className="flex justify-left">
-                  <Button variant="contained" onClick={handleJobModalOpen} size="large"
-                          sx={{fontWeight: 'bold', padding: '0.5rem', background: '#DB6C53', marginBottom: '1rem', color: '#32373B'}}>
-                    Create New Interview
-                  </Button>
-                  <InterviewModal open={openInterviewModal} onClose={handleJobModalClose}>
-                  </InterviewModal>
-                </div>
-                <div className="flex justify-left">
-                  <Button variant="contained" onClick={() => setUploadResumeModal(true)} size="large"
-                          sx={{fontWeight: 'bold', padding: '0.5rem', background: '#DB6C53', marginBottom: '10rem', color: '#32373B', paddingRight: '17px'}}>
-                    Upload your Resume
-                  </Button>
-                  <UploadResume open={uploadResumeModal} onClose={() => setUploadResumeModal(false)}>
-                  </UploadResume>
                 </div>
               </div>
               <Link to="/login" onClick={handleLogout}>
