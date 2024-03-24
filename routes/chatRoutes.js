@@ -77,10 +77,10 @@ router.post('/chat', async (req, res) => {
 router.post('/grade', async (req, res) => {
     const { userID, response } = req.body; // Assuming 'response' is what you want to grade
 
-    if (conversationState[userID].isFirstInteraction) {
-        conversationState[userID].isFirstInteraction = false; // Update state
-        return; 
-    }
+    // if (conversationState[userID].isFirstInteraction) {
+    //     conversationState[userID].isFirstInteraction = false; // Update state
+    //     return; 
+    // }
 
     // Check if the conversation history exists to ensure context is available
     if (!responses) {
