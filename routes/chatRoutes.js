@@ -92,7 +92,7 @@ router.post('/grade', async (req, res) => {
     At the end, MAKE SURE to also provide a numerical grade (out of 100) in the format final score: *grade out of 100*`;
 
     const messagesWithGradingPrompt = [
-        ...responses[userID], // Spread the existing conversation history
+        // ...responses[userID], // Spread the existing conversation history
         { 
             role: "user",
             content: response // The candidate's response you want to grade

@@ -11,7 +11,7 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 import { toast } from "react-toastify";
 
-import { sendMessageToChat } from "../../chat";
+// import { sendMessageToChat } from "../../chat";
 import { gradeResponse } from '../../chat';  
 
 import MicIcon from "@mui/icons-material/Mic";
@@ -275,7 +275,7 @@ const Interview = ({ questions, message, setChatHistory }) => {
             }, 3000); // Delay the happy toast by 3 seconds
           }
         }
-        console.log(previousEmotions)
+        // console.log(previousEmotions)
 
         canvasRef.current
           .getContext("2d")
@@ -427,7 +427,7 @@ const Interview = ({ questions, message, setChatHistory }) => {
                   gradeResponse(0, transcript)
                   .then(gradingFeedback => {
                   console.log('Grading feedback:', gradingFeedback);
-                  const feedback = gradingFeedback.message;
+                  const feedback = gradingFeedback;
                   console.log(feedback);
                   })
                     handlePlay();

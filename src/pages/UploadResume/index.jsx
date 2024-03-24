@@ -5,7 +5,6 @@ import { Close } from '@mui/icons-material';
 import { getAuth } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { firestore } from "../../Firebase";
-import UploadResumeImage from "../UploadResume/UploadResumeImage.jpg"; // Make sure the path is correct
 
 // Configure PDFJS worker
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
