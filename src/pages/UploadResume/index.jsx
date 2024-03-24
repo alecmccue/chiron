@@ -120,9 +120,9 @@ const UploadResume = ({ open, onClose, onSubmit }) => {
                     style={{display: 'none'}} // Hide the default input
                 />
                 <Box sx={{display: 'flex', justifyContent: 'flex-end', mt: 2}}>
-                    <Button onClick={handleSubmit} variant="contained" color="primary" sx={{bgcolor: "#DB6C53"}}>
+                    <button onClick={handleSubmit} className="bg-sienna p-2 hover:bg-onyx hover:text-seasalt rounded-md">
                         Submit
-                    </Button>
+                    </button>
                 </Box>
             </Box>
         </Modal>

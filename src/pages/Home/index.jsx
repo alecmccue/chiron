@@ -180,7 +180,7 @@ const Home = ({ setJob, setRequirements, setCompany }) => {
                           Facial Detection
                         </Typography>
                         <Typography variant="body1 p-1" align="right">
-                          Our platform ensures you're presenting your best self, using facial detection technology to encourage a positive demeanor throughout your interview
+                          Chiron ensures you're presenting your best self, using facial detection technology to encourage a positive demeanor throughout your interview
                         </Typography>
                       </div>
                     </div>
