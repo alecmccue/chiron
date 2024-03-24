@@ -55,7 +55,7 @@ const Home = ({ setJob, setRequirements, setCompany }) => {
                   onClick={handleJobModalOpen}
                   size="large"                  
                   sx={{fontWeight: 'bold', padding: '1rem', background: '#DB6C53'}}
-                  className="bg-DB6C53 text-onyx font-bold py-5 px-5 border-3 border-seashell hover:bg-[#53d09c] bg-[#DB6C53]"
+                  className="bg-DB6C53 text-onyx font-bold py-5 px-5 border-3 border-onyx hover:bg-[#e8745a] bg-[#DB6C53]"
                 >
                   Create New Interview
                 </button>
@@ -65,7 +65,7 @@ const Home = ({ setJob, setRequirements, setCompany }) => {
                   variant="contained"
                   onClick={() => setUploadResumeModal(true)}
                   size="large"
-                  className="bg-DB6C53 text-onyx font-bold py-5 px-5 border-3 border-seashell hover:bg-[#53d09c] bg-[#DB6C53]"                  
+                  className="bg-DB6C53 text-onyx font-bold py-5 px-5 border-3 border-onyx hover:bg-[#e8745a] bg-[#DB6C53]"
                 >
                   Upload your Resume
                 </button>
