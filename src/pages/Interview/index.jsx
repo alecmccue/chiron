@@ -418,6 +418,8 @@ const Interview = ({ questions, message, setChatHistory }) => {
               onClick={() => {
                 if (isLastQuestion()) {
                   navigate("/");
+                  handleStop();
+                  stopListening();
                 } else {
                   setQuestionDisplayIndex((prevIndex) => prevIndex + 1);
                   gradeResponse(transcript)
@@ -428,8 +430,8 @@ const Interview = ({ questions, message, setChatHistory }) => {
                   const feedback = gradingFeedback.message;
                   console.log(feedback);
                   })
+                    handlePlay();
                 }
-                handlePlay();
               }}
             >
               {isLastQuestion() ? "End Call" : "Next Question"}
