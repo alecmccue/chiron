@@ -13,27 +13,52 @@ import BackgroundImage from "../Home/BackgroundImage.jpg";
 import { getFirestore, collection, query, where, getDoc, setDoc, doc } from 'firebase/firestore'; // Importing necessary Firestore functions
 import { firestore } from "../../Firebase";
 import { getAuth } from "firebase/auth";
+import { auth } from "../../Firebase";
 
 const Charts = () => {
-    const auth = getAuth()
-    const user = auth.currentUser
-    const getData = async () => {
-        const d = await getDoc(doc(firestore, "feedback", user.uid))
-        console.log(d.data().feedbackJSON)
-        return {
-            Clarity: d.data().feedbackJSON.clarity,
-            Score: d.data().feedbackJSON.score
-        }
+  const user = auth.currentUser
+  const getData = async () => {
+    var uid = 0;
+    if (!user)
+    {
+      uid = 0;
     }
+    else{
+      uid = user.uid
+    }
+    const docRef = doc(firestore, "feedback", uid);
+    const d = await getDoc(docRef);
+    if (d.exists()) { // Make sure the document exists
+      console.log(d.data().feedbackJSON);
+      return {
+        Clarity: d.data().feedbackJSON.clarity,
+        Score: d.data().feedbackJSON.score
+      };
+    } else {
+      // Handle the case where the document does not exist
+      console.error("No such document!");
+      return { Clarity: 0, Score: 0 }; // return a default or empty object
+    }
+  }
+  // const auth = getAuth()
+  
+  // const getData = async () => {
+  //     const d = await getDoc(doc(firestore, "feedback", user.uid))
+  //     console.log(d.data().feedbackJSON)
+  //     return {
+  //         Clarity: d.data().feedbackJSON.clarity,
+  //         Score: d.data().feedbackJSON.score
+  //     }
+  // }
 
-    const data = [
-    { Clarity: 10, Score: 80 },
-    { Clarity: 15, Score: 70 },
-    { Clarity: 20, Score: 100 },
-    ];
-    data.push(getData())
-    data.sort()
-    console.log(data)
+  const data = [
+  { Clarity: 10, Score: 80 },
+  { Clarity: 15, Score: 70 },
+  { Clarity: 20, Score: 100 },
+  ];
+  data.push(getData())
+  data.sort()
+  console.log(data)
 
   return (
     <>
