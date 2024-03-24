@@ -33,11 +33,8 @@ const Home = () => {
       backgroundSize: '100% 100%',
       top: 0,
       left: 0,
-      width: '100vw', 
-      height: '100vh',
       margin: 0,
       padding: 0,
-      // overflow: 'hidden',
       zIndex: -1 
     }}>
       <div
