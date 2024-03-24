@@ -8,6 +8,9 @@ import { useState } from "react";
 import Navbar from "../../components/Navbar";
 import UploadResume from "../UploadResume";
 
+
+
+
 const Home = () => {
   const [openInterviewModal, setOpenInterviewModal] = useState(false);
   const [uploadResumeModal, setUploadResumeModal] = useState(false);

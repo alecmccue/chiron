@@ -21,9 +21,12 @@
 
 .question-title {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     width: 100%;
+    text-align: left;
+    gap: 5rem;
+    margin-bottom: 2rem;
 }
 
 .card-container {

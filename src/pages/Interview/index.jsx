@@ -1,18 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, Button, Typography, Grid, Chip, Box } from '@mui/material';
 import * as faceapi from "face-api.js";
-import { deepPurple } from '@mui/material/colors';
 import './interview.css';
 import PersonIcon from '@mui/icons-material/Person';
 import { getAuth } from "firebase/auth"
 import BubblingAvatar from "../../components/BubblingAvatar";
 
+const questions = [
+    "Given the emphasis on cloud-based solution development in this role, can you describe a project where you designed, developed, and deployed a software solution on a cloud platform such as AWS, GCP, or Azure? Please walk us through your decision-making process in choosing the technology stack, how you ensured the application's scalability and security, and any challenges you faced during the deployment.",
+    "One of the key responsibilities of this position is full-stack development with a focus on JavaScript, React, HTML/CSS, and other tools. Can you provide an example of a full-stack application you have worked on? Please detail your role in the development process, the technologies you used, how you separated concerns between the client and server-side, and how you contributed to the application's design and user experience.",
+    "Considering the importance of Agile development practices and team collaboration for this role, how have you contributed to a positive team dynamic in a past software engineering project? Discuss how you participated in Agile processes, any challenges you and your team faced, how you overcame them, and how you have mentored or shared knowledge with fellow team members to improve project outcomes."
+];
 
 const Interview = () => {
     const auth = getAuth();
     const user = auth.currentUser;
     const [modelsLoaded, setModelsLoaded] = useState(false);
-    const [question, setQuestion] = useState('');
+    const [questionsAnswered, setQuestionsAnswered] = useState([])
+    const [questionDisplayIndex, setQuestionDisplayIndex] = useState(0);
 
     const videoRef = React.useRef();
     const canvasRef = React.useRef();
@@ -94,12 +99,20 @@ const Interview = () => {
         <div className="container-interview">
             <div className="inner-container">
                 <div className="question-title">
-                    <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '10px' }}>Question Title</Typography>
-                    <hr style={{ width: '40px', marginBottom: '10px' }} />
+                    <Card sx={{ borderRadius: 4, boxShadow: 4, padding: "1rem" }}> {/* Adjust boxShadow and borderRadius as needed */}
+                        <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '10px', fontSize: "0.75rem" }}>
+                            {questions[questionDisplayIndex]}
+                        </Typography>
+                    </Card>
+                    <div style={{ marginTop: 'auto' }}>
+                        <Chip
+                            label={`Questions Left: ${questions.length - questionDisplayIndex}`}
+                            sx={{ backgroundColor: '#C8E6C9', color: 'black', fontWeight: 'bold' }}
+                        />
+                    </div>
                 </div>
                 <Grid container spacing={2} className="card-container">
                     <Grid item>
-                            {/*<Avatar className="avatar" sx={{ bgcolor: deepPurple[500] }}>OP</Avatar>*/}
                             <Box
                                 sx={{
                                     height: '500px',
