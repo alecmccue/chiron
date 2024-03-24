@@ -3,9 +3,16 @@ import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { Button, Container, Typography, Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
 import BackgroundImage from './Home/BackgroundImage.jpg'
+import { useLocation } from 'react-router-dom';
 
 
 const Login = () => {
+    const location = useLocation();
+    const { feedback } = location.state || {}; // feedback will be your feedbackArray
+  
+    // Now you can use the feedback array in your Login component
+    console.log(feedback);
+    
     const handleGoogleLogin = ({ history }) => {
         const provider = new GoogleAuthProvider()
         signInWithPopup(auth, provider)

@@ -46,9 +46,9 @@ router.post('/chat', async (req, res) => {
         responses[userID] = [];
     }
 
-    if (!conversationState[userID]) {
-        conversationState[userID] = { isFirstInteraction: true };
-    }    
+    // if (!conversationState[userID]) {
+    //     conversationState[userID] = { isFirstInteraction: true };
+    // }    
 
     // Add the user's message to the conversation history
     conversationHistories[userID].push({ role: "user", content: message });
@@ -88,8 +88,12 @@ router.post('/grade', async (req, res) => {
     }
 
     // Define a grading prompt based on the response and possibly the conversation context
-    const gradingPrompt = `Given the role of a critical interviewer, grade the following response by the candidate: "${response}". Provide a detailed assessment that is quite harsh based on clarity, relevance, and depth. 
-    At the end, make to also provide a numerical grade (out of 100) in the format final score: *grade out of 100* To Format the clarity, relevance, depth, and score, make sure to return it as a JSON string that can be JSON parsed with no augmentation with the keys being clarity, relevance, depth, and score`;
+    const gradingPrompt = `Given the role of a critical interviewer, grade the following response by the candidate: "${response}". Provide a detailed qualitative assessment that is quite harsh based on clarity, relevance, and depth. 
+    At the end, make to also provide a quantitative grade (out of 100) in the format points scored, then To Format the clarity, relevance, depth, and score, make sure to return it as a JSON string that can be JSON parsed with no augmentation with the keys being clarity, relevance, depth, and score`;
+
+    if (!response) {
+        return res.status(400).send({ error: "Answer not Found" });
+    }
 
     const messagesWithGradingPrompt = [        
         { 

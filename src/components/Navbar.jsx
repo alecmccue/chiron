@@ -6,8 +6,10 @@ import Avatar from '@mui/material/Avatar';
 import { IconButton } from "@mui/material";
 import Tooltip from '@mui/material/Tooltip';
 import { Link } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import { auth } from "../Firebase";
 
-function Navbar({handleLogout}) {
+function Navbar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleMenuOpen = (event) => {
@@ -16,6 +18,15 @@ function Navbar({handleLogout}) {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -71,9 +82,9 @@ function Navbar({handleLogout}) {
                 open={Boolean(anchorEl)}
                 onClose={handleMenuClose}
               >
-                <MenuItem onClick={handleLogout}>
-                  Logout
-                </MenuItem>
+                <Link to="/login" onClick={handleLogout} className="bg-DB6C53 text-onyx font-bold py-7 px-7 text-2x1" sx={{fontWeight: 'bold', padding: '1rem', background: '#DB6C53'}}>
+                    Logout
+                </Link>
               </Menu>
             </li>
           </ul>

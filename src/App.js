@@ -14,6 +14,7 @@ import AdzunaSearch from "./pages/InterviewModal/components/AdzunaSearch";
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import Charts from './pages/Charts/Charts';
+import Summary from "./pages/Summary";
 function App() {
     const [user, setUser] = useState(null)
     const [message, setMessage] = useState("Ask me the beginning questions.")
@@ -49,6 +50,7 @@ function App() {
                         <Route path="/charts" element={<Charts />} />
                         <Route path="/create" element={<InterviewModal />} />
                         <Route path="/login" element={<Login />} />
+                        <Route path="/summary" element={<Summary />} />
                         <Route path="/interview" element={
                             <Interview
                                 user={user}
