@@ -20,10 +20,13 @@ const Charts = () => {
    const d = getDoc(doc(firestore, "feedback", user.uid))
    console.log(d)
   const data = [
-    { Date: "Jan", Score: 80 },
-    { Date: "Feb", Score: 70 },
-    { Date: "Mar", Score: 100 },
+    { Date: "Jan", Score: 80, Clarity:90 },
+    // { Date: "Feb", Score: 70 , Clarity:90},
+    // { Date: "Mar", Score: 100, Clarity:100 },
   ];
+  const fetchDate = () => {
+    
+  }
 
   return (
     <>
@@ -67,7 +70,11 @@ const Charts = () => {
               }}
             />
             <Line type="monotone" dataKey="Score" stroke="green" strokeWidth={3} />
+            <Line type="monotone" dataKey="Clarity" stroke="red" strokeWidth={3} />
           </LineChart>
+          <button onClick={fetchData}>
+              Fetch Latest Scores
+          </button>
         </div>
       </div>
     </>
