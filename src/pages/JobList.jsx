@@ -11,7 +11,7 @@ import { FaPlaneArrival } from "react-icons/fa";
 
 
 const JobList = () => {
-    const [country, setCountry] = useState('us');
+    const [country, setCountry] = useState('US'.toLowerCase());
     const [resultsPerPage, setResultsPerPage] = useState('30');
     const [page, setPage] = useState('1');
     const [what, setWhat] = useState(''); // For job title or category
@@ -47,7 +47,7 @@ const JobList = () => {
                     type="text" 
                     id="countryInput" 
                     value={country}
-                    onChange={(e) => setCountry(e.target.value)}
+                    onChange={(e) => setCountry(e.target.value.toLowerCase())}
                     />
                 </div>
 
