@@ -144,6 +144,25 @@ const Interview = ({ setChatHistory }) => {
     }
 
     // const sendMessage = () => {
+    //     console.log(job)
+    //     console.log(company)
+
+    //         sendMessageToChat(user, message, job, company, requirements, questions)
+    //             .then(response => {
+    //                 console.log(message)
+    //                 const aiMessage = response.message;
+
+    //                 console.log(aiMessage);
+
+    //                 setChatHistory(prevHistory => [
+    //                     ...prevHistory,
+    //                     { sender: 'User', content: message },
+    //                     { sender: 'AI', content: aiMessage },
+    //                 ]);
+    //             })
+    //             .catch(error => console.error('Error:', error));
+    //     };
+    // const sendMessage = () => {
     //
     //         console.log(chat_message)
     //

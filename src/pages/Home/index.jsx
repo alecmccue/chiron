@@ -85,8 +85,8 @@ const Home = ({ setJob, setRequirements, setCompany }) => {
                           Feedback And Results
                         </Typography>
                         <Typography variant="body1 p-1" align="right">
-                          Chiron analyzes your interview performance, provides
-                          detailed feedback and tracks your progress over time.
+                          Chiron revolutionizes your interview preparation by offering 
+                          personalized feedback and meticulously tracking your progress                        
                         </Typography>
                       </div>
                     </div>
@@ -121,10 +121,9 @@ const Home = ({ setJob, setRequirements, setCompany }) => {
                         <Typography variant="h6" className="mb-2 font-bold" align="center">
                           Find Job Opportunities
                         </Typography>
-                        <Typography variant="body1 p-1" align="right">
-                          Discover job opportunities tailored to your skills and
-                          preferences through our in built portal and create mock
-                          interviews for them.
+                        <Typography variant="body1 p-1" align="right">                        
+                          Discover your ideal job through Chiron's specialized portal, 
+                          designed to match you with opportunities that align perfectly with your skills and preferences
                         </Typography>
                       </div>
                     </div>
@@ -159,8 +158,7 @@ const Home = ({ setJob, setRequirements, setCompany }) => {
                           Facial Detection
                         </Typography>
                         <Typography variant="body1 p-1" align="right">
-                          Chiron utilizes facial detection technology to ensure you
-                          maintain a positive attitude during the interview.
+                          Our platform ensures you're presenting your best self, using facial detection technology to encourage a positive demeanor throughout your interview
                         </Typography>
                       </div>
                     </div>
@@ -195,8 +193,7 @@ const Home = ({ setJob, setRequirements, setCompany }) => {
                           Tailor-Made Questions
                         </Typography>
                         <Typography variant="body1 p-1" align="right">
-                          Chiron scans your resume using OCR generates tailor-made
-                          questions based on it and the job you are interviewing for.
+                          Chiron's advanced resume analysis uses OCR to generate questions specifically designed around your experiences and the role you're targeting
                         </Typography>
                       </div>
                     </div>
