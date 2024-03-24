@@ -92,7 +92,7 @@ const AdzunaSearch = ({ setJob, setRequirements, setCompany, handleClose }) => {
                 style={{ fontFamily: "Montserrat, sans-serif" }}
                 className="text-3xl font-bold bg-seashell text-onyx pt-1 pl-9 ml-1"
             >
-                Adzuna Job Search
+                Job Search
             </h1>
             <div
                 style={{ fontFamily: "Montserrat, sans-serif" }}

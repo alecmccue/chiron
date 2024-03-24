@@ -4,11 +4,17 @@ import { doc, getDoc } from "firebase/firestore";
 import { Card, CardContent, CircularProgress, Grid, Typography } from "@mui/material"; // Import Material-UI components
 import { auth, firestore } from "../../Firebase";
 import Navbar from "../../components/Navbar";
+import { useLocation } from "react-router-dom";
 
 const Summary = () => {
     const [feedback, setFeedback] = useState(null);
     const auth = getAuth();
     const user = auth.currentUser;
+
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const data = queryParams.get('data');
+    
 
     useEffect(() => {
         const fetchFeedback = async () => {
