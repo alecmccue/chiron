@@ -213,7 +213,13 @@ const Home = ({ setJob, setRequirements, setCompany }) => {
             <Button variant="contained" onClick={handleJobModalOpen} size="large" sx={{fontWeight:'bold', padding:'0.5rem', background:'#DB6C53', marginBottom:'1rem'}}>
               Create New Interview!
             </Button>
-            <InterviewModal open={openInterviewModal} onClose={handleJobModalClose}>
+            <InterviewModal
+                open={openInterviewModal}
+                onClose={handleJobModalClose}
+                setJob={setJob}
+                setCompany={setCompany}
+                setRequirements={setRequirements}
+            >
             </InterviewModal>
           </div>
           <div className="flex justify-center">

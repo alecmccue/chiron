@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Card, Button, Typography, Grid, Chip, Box } from '@mui/material';
 import * as faceapi from "face-api.js";
 import './interview.css';
@@ -6,30 +6,76 @@ import PersonIcon from '@mui/icons-material/Person';
 import { getAuth } from "firebase/auth"
 import BubblingAvatar from "../../components/BubblingAvatar";
 import { sendMessageToChat } from "../../chat";
+import { doc, getDoc } from "firebase/firestore";
+import { firestore } from "../../Firebase";
+import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore'; // Importing necessary Firestore functions
 
-const questions = [
+
+const questions_test = [
     "Given the emphasis on cloud-based solution development in this role, can you describe a project where you designed, developed, and deployed a software solution on a cloud platform such as AWS, GCP, or Azure? Please walk us through your decision-making process in choosing the technology stack, how you ensured the application's scalability and security, and any challenges you faced during the deployment.",
     "One of the key responsibilities of this position is full-stack development with a focus on JavaScript, React, HTML/CSS, and other tools. Can you provide an example of a full-stack application you have worked on? Please detail your role in the development process, the technologies you used, how you separated concerns between the client and server-side, and how you contributed to the application's design and user experience.",
     "Considering the importance of Agile development practices and team collaboration for this role, how have you contributed to a positive team dynamic in a past software engineering project? Discuss how you participated in Agile processes, any challenges you and your team faced, how you overcame them, and how you have mentored or shared knowledge with fellow team members to improve project outcomes."
 ];
 
-const Interview = ({ questions, job, company, message, requirements, setChatHistory }) => {
+const Interview = ({ questions, message, setChatHistory }) => {
     const auth = getAuth();
     const user = auth.currentUser;
     const [modelsLoaded, setModelsLoaded] = useState(false);
     const [questionsAnswered, setQuestionsAnswered] = useState([])
     const [questionDisplayIndex, setQuestionDisplayIndex] = useState(0);
+    const [jobsData, setJobsData] = useState([]); // State to hold the jobs data
+    const [job, setJob] = useState("")
+    const [company, setCompany] = useState("")
+    const [requirements, setRequirements] = useState("")
+    console.log(jobsData)
 
     const videoRef = React.useRef();
     const canvasRef = React.useRef();
     const intervalRef = React.useRef();
 
+
+        // Function to fetch jobs data
+        const fetchJobs = async () => {
+            try {
+                console.log(user.uid)
+                const d = await getDoc(doc(firestore, "job", user.uid))
+                console.log(d.data().company)
+                setJob(d.data().job)
+                setRequirements(d.data().requirements)
+                setCompany(d.data().company)
+                // setJobsData(d.data()); // Set the jobs data state
+            } catch (error) {
+                console.error('Error fetching jobs:', error);
+            }
+
+        };
+
+
     const isLastQuestion = () => {
-        return questionDisplayIndex === questions.length - 1
+        return questionDisplayIndex === questions_test.length - 1
     }
+
+    const sendMessage = useMemo(() => {
+        return () => {
+            sendMessageToChat(user, message, job, company, requirements, questions)
+                .then(response => {
+                    const aiMessage = response.message;
+
+                    console.log(aiMessage);
+
+                    setChatHistory(prevHistory => [
+                        ...prevHistory,
+                        { sender: 'User', content: message },
+                        { sender: 'AI', content: aiMessage },
+                    ]);
+                })
+                .catch(error => console.error('Error:', error));
+        };
+    }, [user, message, job, company, requirements, questions, setChatHistory]);
 
     useEffect(() => {
         const loadModels = async () => {
+            // sendMessage();
             const MODEL_URL = process.env.PUBLIC_URL + '/models';
 
             await Promise.all([
@@ -41,24 +87,11 @@ const Interview = ({ questions, job, company, message, requirements, setChatHist
             await setModelsLoaded(true);
             startVideo();
         };
-
+        fetchJobs()
         loadModels();
+        sendMessage()
 
-        sendMessageToChat(user.uid, message, job, company, requirements, questions)
-            .then(response => {
-                // Assuming the response object has a message property
-                const aiMessage = response.message;
 
-                console.log(aiMessage);
-
-                // Update chat history with both the user's message and the AI's response
-                setChatHistory(prevHistory => [
-                    ...prevHistory,
-                    { sender: 'User', content: message },
-                    { sender: 'AI', content: aiMessage },
-                ]);
-            })
-            .catch(error => console.error('Error:', error));
 
         return () => {
             if (intervalRef.current) {
@@ -132,12 +165,12 @@ const Interview = ({ questions, job, company, message, requirements, setChatHist
                 <div className="question-title">
                     <Card sx={{ borderRadius: 4, boxShadow: 4, padding: "1rem" }}> {/* Adjust boxShadow and borderRadius as needed */}
                         <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '10px', fontSize: "0.75rem" }}>
-                            {questions[questionDisplayIndex]}
+                            {questions_test[questionDisplayIndex]}
                         </Typography>
                     </Card>
                     <div style={{ marginTop: 'auto' }}>
                         <Chip
-                            label={`Questions Left: ${questions.length - questionDisplayIndex - 1}`}
+                            label={`Questions Left: ${questions_test.length - questionDisplayIndex - 1}`}
                             sx={{ backgroundColor: '#C8E6C9', color: 'black', fontWeight: 'bold' }}
                         />
                     </div>
