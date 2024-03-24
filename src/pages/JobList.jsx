@@ -9,6 +9,7 @@ import { RiSuitcaseFill } from "react-icons/ri";
 import { FaPlaneArrival } from "react-icons/fa";
 import { Button } from "@mui/base";
 import { Card, Input, Typography } from "@mui/material";
+import { Search } from "@mui/icons-material";
 
 const JobList = () => {
   const [country, setCountry] = useState("us");
@@ -92,21 +93,23 @@ const JobList = () => {
           variant="outlined"
           className="border-2 border-onyx bg-current text-seasalt hover:bg-onyx  font-bold px-3 py-1 mt-2 rounded-lg p-2"
         >
-            <Typography>
-                Fetch Jobs
-            </Typography>
+          <Typography>
+            <Search /> Search
+          </Typography>
         </Button>
       </div>
 
-      <div className="main-container bg-seasalt">
-        <div className="job-listings bg-seasalt border-1 p-2 border-onyx">
+      <div className="main-container bg-seasalt rounded-none">
+        <div className="job-listings bg-seasalt p-2 border-onyx border-1">
           {jobs.map((job, index) => (
             <div
               key={index}
-              className="job border border-onyx mt-2 hover:bg-isabelline shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]"
+              className="job  border-onyx mt-2 hover:bg-isabelline shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]"
               onClick={() => handleSelectJob(job)}
             >
-              <Typography className="text-onyx text-2xl font-bold">{job.title}</Typography>
+              <Typography className="text-onyx text-2xl font-bold">
+                {job.title}
+              </Typography>
               <Typography className="text-current text-2xl font-bold">
                 {job.company.display_name}
               </Typography>
@@ -130,7 +133,7 @@ const JobList = () => {
 
         {/* JOB DETAILS */}
         {selectedJob && (
-          <Card className="job-details border-1 border-onyx">
+          <Card className="job-details border-1 border-onyx rounded-none">
             {/* DISPLAY NAME */}
             <Typography
               style={{ fontSize: "2rem", fontFamily: "Montserrat, sans-serif" }}
@@ -141,7 +144,10 @@ const JobList = () => {
 
             {/* JOB TITLE */}
             <Typography
-              style={{ fontSize: "1.3rem", fontFamily: "Montserrat, sans-serif" }}
+              style={{
+                fontSize: "1.3rem",
+                fontFamily: "Montserrat, sans-serif",
+              }}
               className="font-bold"
             >
               {selectedJob.title}
@@ -202,7 +208,14 @@ const JobList = () => {
                   : selectedJob.contract_time}
               </Typography>
             </div>
-
+                <div className="grid grid-row-2">
+            <button
+              onClick={() => console.log("Hello")}
+              style={{ fontSize: "1rem", fontFamily: "Open Sans, sans-serif" }}
+              className="bg-current text-seasalt font-bold border-onyx border-2 px-2 py-2 rounded-lg hover:bg-onyx mt-2"
+            >
+              Create Mock Interview
+            </button>
             <button
               onClick={() =>
                 window.open(
@@ -212,15 +225,20 @@ const JobList = () => {
                 )
               }
               style={{ fontSize: "1rem", fontFamily: "Open Sans, sans-serif" }}
-              className="bg-current text-seasalt font-bold border-seasalt border-2 px-2 py-2 rounded-lg hover:bg-onyx mt-2"
+              className="bg-current text-seasalt font-bold border-onyx border-2 px-2 py-2 rounded-lg hover:bg-onyx mt-2"
             >
-              Create Interview!
+              Apply For Positon
             </button>
+
+                </div>
 
             {/* JOB DESCRIPTION */}
             <Typography
               className="job-description mt-2"
-              style={{ fontSize: "1.2rem", fontFamily: "Open Sans, sans-serif" }}
+              style={{
+                fontSize: "1.2rem",
+                fontFamily: "Open Sans, sans-serif",
+              }}
             >
               {selectedJob.description.endsWith("\u2026") ? (
                 <>
