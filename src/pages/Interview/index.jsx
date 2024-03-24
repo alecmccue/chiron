@@ -23,6 +23,10 @@ const Interview = () => {
     const canvasRef = React.useRef();
     const intervalRef = React.useRef();
 
+    const isLastQuestion = () => {
+        return questionDisplayIndex === questions.length - 1
+    }
+
     useEffect(() => {
         const loadModels = async () => {
             const MODEL_URL = process.env.PUBLIC_URL + '/models';
@@ -33,7 +37,7 @@ const Interview = () => {
                 faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
                 faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
             ]);
-            setModelsLoaded(true);
+            await setModelsLoaded(true);
             startVideo();
         };
 
@@ -46,18 +50,33 @@ const Interview = () => {
         };
     }, []);
 
+    // Inside startVideo function
     const startVideo = () => {
         navigator.mediaDevices
-            .getUserMedia({ video: { width: '100%' } }) // Set width to '100%' for maximum width
+            .getUserMedia({ video: { width: '100%' } })
             .then(stream => {
                 let video = videoRef.current;
-                video.srcObject = stream;
-                video.play();
+                if(video) {
+                    video.srcObject = stream;
+                    video.onloadedmetadata = () => {
+                        video.play()
+                            .then(() => {
+                                console.log('Video playback started successfully.');
+                                handleVideoOnPlay(); // Call handleVideoOnPlay once video is playing
+                            })
+                            .catch(error => {
+                                console.error('Error playing video:', error);
+                            });
+                    };
+                } else {
+                    console.error('Video element not found.');
+                }
             })
             .catch(err => {
-                console.error("error:", err);
+                console.error("Error accessing webcam:", err);
             });
     };
+
 
     const handleVideoOnPlay = () => {
         intervalRef.current = setInterval(async () => {
@@ -90,11 +109,6 @@ const Interview = () => {
         }, 100);
     };
 
-
-    const interviewerPlayer = useRef(null);
-
-
-
     return (
         <div className="container-interview">
             <div className="inner-container">
@@ -106,7 +120,7 @@ const Interview = () => {
                     </Card>
                     <div style={{ marginTop: 'auto' }}>
                         <Chip
-                            label={`Questions Left: ${questions.length - questionDisplayIndex}`}
+                            label={`Questions Left: ${questions.length - questionDisplayIndex - 1}`}
                             sx={{ backgroundColor: '#C8E6C9', color: 'black', fontWeight: 'bold' }}
                         />
                     </div>
@@ -168,8 +182,14 @@ const Interview = () => {
                     </Grid>
                 </Grid>
                 <Grid item sx={{ marginLeft: 'auto', marginTop: '10px' }}>
-                    <Button variant="contained" color="primary" onClick={() => console.log('End Call')}>
-                        End Call
+                    <Button variant="contained" color="primary" onClick={() => {
+                        if (isLastQuestion()) {
+                            console.log('End Call');
+                        } else {
+                            setQuestionDisplayIndex(prevIndex => prevIndex + 1);
+                        }
+                    }}>
+                        {isLastQuestion() ? 'End Call' : 'Next Question'}
                     </Button>
                 </Grid>
             </div>
