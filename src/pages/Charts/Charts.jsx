@@ -18,28 +18,41 @@ import { auth } from "../../Firebase";
 const Charts = () => {
   const user = auth.currentUser
   const getData = async () => {
-    var uid = 0;
-    if (!user)
-    {
-      uid = 0;
-    }
-    else{
-      uid = user.uid
-    }
-    const docRef = doc(firestore, "feedback", uid);
-    const d = await getDoc(docRef);
-    if (d.exists()) { // Make sure the document exists
-      console.log(d.data().feedbackJSON);
-      return {
-        Clarity: d.data().feedbackJSON.clarity,
-        Score: d.data().feedbackJSON.score
-      };
-    } else {
-      // Handle the case where the document does not exist
-      console.error("No such document!");
-      return { Clarity: 0, Score: 0 }; // return a default or empty object
-    }
-  }
+    const fetchedData = await getDoc(doc(firestore, "feedback", 0)); // Wait for the data to be fetched
+    const newData = [
+        { Clarity: 10, Score: 80 },
+        { Clarity: 15, Score: 70 },
+        { Clarity: 20, Score: 100 },
+        { Clarity: 27, Score: 40 },
+        fetchedData // Add the fetched data to your array
+    ];
+    newData.sort((a, b) => a.Clarity - b.Clarity); // Sort if necessary
+    console.log(newData);
+    // Set the data to the state, or do other operations with newData
+  };
+  // const getData = async () => {
+  //   var uid = 0;
+  //   if (!user)
+  //   {
+  //     uid = 0;
+  //   }
+  //   else{
+  //     uid = user.uid
+  //   }
+  //   const docRef = doc(firestore, "feedback", uid);
+  //   const d = await getDoc(docRef);
+  //   if (d.exists()) { // Make sure the document exists
+  //     console.log(d.data().feedbackJSON);
+  //     return {
+  //       Clarity: d.data().feedbackJSON.clarity,
+  //       Score: d.data().feedbackJSON.score
+  //     };
+  //   } else {
+  //     // Handle the case where the document does not exist
+  //     console.error("No such document!");
+  //     return { Clarity: 0, Score: 0 }; // return a default or empty object
+  //   }
+  // }
   // const auth = getAuth()
   
   // const getData = async () => {
@@ -55,6 +68,7 @@ const Charts = () => {
   { Clarity: 10, Score: 80 },
   { Clarity: 15, Score: 70 },
   { Clarity: 20, Score: 100 },
+  { Clarity: 27, Score: 40 },
   ];
   data.push(getData())
   data.sort()
