@@ -32,18 +32,18 @@ const Summary = () => {
     return (
         <>
             <Navbar />
-            <Card sx={{ maxWidth: 800, margin: "auto", marginTop: 20, padding: 10 }}>
+            <Card sx={{ maxWidth: 800, margin: "auto", marginTop: '3rem', marginBottom: '3rem', padding: 10, backgroundColor:"#FFE8E0"}}>
                 <CardContent>
                     {feedback ? (
                         <Grid container spacing={2} alignItems="center">
                             <Grid item xs={12}>
-                                <Typography variant="h5" component="h2" align="center">Interview Feedback</Typography>
+                                <Typography variant="h4" align="center" className="font-bold">Interview Feedback</Typography>
                             </Grid>
                             <Grid item xs={12}>
-                                <Typography variant="body1"><strong>Score:</strong> {feedback.score}%</Typography>
-                                <Typography variant="body1"><strong>Clarity:</strong> {feedback.clarity}</Typography>
-                                <Typography variant="body1"><strong>Depth:</strong> {feedback.depth}</Typography>
-                                <Typography variant="body1"><strong>Relevance:</strong> {feedback.relevance}</Typography>
+                                <Typography variant="h6" className="font-sm p-2 border-3 border-top-4 border-seasalt"><strong>Score:</strong> {feedback.score}%</Typography>
+                                <Typography variant="body1" className="font-sm p-2 border-3 border-seasalt"><strong>Clarity:</strong> {feedback.clarity}</Typography>
+                                <Typography variant="body1" className="font-sm p-2 border-3 border-seasalt"><strong>Depth:</strong> {feedback.depth}</Typography>
+                                <Typography variant="body1" className="font-sm p-2 border-3 border-seasalt"><strong>Relevance:</strong> {feedback.relevance}</Typography>
                             </Grid>
                         </Grid>
                     ) : (
