@@ -12,7 +12,7 @@ import SpeechRecognition, {
 import { toast } from "react-toastify";
 
 import { gradeResponse } from '../../chat';  
-
+import Navbar from './../../components/Navbar';
 import MicIcon from "@mui/icons-material/Mic";
 import MicOffIcon from "@mui/icons-material/MicOff";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
@@ -29,6 +29,7 @@ const q = [
     "One of the key responsibilities of this position is full-stack development with a focus on JavaScript, React, HTML/CSS, and other tools. Can you provide an example of a full-stack application you have worked on? Please detail your role in the development process, the technologies you used, how you separated concerns between the client and server-side, and how you contributed to the application's design and user experience.",
     "Considering the importance of Agile development practices and team collaboration for this role, how have you contributed to a positive team dynamic in a past software engineering project? Discuss how you participated in Agile processes, any challenges you and your team faced, how you overcame them, and how you have mentored or shared knowledge with fellow team members to improve project outcomes."
 ];
+
 
 const Interview = ({ setChatHistory }) => {
     const auth = getAuth();
@@ -253,6 +254,8 @@ const Interview = ({ setChatHistory }) => {
   }
 
   return (
+    <>
+    <Navbar/>
     <div className="container-interview">
       <div className="inner-container">
         <div className="question-title">
@@ -404,6 +407,7 @@ const Interview = ({ setChatHistory }) => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
