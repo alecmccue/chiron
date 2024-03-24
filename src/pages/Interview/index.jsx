@@ -17,7 +17,7 @@ import StopIcon from "@mui/icons-material/Stop";
 import { useNavigate } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { firestore } from "../../Firebase";
-import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore'; // Importing necessary Firestore functions
+import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
 
 
 const q = [
@@ -26,30 +26,32 @@ const q = [
     "Considering the importance of Agile development practices and team collaboration for this role, how have you contributed to a positive team dynamic in a past software engineering project? Discuss how you participated in Agile processes, any challenges you and your team faced, how you overcame them, and how you have mentored or shared knowledge with fellow team members to improve project outcomes."
 ];
 
-const Interview = ({ questions, message, setChatHistory }) => {
+const Interview = ({ setChatHistory }) => {
     const auth = getAuth();
     const user = auth.currentUser;
     const [modelsLoaded, setModelsLoaded] = useState(false);
     const [questionsAnswered, setQuestionsAnswered] = useState([])
     const [questionDisplayIndex, setQuestionDisplayIndex] = useState(0);
-    const [jobsData, setJobsData] = useState([]); // State to hold the jobs data
+    const [questions, setQuestions] = useState([]); // State to hold the jobs data
     const [job, setJob] = useState("")
     const [company, setCompany] = useState("")
     const [requirements, setRequirements] = useState("")
+    const [message, setMessage] = useState("")
 
     const [recognizedText, setRecognizedText] = useState("");
     const [listening, setListening] = useState(false);
-
+    const [ready, setReady] = useState(false);
     const videoRef = React.useRef();
     const canvasRef = React.useRef();
     const intervalRef = React.useRef();
     const [isPaused, setIsPaused] = useState(false);
     const [utterance, setUtterance] = useState(null);
+    const chat_message = "";
 
     useEffect(() => {
         const synth = window.speechSynthesis;
-        console.log(q[questionDisplayIndex]);
-        const u = new SpeechSynthesisUtterance(q[questionDisplayIndex]);
+        console.log(questions[questionDisplayIndex]);
+        const u = new SpeechSynthesisUtterance(questions[questionDisplayIndex]);
 
         setUtterance(u);
 
@@ -118,36 +120,45 @@ const Interview = ({ questions, message, setChatHistory }) => {
             setJob(d.data().job)
             setRequirements(d.data().requirements)
             setCompany(d.data().company)
+
+            console.log(chat_message)
         } catch (error) {
             console.error('Error fetching jobs:', error);
         }
 
     };
 
+    const fetchQuestions = async () => {
+        const d = await getDoc(doc(firestore, "questions", user.uid))
+        console.log(d.data().questions_array)
+        // setReady(d.data().ready)
+        setQuestions(d.data().questions_array)
+    }
+
 
     const isLastQuestion = () => {
         return questionDisplayIndex === q.length - 1
     }
 
-    const sendMessage = () => {
-        console.log(job)
-        console.log(company)
-
-            sendMessageToChat(user, message, job, company, requirements, questions)
-                .then(response => {
-                    console.log(message)
-                    const aiMessage = response.message;
-
-                    console.log(aiMessage);
-
-                    setChatHistory(prevHistory => [
-                        ...prevHistory,
-                        { sender: 'User', content: message },
-                        { sender: 'AI', content: aiMessage },
-                    ]);
-                })
-                .catch(error => console.error('Error:', error));
-        };
+    // const sendMessage = () => {
+    //
+    //         console.log(chat_message)
+    //
+    //         sendMessageToChat(user, "This is a test string", job, company, requirements, questions)
+    //             .then(response => {
+    //                 console.log(message)
+    //                 const aiMessage = response.message;
+    //
+    //                 console.log(aiMessage);
+    //
+    //                 setChatHistory(prevHistory => [
+    //                     ...prevHistory,
+    //                     { sender: 'User', content: message },
+    //                     { sender: 'AI', content: aiMessage },
+    //                 ]);
+    //             })
+    //             .catch(error => console.error('Error:', error));
+    //     };
 
     useEffect(() => {
         const loadModels = async () => {
@@ -163,17 +174,8 @@ const Interview = ({ questions, message, setChatHistory }) => {
             await setModelsLoaded(true);
             startVideo();
         };
-        fetchJobs()
+        fetchQuestions()
         loadModels();
-        sendMessage()
-
-
-
-        return () => {
-            if (intervalRef.current) {
-                clearInterval(intervalRef.current);
-            }
-        };
     }, []);
 
   // Inside startVideo function
@@ -263,7 +265,7 @@ const Interview = ({ questions, message, setChatHistory }) => {
                 <div className="question-title">
                     <Card sx={{ borderRadius: 4, boxShadow: 4, padding: "1rem" }}> {/* Adjust boxShadow and borderRadius as needed */}
                         <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '10px', fontSize: "0.75rem" }}>
-                            {q[questionDisplayIndex]}
+                            {questions[questionDisplayIndex]}
                         </Typography>
                     </Card>
                     <div style={{ marginTop: 'auto' }}>

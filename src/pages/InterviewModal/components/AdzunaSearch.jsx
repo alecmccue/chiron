@@ -9,18 +9,20 @@ import { FaPlaneArrival } from "react-icons/fa";
 import { Card, Input, Typography,Button } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { getJob } from "../../../jobListing";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { doc, setDoc } from "firebase/firestore";
 import { firestore } from "../../../Firebase";
 import { getAuth } from "firebase/auth";
+import { sendMessageToChat } from "../../../chat";
 
 const AdzunaSearch = ({ setJob, setRequirements, setCompany, handleClose }) => {
+    const navigate = useNavigate()
     const [country, setCountry] = useState("us");
     const [resultsPerPage, setResultsPerPage] = useState("30");
     const [page, setPage] = useState("1");
     const [what, setWhat] = useState(""); // For job title or category
     const [fullTime, setFullTime] = useState(false); // Boolean to indicate full-time jobs
-
+    const [chatHistory, setChatHistory] = useState("")
     const [jobs, setJobs] = useState([]); // State to store the job listings
 
     const [selectedJob, setSelectedJob] = useState(null);
@@ -43,11 +45,45 @@ const AdzunaSearch = ({ setJob, setRequirements, setCompany, handleClose }) => {
     const user = auth.currentUser;
 
     const createMockInterview = async() => {
-        await setDoc(doc(firestore, "job", user.uid), {
-            company: selectedJob.company.display_name,
-            requirements: selectedJob.description,
-            job: selectedJob.title
-        });
+        // await setDoc(doc(firestore, "job", user.uid), {
+        //     company: selectedJob.company.display_name,
+        //     requirements: selectedJob.description,
+        //     job: selectedJob.title
+        // });
+
+        const company =  selectedJob.company.display_name
+        const requirements = selectedJob.description
+        const job = selectedJob.title
+        const message = "ask me about the interview questions"
+        const questions = ""
+
+        const response = await sendMessageToChat(user, message, job, company, requirements, questions)
+            // .then(response => {
+            //     setDoc(doc(firestore, "questions", user.uid), {
+            //         ready: false
+            //     });
+                console.log(message)
+                const aiMessage = response.message;
+
+                console.log(aiMessage);
+
+                const questionsArray = aiMessage.split('startquestion/').filter(question => question.trim() !== '').map(question => question.split('endquestion/')[0]);
+                console.log(questionsArray)
+
+                await setDoc(doc(firestore, "questions", user.uid), {
+                    questions_array: questionsArray.slice(1)
+                    // ready: true
+                });
+
+                setChatHistory(prevHistory => [
+                    ...prevHistory,
+                    { sender: 'User', content: message },
+                    { sender: 'AI', content: aiMessage },
+                ]);
+
+                navigate("/interview")
+            // })
+            // .catch(error => console.error('Error:', error));
     }
 
     return (
@@ -222,11 +258,12 @@ const AdzunaSearch = ({ setJob, setRequirements, setCompany, handleClose }) => {
                             </Typography>
                         </div>
                         <div className="grid grid-row-2">
-                            <Link to="/interview" onClick={(e) => createMockInterview(e)} style={{ fontSize: "1rem", fontFamily: "Open Sans, sans-serif" }}
-                                  className="bg-current text-seasalt font-bold border-onyx border-2 px-2 py-2 rounded-lg hover:bg-onyx mt-2"
-                            >
-                                    Create Mock Interview
-                            </Link>
+                            {/*<Link to="/interview" onClick={(e) => createMockInterview(e)} style={{ fontSize: "1rem", fontFamily: "Open Sans, sans-serif" }}*/}
+                            {/*      className="bg-current text-seasalt font-bold border-onyx border-2 px-2 py-2 rounded-lg hover:bg-onyx mt-2"*/}
+                            {/*>*/}
+                            {/*        Create Mock Interview*/}
+                            {/*</Link>*/}
+                            <Button onClick={createMockInterview}>Mock</Button>
                             <button
                                 onClick={() =>
                                     window.open(
