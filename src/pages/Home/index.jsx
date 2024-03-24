@@ -195,14 +195,10 @@ const Home = () => {
             </Grid>
           </div>
           <div className="flex justify-center">
-            <Button variant="contained" onClick={handleOpen} size="large">
+            <Button variant="outlined" onClick={handleOpen} size="large">
               Create New Interview!
             </Button>
             <InterviewModal open={open} onClose={handleClose}>
-              <h2 id="modal-modal-title">Centered Modal</h2>
-              <p id="modal-modal-description">
-                This modal is centered in the middle of the screen.
-              </p>
             </InterviewModal>
           </div>
         </div>

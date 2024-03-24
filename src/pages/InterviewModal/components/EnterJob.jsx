@@ -14,6 +14,8 @@ const EnterJob = ({ onSubmit, handleNext }) => {
 
     return (
         <form onSubmit={handleSubmit}>
+            <div className='container p-2 pr-3'>
+                <h1 className='text-xl p-2 ml-1'>Enter Job Information</h1>
             <TextField
                 label="Job Title"
                 variant="outlined"
@@ -21,6 +23,7 @@ const EnterJob = ({ onSubmit, handleNext }) => {
                 margin="normal"
                 value={jobTitle}
                 onChange={(e) => setJobTitle(e.target.value)}
+                sx={{padding:'5px', margin:'5px'}}
             />
             <TextField
                 label="Job Description"
@@ -31,15 +34,15 @@ const EnterJob = ({ onSubmit, handleNext }) => {
                 rows={4}
                 value={jobDescription}
                 onChange={(e) => setJobDescription(e.target.value)}
+                sx={{padding:'5px', margin:'5px'}}
+
             />
-            <Button type="submit" variant="contained" color="primary">
-                Submit
-            </Button>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', pr: 1, pt: 1 }}>
                 <Button onClick={() => handleNext(4)} color="primary">
                     Next
                 </Button>
             </Box>
+            </div>
         </form>
     );
 };
