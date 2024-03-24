@@ -52,30 +52,29 @@ const Home = ({ setJob, setRequirements, setCompany }) => {
               <div className="py-8 px-4">
                 
 
-              <div className="flex items-center justify-start space-x-4 ">
-                <Typography variant = "h1" className="text-onyx font-bold ">
-                  Chiron.
+              <div className="flex items-center justify-start space-x-7 ">
+                <Typography variant = "h1" className="text-onyx font-bold mr-96 ">
+                  Chiron.               
                 </Typography>
-                <Button
+                <button
                   variant="contained"
                   onClick={handleJobModalOpen}
-                  size="large"
-                  className="bg-DB6C53 text-onyx font-bold py-5 px-5"
+                  size="large"                  
                   sx={{fontWeight: 'bold', padding: '1rem', background: '#DB6C53'}}
+                  className="bg-DB6C53 text-onyx font-bold py-5 px-5 border-3 border-seashell hover:bg-[#53d09c] bg-[#DB6C53]"
                 >
                   Create New Interview
-                </Button>
+                </button>
                 <InterviewModal open={openInterviewModal} onClose={handleJobModalClose} />
 
-                <Button
+                <button
                   variant="contained"
                   onClick={() => setUploadResumeModal(true)}
                   size="large"
-                  className="bg-DB6C53 text-onyx font-bold py-5 px-5"
-                  sx={{fontWeight: 'bold', padding: '1rem', background: '#DB6C53'}}
+                  className="bg-DB6C53 text-onyx font-bold py-5 px-5 border-3 border-seashell hover:bg-[#53d09c] bg-[#DB6C53]"                  
                 >
                   Upload your Resume
-                </Button>
+                </button>
                 <UploadResume open={uploadResumeModal} onClose={() => setUploadResumeModal(false)} />
               </div>
 
