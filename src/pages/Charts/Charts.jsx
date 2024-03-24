@@ -10,8 +10,15 @@ import {
 } from "recharts";
 import Navbar from "../../components/Navbar";
 import BackgroundImage from "../Home/BackgroundImage.jpg";
+import { getFirestore, collection, query, where, getDoc, setDoc, doc } from 'firebase/firestore'; // Importing necessary Firestore functions
+import { firestore } from "../../Firebase";
+import { getAuth } from "firebase/auth";
 
 const Charts = () => {
+    const auth = getAuth()
+    const user = auth.currentUser
+   const d = getDoc(doc(firestore, "feedback", user.uid))
+   console.log(d)
   const data = [
     { Date: "Jan", Score: 80 },
     { Date: "Feb", Score: 70 },
