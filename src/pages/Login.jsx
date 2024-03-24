@@ -34,13 +34,13 @@ const Login = () => {
                 style={{ height: '100vh' }}
             >
                 <Grid item style={{ marginBottom: '20px' }}>
-                    <Typography variant="h4" gutterBottom>
-                        Welcome to Chiron
+                    <Typography variant="h1" align="center" className="mb-4 text-onyx font-bold">
+                        Chiron.
                     </Typography>
                 </Grid>
                 <Grid item style={{ marginBottom: '20px' }}>
-                    <Typography variant="subtitle1" gutterBottom>
-                        Please sign in to continue
+                    <Typography variant="h3" align="" className="mb-4 text-onyx">
+                        Your Personalized AI Interviewer
                     </Typography>
                 </Grid>
                 <Grid item>
