@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "react-icons/ri";
 import "../../css/joblist.css";
 import "tailwindcss/tailwind.css"; // Tailwind utilities come after
@@ -6,13 +6,15 @@ import "tailwindcss/tailwind.css"; // Tailwind utilities come after
 import { FaMoneyCheck } from "react-icons/fa";
 import { RiSuitcaseFill } from "react-icons/ri";
 import { FaPlaneArrival } from "react-icons/fa";
-import { Button } from "@mui/base";
-import { Card, Input, Typography } from "@mui/material";
+import { Card, Input, Typography,Button } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { getJob } from "../../../jobListing";
 import { Link } from "react-router-dom";
+import { doc, setDoc } from "firebase/firestore";
+import { firestore } from "../../../Firebase";
+import { getAuth } from "firebase/auth";
 
-const AdzunaSearch = ({ setJob, setRequirements, setCompany }) => {
+const AdzunaSearch = ({ setJob, setRequirements, setCompany, handleClose }) => {
     const [country, setCountry] = useState("us");
     const [resultsPerPage, setResultsPerPage] = useState("30");
     const [page, setPage] = useState("1");
@@ -23,12 +25,6 @@ const AdzunaSearch = ({ setJob, setRequirements, setCompany }) => {
 
     const [selectedJob, setSelectedJob] = useState(null);
 
-    const createMockInterview = () => {
-        setJob(selectedJob.title)
-        setRequirements(selectedJob.description)
-        setCompany(selectedJob.company.display_name)
-
-    }
     const handleGetJobs = () => {
         getJob(country, resultsPerPage, page, what, fullTime)
             .then((response) => {
@@ -43,6 +39,16 @@ const AdzunaSearch = ({ setJob, setRequirements, setCompany }) => {
     const handleSelectJob = (job) => {
         setSelectedJob(job); // Set the selected job to the job that was clicked
     };
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    const createMockInterview = async() => {
+        await setDoc(doc(firestore, "job", user.uid), {
+            company: selectedJob.company.display_name,
+            requirements: selectedJob.description,
+            job: selectedJob.title
+        });
+    }
 
     return (
         <>
@@ -216,13 +222,10 @@ const AdzunaSearch = ({ setJob, setRequirements, setCompany }) => {
                             </Typography>
                         </div>
                         <div className="grid grid-row-2">
-                            <Link to="/interview" onClick={createMockInterview}>
-                                <button
-                                    style={{ fontSize: "1rem", fontFamily: "Open Sans, sans-serif" }}
-                                    className="bg-current text-seasalt font-bold border-onyx border-2 px-2 py-2 rounded-lg hover:bg-onyx mt-2"
-                                >
+                            <Link to="/interview" onClick={(e) => createMockInterview(e)} style={{ fontSize: "1rem", fontFamily: "Open Sans, sans-serif" }}
+                                  className="bg-current text-seasalt font-bold border-onyx border-2 px-2 py-2 rounded-lg hover:bg-onyx mt-2"
+                            >
                                     Create Mock Interview
-                                </button>
                             </Link>
                             <button
                                 onClick={() =>

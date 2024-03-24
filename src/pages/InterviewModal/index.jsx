@@ -27,9 +27,11 @@ const InterviewModal = ({ open, onClose, setJob, setRequirements, setCompany }) 
                 return <ModalStart handleNext={handleNext}/>;
             case 2:
                 return <AdzunaSearch handleNext={handleNext}
+                                     handleClose={handleClose}
                                      setJob={setJob}
                                      setCompany={setCompany}
-                                     setRequirements={setRequirements}/>;
+                                     setRequirements={setRequirements}
+                />;
             case 3:
                 return <EnterJob handleNext={handleNext}/>;
             case 4:

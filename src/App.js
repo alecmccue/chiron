@@ -1,5 +1,5 @@
 import './App.css';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { auth } from "./Firebase";
 import { onAuthStateChanged } from "firebase/auth"
 import Home from "./pages/Home";
@@ -15,16 +15,20 @@ import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 function App() {
     const [user, setUser] = useState(null)
-    const [message, setMessage] = useState(null)
-    const [job, setJob] = useState(null)
-    const [company, setCompany] = useState(null)
-    const [requirements, setRequirements] = useState(null)
-    const [questions, setQuestions] = useState(null)
+    const [message, setMessage] = useState("Ask me the beginning questions.")
+    const [job, setJob] = useState("")
+    const [company, setCompany] = useState("")
+    const [requirements, setRequirements] = useState("")
+    const [questions, setQuestions] = useState("")
     const [chatHistory, setChatHistory] = useState([]);
 
     onAuthStateChanged(auth, (user) => {
         setUser(user)
     })
+
+    useEffect(() => {
+        console.log(job)
+    },[job])
 
     return (
         <>

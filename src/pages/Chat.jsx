@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { sendMessageToChat } from "../chat";
+import { gradeResponse } from '../chat';
 
 const Chat = () => {
     const [userID, setUserID] = useState('0');
@@ -10,6 +11,7 @@ const Chat = () => {
     const [questions, setQuestions] = useState('');
 
     const [chatHistory, setChatHistory] = useState([]);
+    const [gradeHistory, setGradeHistory] = useState([]);
 
     const handleQuery = () => {
         const userMessage = message; // Store the current message to append to chat history
@@ -17,24 +19,33 @@ const Chat = () => {
         const userCompany = company;
         const userRequirements = requirements;
         const userQuestions = questions;
-        sendMessageToChat(userID, message, userJob, userCompany, userRequirements, userQuestions)
+        sendMessageToChat(userID, message, job, company, requirements, questions)
             .then(response => {
-                // Assuming the response object has a message property
-                const aiMessage = response.message;
-                console.log(aiMessage);
-                
-                // Update chat history with both the user's message and the AI's response
-                setChatHistory(prevHistory => [
-                    ...prevHistory,
-                    { sender: 'User', content: userMessage },
-                    { sender: 'AI', content: aiMessage },
-                ]);
+            // Assuming the response object has a message property
+            const aiMessage = response.message;
+            
+            // Update chat history with both the user's message and the AI's response
+            setChatHistory(prevHistory => [
+                ...prevHistory,
+                { sender: 'User', content: message },
+                { sender: 'AI', content: aiMessage },
+            ]);
 
-                // Optionally clear the message input after sending
-                setMessage('');
+            // Call gradeResponse to grade the user's message
+            return gradeResponse(userID, message); // You may adjust this to send the last AI's message for grading instead
+            })
+            .then(gradingFeedback => {
+            console.log('Grading feedback:', gradingFeedback);
+            const feedback = gradingFeedback.message;
+            
+            // Update grading history with the feedback
+            setGradeHistory(prevHistory => [
+                ...prevHistory,                
+                { sender: 'user', content: gradingFeedback },
+            ]);
             })
             .catch(error => console.error('Error:', error));
-    };
+        };
 
     return (
         <>

@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Card, Button, Typography, Grid, Chip, Box } from "@mui/material";
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { Card, Button, Typography, Grid, Chip, Box } from '@mui/material';
 import * as faceapi from "face-api.js";
 import "./interview.css";
 import PersonIcon from "@mui/icons-material/Person";
@@ -18,36 +18,81 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import StopIcon from "@mui/icons-material/Stop";
 import { useNavigate } from "react-router-dom";
+import { doc, getDoc } from "firebase/firestore";
+import { firestore } from "../../Firebase";
+import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore'; // Importing necessary Firestore functions
+
 
 const q = [
-  "Given the emphasis on cloud-based solution development in this role, can you describe a project where you designed, developed, and deployed a software solution on a cloud platform such as AWS, GCP, or Azure? Please walk us through your decision-making process in choosing the technology stack, how you ensured the application's scalability and security, and any challenges you faced during the deployment.",
-  "One of the key responsibilities of this position is full-stack development with a focus on JavaScript, React, HTML/CSS, and other tools. Can you provide an example of a full-stack application you have worked on? Please detail your role in the development process, the technologies you used, how you separated concerns between the client and server-side, and how you contributed to the application's design and user experience.",
-  "Considering the importance of Agile development practices and team collaboration for this role, how have you contributed to a positive team dynamic in a past software engineering project? Discuss how you participated in Agile processes, any challenges you and your team faced, how you overcame them, and how you have mentored or shared knowledge with fellow team members to improve project outcomes.",
+    "Given the emphasis on cloud-based solution development in this role, can you describe a project where you designed, developed, and deployed a software solution on a cloud platform such as AWS, GCP, or Azure? Please walk us through your decision-making process in choosing the technology stack, how you ensured the application's scalability and security, and any challenges you faced during the deployment.",
+    "One of the key responsibilities of this position is full-stack development with a focus on JavaScript, React, HTML/CSS, and other tools. Can you provide an example of a full-stack application you have worked on? Please detail your role in the development process, the technologies you used, how you separated concerns between the client and server-side, and how you contributed to the application's design and user experience.",
+    "Considering the importance of Agile development practices and team collaboration for this role, how have you contributed to a positive team dynamic in a past software engineering project? Discuss how you participated in Agile processes, any challenges you and your team faced, how you overcame them, and how you have mentored or shared knowledge with fellow team members to improve project outcomes."
 ];
 
-const Interview = ({
-  questions,
-  job,
-  company,
-  message,
-  requirements,
-  setChatHistory,
-}) => {
-  const auth = getAuth();
-  const user = auth.currentUser;
-  const [modelsLoaded, setModelsLoaded] = useState(false);
-  const [questionsAnswered, setQuestionsAnswered] = useState([]);
-  const [questionDisplayIndex, setQuestionDisplayIndex] = useState(0);
+const Interview = ({ questions, message, setChatHistory }) => {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    const [modelsLoaded, setModelsLoaded] = useState(false);
+    const [questionsAnswered, setQuestionsAnswered] = useState([])
+    const [questionDisplayIndex, setQuestionDisplayIndex] = useState(0);
+    const [jobsData, setJobsData] = useState([]); // State to hold the jobs data
+    const [job, setJob] = useState("")
+    const [company, setCompany] = useState("")
+    const [requirements, setRequirements] = useState("")
 
-  const [recognizedText, setRecognizedText] = useState("");
-  const [listening, setListening] = useState(false);
+    const [recognizedText, setRecognizedText] = useState("");
+    const [listening, setListening] = useState(false);
 
-  const { transcript, resetTranscript, browserSupportsSpeechRecognition } =
-    useSpeechRecognition();
-  useEffect(() => {
-    setRecognizedText(transcript);
-    console.log(transcript); // Log the transcript when it changes
-  }, [transcript]);
+    const videoRef = React.useRef();
+    const canvasRef = React.useRef();
+    const intervalRef = React.useRef();
+    const [isPaused, setIsPaused] = useState(false);
+    const [utterance, setUtterance] = useState(null);
+
+    useEffect(() => {
+        const synth = window.speechSynthesis;
+        console.log(q[questionDisplayIndex]);
+        const u = new SpeechSynthesisUtterance(q[questionDisplayIndex]);
+
+        setUtterance(u);
+
+        return () => {
+            synth.cancel();
+        };
+    }, [questionDisplayIndex]);
+    const handlePlay = () => {
+        const synth = window.speechSynthesis;
+
+        if (isPaused) {
+            synth.resume();
+        }
+
+        synth.speak(utterance);
+
+        setIsPaused(false);
+    };
+    const handlePause = () => {
+        const synth = window.speechSynthesis;
+
+        synth.pause();
+
+        setIsPaused(true);
+    };
+
+    const handleStop = () => {
+        const synth = window.speechSynthesis;
+
+        synth.cancel();
+
+        setIsPaused(false);
+    };
+
+    const { transcript, resetTranscript, browserSupportsSpeechRecognition } =
+        useSpeechRecognition();
+    useEffect(() => {
+        setRecognizedText(transcript);
+        console.log(transcript); // Log the transcript when it changes
+    }, [transcript]);
 
   const toggleListening = () => {
     if (listening) {
@@ -67,77 +112,72 @@ const Interview = ({
   };
   const navigate = useNavigate();
 
-  const videoRef = React.useRef();
-  const canvasRef = React.useRef();
-  const intervalRef = React.useRef();
+    // Function to fetch jobs data
+    const fetchJobs = async () => {
+        try {
+            console.log(user.uid)
+            const d = await getDoc(doc(firestore, "job", user.uid))
+            console.log(d.data().company)
+            setJob(d.data().job)
+            setRequirements(d.data().requirements)
+            setCompany(d.data().company)
+        } catch (error) {
+            console.error('Error fetching jobs:', error);
+        }
 
-  const [isPaused, setIsPaused] = useState(false);
-  const [utterance, setUtterance] = useState(null);
-
-  useEffect(() => {
-    const synth = window.speechSynthesis;
-    console.log(q[questionDisplayIndex]);
-    const u = new SpeechSynthesisUtterance(q[questionDisplayIndex]);
-
-    setUtterance(u);
-
-    return () => {
-      synth.cancel();
     };
-  }, [questionDisplayIndex]);
-  const handlePlay = () => {
-    const synth = window.speechSynthesis;
 
-    if (isPaused) {
-      synth.resume();
+
+    const isLastQuestion = () => {
+        return questionDisplayIndex === q.length - 1
     }
 
-    synth.speak(utterance);
+    const sendMessage = () => {
+        console.log(job)
+        console.log(company)
 
-    setIsPaused(false);
-  };
-  const handlePause = () => {
-    const synth = window.speechSynthesis;
+            sendMessageToChat(user, message, job, company, requirements, questions)
+                .then(response => {
+                    console.log(message)
+                    const aiMessage = response.message;
 
-    synth.pause();
+                    console.log(aiMessage);
 
-    setIsPaused(true);
-  };
+                    setChatHistory(prevHistory => [
+                        ...prevHistory,
+                        { sender: 'User', content: message },
+                        { sender: 'AI', content: aiMessage },
+                    ]);
+                })
+                .catch(error => console.error('Error:', error));
+        };
 
-  const handleStop = () => {
-    const synth = window.speechSynthesis;
+    useEffect(() => {
+        const loadModels = async () => {
+            // sendMessage();
+            const MODEL_URL = process.env.PUBLIC_URL + '/models';
 
-    synth.cancel();
+            await Promise.all([
+                faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
+                faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+                faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
+                faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
+            ]);
+            await setModelsLoaded(true);
+            startVideo();
+        };
+        fetchJobs()
+        loadModels();
+        sendMessage()
 
-    setIsPaused(false);
-  };
 
-  const isLastQuestion = () => {
-    return questionDisplayIndex === q.length - 1;
-  };
 
-  useEffect(() => {
-    const loadModels = async () => {
-      const MODEL_URL = process.env.PUBLIC_URL + "/models";
-
-      await Promise.all([
-        faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
-        faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
-        faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
-        faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
-      ]);
-      await setModelsLoaded(true);
-      startVideo();
-    };
-
-    loadModels();
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, []);
+        return () => {
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+            }
+        };
+    }, []);
   let previousEmotions = [];
   let toastTimeout = null;
 
@@ -208,6 +248,7 @@ const Interview = ({
             }
             return emotion;
           });
+          // console.log("Emotions detected:", emotions);
           console.log(previousEmotions)
           previousEmotions.push(emotions[0]); // Add the new emotion to the array
           if (previousEmotions.length > 3) {
