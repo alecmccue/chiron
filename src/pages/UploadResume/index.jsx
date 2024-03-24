@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { pdfjs } from 'react-pdf';
 import { Box, Button, Modal, Typography, IconButton, TextField } from "@mui/material";
 import { Close } from '@mui/icons-material';
-import { getAuth } from "firebase/auth"
+import { getAuth } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { firestore } from "../../Firebase";
-
+import UploadResumeImage from "../UploadResume/UploadResumeImage.jpg"; // Make sure the path is correct
 
 // Configure PDFJS worker
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
@@ -13,6 +13,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 const UploadResume = ({ open, onClose, onSubmit }) => {
     const [file, setFile] = useState(null);
     const [extractedText, setExtractedText] = useState("");
+    const fileInputRef = useRef(null);
 
     const auth = getAuth();
     const user = auth.currentUser;
@@ -62,7 +63,7 @@ const UploadResume = ({ open, onClose, onSubmit }) => {
                 resume_string: extractedText
             });
         }
-        onClose()
+        onClose();
     }
 
     return (
@@ -82,10 +83,14 @@ const UploadResume = ({ open, onClose, onSubmit }) => {
                     position: 'absolute',
                     width: 600,
                     maxWidth: '90%',
-                    bgcolor: 'background.paper',
+                    bgcolor: 'background.paper', // Consider changing this if it makes the text hard to read
                     boxShadow: 24,
                     borderRadius: 4,
                     p: 3,
+                    backgroundColor: "#FFE8E0", // Using the imported image as a background
+                    backgroundSize: 'cover', // Cover the entire box area
+                    backgroundPosition: 'center', // Center the background image
+                    backgroundRepeat: 'no-repeat', // Do not repeat the image
                 }}
             >
                 <IconButton
@@ -97,22 +102,37 @@ const UploadResume = ({ open, onClose, onSubmit }) => {
                         top: 8,
                     }}
                 >
-                    <Close />
+                    <Close/>
                 </IconButton>
-                <Typography variant="h5" gutterBottom>
-                    Upload File
+                <Typography variant="h4" gutterBottom>
+                    Upload Resume
                 </Typography>
                 <Typography variant="body1" gutterBottom>
-                    Upload file to Chiron to save for interviews
+                    Upload PDF file to Chiron for Interview Testing
                 </Typography>
                 <TextField
                     type="file"
                     onChange={onFileChange}
                     variant="outlined"
                     fullWidth
-                    sx={{ mt: 2 }}
+                    sx={{mt: 2}}
                 />
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+                <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={onFileChange}
+                    style={{display: 'none'}} // Hide the default input
+                />
+                <Button
+                    sx={{mt: 2, bgcolor: '#DB6C53'}} // Custom styled button
+                    variant="contained"
+                    component="span"
+                    onClick={() => fileInputRef.current.click()} // Trigger file input on button click
+                >
+                    Choose File
+                </Button>
+
+                <Box sx={{display: 'flex', justifyContent: 'flex-end', mt: 2}}>
                     <Button onClick={handleSubmit} variant="contained" color="primary">
                         Submit
                     </Button>
