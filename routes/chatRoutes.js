@@ -77,10 +77,10 @@ router.post('/chat', async (req, res) => {
 router.post('/grade', async (req, res) => {
     const { userID, response } = req.body; // Assuming 'response' is what you want to grade
 
-    if (conversationState[userID].isFirstInteraction) {
-        conversationState[userID].isFirstInteraction = false; // Update state
-        return; 
-    }
+    // if (conversationState[userID].isFirstInteraction) {
+    //     conversationState[userID].isFirstInteraction = false; // Update state
+    //     return; 
+    // }
 
     // Check if the conversation history exists to ensure context is available
     if (!responses) {
@@ -92,7 +92,7 @@ router.post('/grade', async (req, res) => {
     At the end, MAKE SURE to also provide a numerical grade (out of 100) in the format final score: *grade out of 100*`;
 
     const messagesWithGradingPrompt = [
-        ...responses[userID], // Spread the existing conversation history
+        // ...responses[userID], // Spread the existing conversation history
         { 
             role: "user",
             content: response // The candidate's response you want to grade

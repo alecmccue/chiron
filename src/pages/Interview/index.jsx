@@ -11,7 +11,9 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 import { toast } from "react-toastify";
 
-import { sendMessageToChat } from "../../chat";
+// import { sendMessageToChat } from "../../chat";
+import { gradeResponse } from '../../chat';  
+
 import MicIcon from "@mui/icons-material/Mic";
 import MicOffIcon from "@mui/icons-material/MicOff";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
@@ -20,7 +22,7 @@ import StopIcon from "@mui/icons-material/Stop";
 import { useNavigate } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { firestore } from "../../Firebase";
-import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
+import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore'; // Importing necessary Firestore functions
 
 
 const q = [
@@ -43,13 +45,12 @@ const Interview = ({ setChatHistory }) => {
 
     const [recognizedText, setRecognizedText] = useState("");
     const [listening, setListening] = useState(false);
-    const [ready, setReady] = useState(false);
+
     const videoRef = React.useRef();
     const canvasRef = React.useRef();
     const intervalRef = React.useRef();
     const [isPaused, setIsPaused] = useState(false);
     const [utterance, setUtterance] = useState(null);
-    const chat_message = "";
 
     useEffect(() => {
         const synth = window.speechSynthesis;
@@ -114,23 +115,6 @@ const Interview = ({ setChatHistory }) => {
   };
   const navigate = useNavigate();
 
-    // Function to fetch jobs data
-    const fetchJobs = async () => {
-        try {
-            console.log(user.uid)
-            const d = await getDoc(doc(firestore, "job", user.uid))
-            console.log(d.data().company)
-            setJob(d.data().job)
-            setRequirements(d.data().requirements)
-            setCompany(d.data().company)
-
-            console.log(chat_message)
-        } catch (error) {
-            console.error('Error fetching jobs:', error);
-        }
-
-    };
-
     const fetchQuestions = async () => {
         const d = await getDoc(doc(firestore, "questions", user.uid))
         console.log(d.data().questions_array)
@@ -143,44 +127,6 @@ const Interview = ({ setChatHistory }) => {
         return questionDisplayIndex === questions.length - 1
     }
 
-    // const sendMessage = () => {
-    //     console.log(job)
-    //     console.log(company)
-
-    //         sendMessageToChat(user, message, job, company, requirements, questions)
-    //             .then(response => {
-    //                 console.log(message)
-    //                 const aiMessage = response.message;
-
-    //                 console.log(aiMessage);
-
-    //                 setChatHistory(prevHistory => [
-    //                     ...prevHistory,
-    //                     { sender: 'User', content: message },
-    //                     { sender: 'AI', content: aiMessage },
-    //                 ]);
-    //             })
-    //             .catch(error => console.error('Error:', error));
-    //     };
-    // const sendMessage = () => {
-    //
-    //         console.log(chat_message)
-    //
-    //         sendMessageToChat(user, "This is a test string", job, company, requirements, questions)
-    //             .then(response => {
-    //                 console.log(message)
-    //                 const aiMessage = response.message;
-    //
-    //                 console.log(aiMessage);
-    //
-    //                 setChatHistory(prevHistory => [
-    //                     ...prevHistory,
-    //                     { sender: 'User', content: message },
-    //                     { sender: 'AI', content: aiMessage },
-    //                 ]);
-    //             })
-    //             .catch(error => console.error('Error:', error));
-    //     };
 
     useEffect(() => {
         const loadModels = async () => {
@@ -196,8 +142,8 @@ const Interview = ({ setChatHistory }) => {
             await setModelsLoaded(true);
             startVideo();
         };
-        fetchQuestions()
         loadModels();
+        fetchQuestions()
     }, []);
   let previousEmotions = [];
   let toastTimeout = null;
@@ -294,7 +240,7 @@ const Interview = ({ setChatHistory }) => {
             }, 3000); // Delay the happy toast by 3 seconds
           }
         }
-        console.log(previousEmotions)
+        // console.log(previousEmotions)
 
         canvasRef.current
           .getContext("2d")
@@ -441,6 +387,14 @@ const Interview = ({ setChatHistory }) => {
                   stopListening();
                 } else {
                   setQuestionDisplayIndex((prevIndex) => prevIndex + 1);
+                  gradeResponse(transcript)
+                  
+                  gradeResponse(0, transcript)
+                  .then(gradingFeedback => {
+                  console.log('Grading feedback:', gradingFeedback);
+                  const feedback = gradingFeedback;
+                  console.log(feedback);
+                  })
                     handlePlay();
                 }
               }}
