@@ -1,10 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, Typography, Grid, Avatar } from '@mui/material';
+import React, { useState, useEffect, useRef } from 'react';
+import { Card, Button, Typography, Grid, Chip, Box } from '@mui/material';
 import * as faceapi from "face-api.js";
 import { deepPurple } from '@mui/material/colors';
 import './interview.css';
+import PersonIcon from '@mui/icons-material/Person';
+import { getAuth } from "firebase/auth"
+import BubblingAvatar from "../../components/BubblingAvatar";
+
 
 const Interview = () => {
+    const auth = getAuth();
+    const user = auth.currentUser;
     const [modelsLoaded, setModelsLoaded] = useState(false);
     const [question, setQuestion] = useState('');
 
@@ -79,30 +85,81 @@ const Interview = () => {
         }, 100);
     };
 
+
+    const interviewerPlayer = useRef(null);
+
+
+
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-            <Grid container spacing={3} style={{ maxWidth: '100%' }}>
-                <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <Card sx={{ width: 'fit-content' }}>
-                        <CardContent style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                            <Typography variant="h5" gutterBottom>
-                                Interviewer
-                            </Typography>
-                            <Avatar sx={{ bgcolor: deepPurple[500] }}>OP</Avatar>
-                        </CardContent>
-                    </Card>
+        <div className="container">
+            <div className="inner-container">
+                <div className="question-title">
+                    <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '10px' }}>Question Title</Typography>
+                    <hr style={{ width: '40px', marginBottom: '10px' }} />
+                </div>
+                <Grid container spacing={2} className="card-container">
+                    <Grid item>
+                            {/*<Avatar className="avatar" sx={{ bgcolor: deepPurple[500] }}>OP</Avatar>*/}
+                            <Box
+                                sx={{
+                                    height: '500px',
+                                    width: '300px',
+                                    bgcolor: '#E1E1E1',
+                                    borderRadius: '1.25rem',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    position: 'relative'
+                                }}
+                            >
+                                <BubblingAvatar />
+                                <Chip
+                                    icon={
+                                        <PersonIcon sx={{ '&.MuiChip-icon': { color: '#FFFFFF8A' } }} />
+                                    }
+                                    label='Chiron'
+                                    sx={{
+                                        position: 'absolute',
+                                        zIndex: 5,
+                                        bottom: '1rem',
+                                        left: '1rem',
+                                        backgroundColor: '#00000052',
+                                        color: '#FFFFFFA1',
+                                        fontWeight: 700,
+                                    }}
+                                />
+                            </Box>
+                    </Grid>
+                    <Grid item className="video-container">
+                            {modelsLoaded ? (
+                                <video className="video" ref={videoRef} onPlay={handleVideoOnPlay} />
+                            ) : (
+                                <div className="placeholder"></div>
+                            )}
+                            <canvas className="video" ref={canvasRef}></canvas>
+                            <Chip
+                                icon={
+                                    <PersonIcon sx={{ '&.MuiChip-icon': { color: '#FFFFFF8A' } }} />
+                                }
+                                label={user ? user.displayName : "User"}
+                                sx={{
+                                    position: 'absolute',
+                                    zIndex: 5,
+                                    bottom: '1rem',
+                                    left: '2rem',
+                                    backgroundColor: '#00000052',
+                                    color: '#FFFFFFA1',
+                                    fontWeight: 700,
+                                }}
+                            ></Chip>
+                    </Grid>
                 </Grid>
-                <Grid item xs={12} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <div style={{ position: 'relative', width: '100%', paddingTop: '56.25%' }}>
-                        {modelsLoaded ? (
-                            <video ref={videoRef} onPlay={handleVideoOnPlay} style={{ position: 'absolute', width: '100%', height: '100%', objectFit: 'cover' }} />
-                        ) : (
-                            <div style={{ width: '100%', height: '100%', borderRadius: '10px', backgroundColor: 'black' }}></div>
-                        )}
-                        <canvas ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }} />
-                    </div>
+                <Grid item sx={{ marginLeft: 'auto', marginTop: '10px' }}>
+                    <Button variant="contained" color="primary" onClick={() => console.log('End Call')}>
+                        End Call
+                    </Button>
                 </Grid>
-            </Grid>
+            </div>
         </div>
     );
 };
