@@ -91,8 +91,7 @@ router.post('/grade', async (req, res) => {
     const gradingPrompt = `Given the role of a critical interviewer, grade the following response by the candidate: "${response}". Provide a detailed assessment that is quite harsh based on clarity, relevance, and depth. 
     At the end, MAKE SURE to also provide a numerical grade (out of 100) in the format final score: *grade out of 100*`;
 
-    const messagesWithGradingPrompt = [
-        // ...responses[userID], // Spread the existing conversation history
+    const messagesWithGradingPrompt = [        
         { 
             role: "user",
             content: response // The candidate's response you want to grade

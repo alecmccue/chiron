@@ -11,7 +11,6 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 import { toast } from "react-toastify";
 
-// import { sendMessageToChat } from "../../chat";
 import { gradeResponse } from '../../chat';  
 
 import MicIcon from "@mui/icons-material/Mic";
