@@ -12,6 +12,8 @@ import SpeechRecognition, {
 import { toast } from "react-toastify";
 
 import { sendMessageToChat } from "../../chat";
+import { gradeResponse } from '../../chat';
+
 import MicIcon from "@mui/icons-material/Mic";
 import MicOffIcon from "@mui/icons-material/MicOff";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
@@ -20,7 +22,7 @@ import StopIcon from "@mui/icons-material/Stop";
 import { useNavigate } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { firestore } from "../../Firebase";
-import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
+import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore'; // Importing necessary Firestore functions
 
 
 const q = [
@@ -43,13 +45,12 @@ const Interview = ({ setChatHistory }) => {
 
     const [recognizedText, setRecognizedText] = useState("");
     const [listening, setListening] = useState(false);
-    const [ready, setReady] = useState(false);
+
     const videoRef = React.useRef();
     const canvasRef = React.useRef();
     const intervalRef = React.useRef();
     const [isPaused, setIsPaused] = useState(false);
     const [utterance, setUtterance] = useState(null);
-    const chat_message = "";
 
     useEffect(() => {
         const synth = window.speechSynthesis;
