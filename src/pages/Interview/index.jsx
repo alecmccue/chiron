@@ -397,8 +397,8 @@ const Interview = ({ setChatHistory }) => {
                   const feedback = gradingFeedback;
                   console.log(feedback);
                   })
-                    handlePlay();
                 }
+                handlePlay();
               }}
             >
               {isLastQuestion() ? "End Call" : "Next Question"}
