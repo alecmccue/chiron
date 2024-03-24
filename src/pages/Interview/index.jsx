@@ -394,7 +394,7 @@ const Interview = ({ setChatHistory }) => {
                     feedbackArray.push(gradingFeedback);
                     // Additional processing if needed...
                     console.log('Navigating to login...');
-                    navigate('/login', { state: { feedback: feedbackArray } });
+                    navigate('/summary', { state: { feedback: feedbackArray } });
                   })
                   .catch(error => {
                     console.error('Error grading response:', error);
