@@ -39,7 +39,7 @@ function Navbar({handleLogout}) {
             </li>
             <li>
               <Link
-                to="/"
+                to="/charts"
                 className="block py- px-3 text-xl text-onyx bg-current rounded md:bg-transparent md:current-700 md:p-0 md:dark:text-onyx font-bold"
                 aria-current="page"
               >
