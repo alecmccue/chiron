@@ -115,9 +115,6 @@ const Charts = () => {
             <Line type="monotone" dataKey="Score" stroke="green" strokeWidth={3} />
             <Line type="monotone" dataKey="Clarity" stroke="red" strokeWidth={3} />
           </LineChart>
-          <button onClick={fetchData}>
-              Fetch Latest Scores
-          </button>
         </div>
       </div>
     </>
