@@ -7,6 +7,7 @@ import { Button, Grid, Icon, Typography } from "@mui/material";
 import { useState } from "react";
 import Navbar from "../../components/Navbar";
 import UploadResume from "../UploadResume";
+import BackgroundImage from './BackgroundImage.jpg'
 
 
 
@@ -29,16 +30,26 @@ const Home = () => {
     }
   };
   return (
-    <div className="container mx-auto w-[75rem]">
+    <div
+    style={{
+      backgroundImage: `url(${BackgroundImage})`,
+      backgroundSize: '100% 100%',
+      top: 0,
+      left: 0,
+      margin: 0,
+      padding: 0,
+      zIndex: -1 
+    }}>
+      <div
+          className="container mx-auto w-[75rem]"
+      >
       <Navbar signOut={handleLogout} auth={auth} />
       <div className="container mx-auto rounded-lg overflow-hidden">
         <div className="py-8 px-4">
-          <Typography variant="h2" align="center" className="mb-4 text-onyx">
+          <Typography variant="h2" align="center" className="mb-4 text-onyx font-bold underline">
             Welcome to Chiron!
           </Typography>
-          <Typography variant="h5" align="center" className="mb-8 text-current">
-            Your AI Interview Assistant
-          </Typography>
+          
           <div className="grid grid-cols-2 gap-20 mb-10 mt-10">
             <Grid
               container
@@ -199,24 +210,26 @@ const Home = () => {
             </Grid>
           </div>
           <div className="flex justify-center">
-            <Button variant="outlined" onClick={handleJobModalOpen} size="large">
+            <Button variant="contained" onClick={handleJobModalOpen} size="large" sx={{fontWeight:'bold', padding:'0.5rem', background:'#DB6C53', marginBottom:'1rem'}}>
               Create New Interview!
             </Button>
             <InterviewModal open={openInterviewModal} onClose={handleJobModalClose}>
             </InterviewModal>
           </div>
           <div className="flex justify-center">
-            <Button variant="outlined" onClick={() => setUploadResumeModal(true)} size="large">
+            <Button variant="contained" onClick={() => setUploadResumeModal(true)} size="large" sx={{fontWeight:'bold', padding:'0.5rem', background:'#DB6C53'}}>
               Upload your Resume
             </Button>
             <UploadResume open={uploadResumeModal} onClose={() => setUploadResumeModal(false)}>
             </UploadResume>
           </div>
         </div>
-      </div>
       <Link to="/login" onClick={handleLogout}>
         Logout
       </Link>
+      </div>
+    </div>
+
     </div>
   );
 };
