@@ -5,9 +5,12 @@ import "./interview.css";
 import PersonIcon from "@mui/icons-material/Person";
 import { getAuth } from "firebase/auth";
 import BubblingAvatar from "../../components/BubblingAvatar";
+import Avatar from "@mui/material/Avatar";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
+import { toast } from "react-toastify";
+
 import { sendMessageToChat } from "../../chat";
 import MicIcon from "@mui/icons-material/Mic";
 import MicOffIcon from "@mui/icons-material/MicOff";
@@ -137,7 +140,7 @@ const Interview = ({ setChatHistory }) => {
 
 
     const isLastQuestion = () => {
-        return questionDisplayIndex === q.length - 1
+        return questionDisplayIndex === questions.length - 1
     }
 
     // const sendMessage = () => {
@@ -177,6 +180,8 @@ const Interview = ({ setChatHistory }) => {
         fetchQuestions()
         loadModels();
     }, []);
+  let previousEmotions = [];
+  let toastTimeout = null;
 
   // Inside startVideo function
   const startVideo = () => {
@@ -246,105 +251,186 @@ const Interview = ({ setChatHistory }) => {
             return emotion;
           });
           // console.log("Emotions detected:", emotions);
+          previousEmotions.push(emotions[0]); // Add the new emotion to the array
+          if (previousEmotions.length > 3) {
+            previousEmotions.shift(); // Remove the oldest emotion if the array exceeds 3
+          }
+          const happyCount = previousEmotions.filter(
+            (e) => e === "happy"
+          ).length;
+          const sadCount = previousEmotions.filter((e) => e === "sad" || e !== "angry").length;
+
+          clearTimeout(toastTimeout);
+
+          if (sadCount > 2  && happyCount === 0) {
+            toastTimeout = setTimeout(() => {
+              toast.warning("Try to Smile More!", {toastId:'anger1'});
+              previousEmotions = [];
+            }, 3000); // Delay the warning toast by 3 seconds
+          } else if (happyCount ===3) {
+            toastTimeout = setTimeout(() => {
+              toast.success("Great job! You've been smiling a lot!", {toastId:'smile1'});
+              previousEmotions = [];
+
+            }, 3000); // Delay the happy toast by 3 seconds
+          }
         }
+        console.log(previousEmotions)
 
         canvasRef.current
           .getContext("2d")
           .clearRect(0, 0, displaySize.width, displaySize.height);
       }
-    }, 3000);
+    }, 5000);
   };
 
   if (!browserSupportsSpeechRecognition) {
     return <span>your browser doesnt support speech recognition</span>;
   }
 
-    return (
-        <div className="container-interview">
-            <div className="inner-container">
-                <div className="question-title">
-                    <Card sx={{ borderRadius: 4, boxShadow: 4, padding: "1rem" }}> {/* Adjust boxShadow and borderRadius as needed */}
-                        <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '10px', fontSize: "0.75rem" }}>
-                            {questions[questionDisplayIndex]}
-                        </Typography>
-                    </Card>
-                    <div style={{ marginTop: 'auto' }}>
-                        <Chip
-                            label={`Questions Left: ${q.length - questionDisplayIndex - 1}`}
-                            sx={{ backgroundColor: '#C8E6C9', color: 'black', fontWeight: 'bold' }}
-                        />
-                    </div>
-                </div>
-                <Grid container spacing={2} className="card-container">
-                    <Grid item>
-                            <Box
-                                sx={{
-                                    height: '500px',
-                                    width: '300px',
-                                    bgcolor: '#E1E1E1',
-                                    borderRadius: '1.25rem',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    position: 'relative'
-                                }}
-                            >
-                                <BubblingAvatar />
-                                <Chip
-                                    icon={
-                                        <PersonIcon sx={{ '&.MuiChip-icon': { color: '#FFFFFF8A' } }} />
-                                    }
-                                    label='Chiron'
-                                    sx={{
-                                        position: 'absolute',
-                                        zIndex: 5,
-                                        bottom: '1rem',
-                                        left: '1rem',
-                                        backgroundColor: '#00000052',
-                                        color: '#FFFFFFA1',
-                                        fontWeight: 700,
-                                    }}
-                                />
-                            </Box>
-                    </Grid>
-                    <Grid item className="video-container">
-                            {modelsLoaded ? (
-                                <video className="video" ref={videoRef} onPlay={handleVideoOnPlay} />
-                            ) : (
-                                <div className="placeholder"></div>
-                            )}
-                            <canvas className="video" ref={canvasRef}></canvas>
-                            <Chip
-                                icon={
-                                    <PersonIcon sx={{ '&.MuiChip-icon': { color: '#FFFFFF8A' } }} />
-                                }
-                                label={user ? user.displayName : "User"}
-                                sx={{
-                                    position: 'absolute',
-                                    zIndex: 5,
-                                    bottom: '1rem',
-                                    left: '2rem',
-                                    backgroundColor: '#00000052',
-                                    color: '#FFFFFFA1',
-                                    fontWeight: 700,
-                                }}
-                            ></Chip>
-                    </Grid>
-                </Grid>
-                <Grid item sx={{ marginLeft: 'auto', marginTop: '10px' }}>
-                    <Button variant="contained" color="primary" onClick={() => {
-                        if (isLastQuestion()) {
-                            console.log('End Call');
-                        } else {
-                            setQuestionDisplayIndex(prevIndex => prevIndex + 1);
-                        }
-                    }}>
-                        {isLastQuestion() ? 'End Call' : 'Next Question'}
-                    </Button>
-                </Grid>
-            </div>
+  return (
+    <div className="container-interview">
+      <div className="inner-container">
+        <div className="question-title">
+          <Card sx={{ borderRadius: 4, boxShadow: 4, padding: "1rem" }}>
+            {" "}
+            {/* Adjust boxShadow and borderRadius as needed */}
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: "bold",
+                marginBottom: "10px",
+                fontSize: "0.75rem",
+              }}
+            >
+              {questions[questionDisplayIndex]}
+            </Typography>
+          </Card>
+          <div style={{ marginTop: "auto" }}>
+            <Chip
+              label={`Questions Left: ${questions.length - questionDisplayIndex - 1}`}
+              sx={{
+                backgroundColor: "#C8E6C9",
+                color: "black",
+                fontWeight: "bold",
+              }}
+            />
+          </div>
         </div>
-    );
+        <Grid container spacing={2} className="card-container">
+          <Grid item>
+            <Box
+              sx={{
+                height: "500px",
+                width: "300px",
+                bgcolor: "#E1E1E1",
+                borderRadius: "1.25rem",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                position: "relative",
+              }}
+            >
+              <Avatar
+                alt="Chiron"
+                src="https://media.istockphoto.com/id/941756036/vector/sagittarius-centaur-zodiac-horoscope-sign.jpg?s=612x612&w=0&k=20&c=SBzTUQEIfzmxxh3M8cfwUt4p9TvH5561lxwQM3zJqz8="
+                sx={{ width: "60px", height: "auto" }}
+              />
+              <Chip
+                avatar={
+                  <Avatar
+                    alt="Chiron"
+                    src="https://media.istockphoto.com/id/941756036/vector/sagittarius-centaur-zodiac-horoscope-sign.jpg?s=612x612&w=0&k=20&c=SBzTUQEIfzmxxh3M8cfwUt4p9TvH5561lxwQM3zJqz8="
+                  />
+                }
+                variant="outlined"
+                label="Chiron"
+                sx={{
+                  position: "absolute",
+                  zIndex: 5,
+                  bottom: "1rem",
+                  left: "1rem",
+                  backgroundColor: "#00000052",
+                  color: "#FFFFFFA1",
+                  fontWeight: 700,
+                }}
+              />
+            </Box>
+          </Grid>
+          <Grid item className="video-container">
+            {modelsLoaded ? (
+              <video
+                className="video"
+                ref={videoRef}
+                onPlay={handleVideoOnPlay}
+              />
+            ) : (
+              <div className="placeholder"></div>
+            )}
+            <canvas className="video" ref={canvasRef}></canvas>
+            <Chip
+              icon={
+                <PersonIcon sx={{ "&.MuiChip-icon": { color: "#FFFFFF8A" } }} />
+              }
+              label={user ? user.displayName : "User"}
+              sx={{
+                position: "absolute",
+                zIndex: 5,
+                bottom: "1rem",
+                left: "2rem",
+                backgroundColor: "#00000052",
+                color: "#FFFFFFA1",
+                fontWeight: 700,
+              }}
+            ></Chip>
+          </Grid>
+        </Grid>
+        <div>
+          <button
+            onClick={toggleListening}
+            className="rounded-full bg-blue-500 p-2 m-2"
+          >
+            {listening ? <MicIcon /> : <MicOffIcon />}
+          </button>
+          <button
+            onClick={handlePlay}
+            className="bg-green-500 rounded-md text-white p-2 m-2"
+          >
+            <PlayArrowIcon />
+          </button>
+          <button
+            onClick={handlePause}
+            className="bg-yellow-500 rounded-md text-white p-2 m-2"
+          >
+            <PauseIcon />
+          </button>
+          <button
+            onClick={handleStop}
+            className="bg-red-500 rounded-md text-white p-2 m-2"
+          >
+            <StopIcon />
+          </button>
+          <p>{transcript}</p>
+          <Grid item sx={{ marginLeft: "auto", marginTop: "10px" }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                if (isLastQuestion()) {
+                  navigate("/");
+                } else {
+                  setQuestionDisplayIndex((prevIndex) => prevIndex + 1);
+                }
+                handlePlay();
+              }}
+            >
+              {isLastQuestion() ? "End Call" : "Next Question"}
+            </Button>
+          </Grid>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Interview;

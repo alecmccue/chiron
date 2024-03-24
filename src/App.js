@@ -11,6 +11,8 @@ import Chat from './pages/Chat';
 
 import Interview from "./pages/Interview";
 import AdzunaSearch from "./pages/InterviewModal/components/AdzunaSearch";
+import { ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
 function App() {
     const [user, setUser] = useState(null)
     const [message, setMessage] = useState("Ask me the beginning questions.")
@@ -29,6 +31,8 @@ function App() {
     },[job])
 
     return (
+        <>
+        <ToastContainer/>
         <Router>
             <div className="App">
                 <div className="content">
@@ -58,6 +62,7 @@ function App() {
                 </div>
             </div>
         </Router>
+        </>
     );
 }
 

@@ -33,17 +33,18 @@ const Login = () => {
                 alignItems="center"
                 style={{ height: '100vh' }}
             >
-                <Grid item style={{ marginBottom: '20px' }}>
-                    <Typography variant="h4" gutterBottom>
-                        Welcome to Chiron
+                <Grid item style={{ marginBottom: '-20px' }}>
+                    <Typography variant="h1" align="center" className="mb-4 text-onyx font-bold">
+                        Chiron.
                     </Typography>
                 </Grid>
                 <Grid item style={{ marginBottom: '20px' }}>
-                    <Typography variant="subtitle1" gutterBottom>
-                        Please sign in to continue
+                    <Typography variant="h3" align="" className="mb-4 text-onyx">
+                        Your Personalized AI Interviewer
                     </Typography>
                 </Grid>
                 <Grid item>
+
                     <Link to="/" onClick={handleGoogleLogin}>
 
                         <Button
@@ -51,20 +52,19 @@ const Login = () => {
                             color="primary"
                             fullWidth
                             size="large"
-                            style={{ textTransform: 'none' }}
+                            style={{ textTransform: 'none', fontWeight: 'bold', padding: '0.5rem', background: '#DB6C53', marginBottom: '2rem', color: "#32373B", fontSize: "16px"}}
                         >
                             <img
                                 src="https://img.icons8.com/fluent/24/000000/google-logo.png"
                                 alt="Google Logo"
-                                style={{ marginRight: '10px' }}
+                                style={{ marginRight: '15px'}}
                             />
-                            Sign in with Google
+                            Continue with Google
                         </Button>
                     </Link>
                 </Grid>
             </Grid>
         </Container>
-
         </div>
     )
 }
