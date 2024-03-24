@@ -5,7 +5,6 @@ import { Close } from '@mui/icons-material';
 import { getAuth } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { firestore } from "../../Firebase";
-import UploadResumeImage from "../UploadResume/UploadResumeImage.jpg"; // Make sure the path is correct
 
 // Configure PDFJS worker
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
@@ -83,14 +82,11 @@ const UploadResume = ({ open, onClose, onSubmit }) => {
                     position: 'absolute',
                     width: 600,
                     maxWidth: '90%',
-                    bgcolor: 'background.paper', // Consider changing this if it makes the text hard to read
+                    bgcolor: 'background.paper',
                     boxShadow: 24,
                     borderRadius: 4,
                     p: 3,
-                    backgroundColor: "#FFE8E0", // Using the imported image as a background
-                    backgroundSize: 'cover', // Cover the entire box area
-                    backgroundPosition: 'center', // Center the background image
-                    backgroundRepeat: 'no-repeat', // Do not repeat the image
+                    backgroundColor: "#FFE8E0",
                 }}
             >
                 <IconButton
@@ -123,17 +119,8 @@ const UploadResume = ({ open, onClose, onSubmit }) => {
                     onChange={onFileChange}
                     style={{display: 'none'}} // Hide the default input
                 />
-                <Button
-                    sx={{mt: 2, bgcolor: '#DB6C53'}} // Custom styled button
-                    variant="contained"
-                    component="span"
-                    onClick={() => fileInputRef.current.click()} // Trigger file input on button click
-                >
-                    Choose File
-                </Button>
-
                 <Box sx={{display: 'flex', justifyContent: 'flex-end', mt: 2}}>
-                    <Button onClick={handleSubmit} variant="contained" color="primary">
+                    <Button onClick={handleSubmit} variant="contained" color="primary" sx={{bgcolor: "#DB6C53"}}>
                         Submit
                     </Button>
                 </Box>

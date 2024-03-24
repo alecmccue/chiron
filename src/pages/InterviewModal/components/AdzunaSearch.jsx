@@ -87,7 +87,7 @@ const AdzunaSearch = ({ setJob, setRequirements, setCompany, handleClose }) => {
     }
 
     return (
-        <>
+        <div className="">
             <h1
                 style={{ fontFamily: "Montserrat, sans-serif" }}
                 className="text-3xl font-bold bg-seashell text-onyx pt-1 pl-9 ml-1"
@@ -143,13 +143,17 @@ const AdzunaSearch = ({ setJob, setRequirements, setCompany, handleClose }) => {
                     variant="outlined"
                     className="border-2 border-onyx bg-sienna hover:bg-onyx text-seasalt  font-bold px-3 py-1 mt-2 rounded-lg p-2"
                 >
-                    <Typography>
-                        <Search /> Search
+                    <div className="flex">
+                        <Search className="float-left mr-1" />
+                    <Typography className="text-lg float-right ml-1" variant="h1">
+                        Search
                     </Typography>
+
+                    </div>
                 </Button>
             </div>
 
-            <div className="main-container bg-seasalt rounded-none">
+            <div className="main-container rounded-none ">
                 <div className="job-listings bg-seasalt p-2 border-onyx border-1">
                     {jobs.map((job, index) => (
                         <div
@@ -183,7 +187,7 @@ const AdzunaSearch = ({ setJob, setRequirements, setCompany, handleClose }) => {
 
                 {/* JOB DETAILS */}
                 {selectedJob && (
-                    <Card className="job-details border-1 border-onyx rounded-none">
+                    <Card className="job-details border-1 border-onyx rounded-none bg-[#FFE8E0]">
                         {/* DISPLAY NAME */}
                         <Typography
                             style={{ fontSize: "2rem", fontFamily: "Montserrat, sans-serif" }}
@@ -259,11 +263,11 @@ const AdzunaSearch = ({ setJob, setRequirements, setCompany, handleClose }) => {
                             </Typography>
                         </div>
                         <div className="grid grid-row-2">
-                            <Button onClick={createMockInterview} 
+                            <button onClick={createMockInterview} 
                                 style={{ fontSize: "1rem", fontFamily: "Open Sans, sans-serif", alignItems:"center", textAlign:"center"}} 
                                 className="bg-sienna text-seasalt font-bold border-onyx border-2 px-2 py-2 rounded-lg hover:bg-onyx mt-2">
-                                    Mock
-                            </Button>
+                                    Mock Interview
+                            </button>
                             <button
                                 onClick={() =>
                                     window.open(
@@ -308,7 +312,7 @@ const AdzunaSearch = ({ setJob, setRequirements, setCompany, handleClose }) => {
                     </Card>
                 )}
             </div>
-        </>
+        </div>
     );
 };
 
