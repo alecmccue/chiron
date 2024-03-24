@@ -159,32 +159,31 @@ router.post('/resume', async (req, res) => {
     // Content prompt directly instructing the AI on its role and expectations
     const contentPrompt = `The candidate is preparing for an upcoming interview. They have provided
         you with their resume to analyze and come up with questions that typical interviewers would ask
-        after looking at the resume. This is the resume: ${resume}. Make sure to ask exactly three questions at time. 
+        after looking at the resume. This is the resume: ${resume}. Make sure to ask exactly three questions at a time. 
         If the user prompts something other than asking you to ask a question, then do not ask a question, just answer as the interviewer.
         Phrase the question like this:
         Question 1: startquestion/ *question content* endquestion/
         Question 2: startquestion/ *question content* endquestion/
-        Question 3: startquestion/ *question content* endquestion/`;        
-    }
+        Question 3: startquestion/ *question content* endquestion/`;
     
-        const messagesWithResumePrompt = [        
-            { 
-                role: "system",
-                content: rolePrompt 
-            },
-            { 
-                role: "system",
-                content: contentPrompt 
-            }
-        ];
+    const messagesWithResumePrompt = [        
+        { 
+            role: "system",
+            content: rolePrompt 
+        },
+        { 
+            role: "system",
+            content: contentPrompt 
+        }
+    ];
 
     try {
-        const completion = await openai.chat.completions.create({
+        const completion = await openai.createChatCompletion({
             model: "gpt-4-0125-preview",
             messages: messagesWithResumePrompt,
         });
 
-        const aiMessage = completion.choices[0].message.content;
+        const aiMessage = completion.data.choices[0].message.content;
 
         res.json({ message: aiMessage });
     } catch (error) {
