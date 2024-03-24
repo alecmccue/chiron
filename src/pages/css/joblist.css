@@ -1,27 +1,18 @@
+/* html, body {
+    overflow: hidden;
+} */
+
 .job-listings .job {
     padding: 20px;    
     border-radius: 5px;
 }
 
-.job h2 {
-    margin: 0;
-    color: #333;
-}
-
-.job h3 {    
-    color: #666;
-}
-
-/* .job p {
-    margin: 5px 0;
-} */
-
-.job a {
+/* .job a {
     display: inline-block;
     margin-top: 10px;
     color: #007bff;
     text-decoration: none;
-}
+} */
 
 .job-list-container {
     display: flex;
@@ -66,19 +57,6 @@ job-description {
     text-overflow: clip;  /* Default, clips text */
 }
 
-/* .body, html {
-    margin: 0;
-    padding: 0;
-    overflow: hidden; 
-    height: 100%; 
-} */
-  
-html, body {
-    margin: 0;
-    padding: 0;
-    /* Prevents default scrolling */
-    overflow: hidden;
-}
 
 .main-container {
     display: flex;
