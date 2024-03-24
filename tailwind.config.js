@@ -26,7 +26,7 @@ module.exports = {
       '10': '10px',
       '20': '20px',
       '20': '20px',
-    },
+    },    
   },
   plugins: [],
   important: true,
