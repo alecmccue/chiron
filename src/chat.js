@@ -54,28 +54,28 @@ export function gradeResponse(userID, response) {
   });
 }
 
-export function sendResume(userID, resume) {
-  return fetch('http://localhost:3001/resume', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      userID: userID,
-      resume: resume,
-    }),
-  })
-  .then(response => response.json())
-  .then(data => {
-      if (data) {            
-          console.log(data);
-          return data;
-      } else {
-          console.log('No data found');
-          return null;
-      }
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
-}
+// export function sendResume(userID, resume) {
+//   return fetch('http://localhost:3001/resume', {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify({
+//       userID: userID,
+//       resume: resume,
+//     }),
+//   })
+//   .then(response => response.json())
+//   .then(data => {
+//       if (data) {            
+//           console.log(data);
+//           return data;
+//       } else {
+//           console.log('No data found');
+//           return null;
+//       }
+//   })
+//   .catch(error => {
+//     console.error('Error:', error);
+//   });
+// }

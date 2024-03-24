@@ -399,25 +399,20 @@ const Interview = ({ setChatHistory }) => {
                   .catch(error => {
                     console.error('Error grading response:', error);
                   });
-
-                  // Access it in your component using useLocation
-                  // const location = useLocation();
-                  // const queryParams = new URLSearchParams(location.search);
-                  // const data = queryParams.get('data');
                 } else {
                   setQuestionDisplayIndex((prevIndex) => prevIndex + 1);
 
                   
                   gradeResponse(0, transcript)
                   .then(gradingFeedback => {
-                      const feedback = gradingFeedback.gradingFeedback;
-                      console.log(feedback)
-                      const str = feedback.substring(8, feedback.length - 3)
-                      console.log(str)
-                      const feedbackJSON = JSON.parse(str)
-                      console.log(feedbackJSON)
-                      feedbackJSON.time = serverTimestamp()
-                      setDoc(doc(firestore, "feedback", user.uid), { feedbackJSON });
+                      // const feedback = gradingFeedback.gradingFeedback;
+                      // console.log(gradingFeedback)
+                      // const str = feedback.substring(8, feedback.length - 3)
+                      // console.log(str)
+                      // const feedbackJSON = JSON.parse(str)
+                      // console.log(feedbackJSON)
+                      // feedbackJSON.time = serverTimestamp()
+                      // setDoc(doc(firestore, "feedback", user.uid), { feedbackJSON });
                   })
                   resetTranscript();
                 }                
