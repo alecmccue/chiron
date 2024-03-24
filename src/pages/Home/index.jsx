@@ -33,12 +33,12 @@ const Home = () => {
       backgroundSize: '100% 100%',
       top: 0,
       left: 0,
-      width: '100vw', // Viewport width - makes the div width equal to 100% of the viewport width
-      height: '100vh', // Viewport height - makes the div height equal to 100% of the viewport height
+      width: '100vw', 
+      height: '100vh',
       margin: 0,
       padding: 0,
       // overflow: 'hidden',
-      zIndex: -1 // Ensures the background is behind all other content
+      zIndex: -1 
     }}>
       <div
           className="container mx-auto w-[75rem]"
@@ -46,12 +46,10 @@ const Home = () => {
       <Navbar signOut={handleLogout} auth={auth} />
       <div className="container mx-auto rounded-lg overflow-hidden">
         <div className="py-8 px-4">
-          <Typography variant="h2" align="center" className="mb-4 text-onyx">
+          <Typography variant="h2" align="center" className="mb-4 text-onyx font-bold underline">
             Welcome to Chiron!
           </Typography>
-          <Typography variant="h5" align="center" className="mb-8 text-oyx ">
-            Your AI Interview Assistant
-          </Typography>
+          
           <div className="grid grid-cols-2 gap-20 mb-10 mt-10">
             <Grid
               container

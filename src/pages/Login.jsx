@@ -2,6 +2,7 @@ import { auth } from "../Firebase";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { Button, Container, Typography, Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
+import BackgroundImage from './Home/BackgroundImage.jpg'
 
 
 const Login = () => {
@@ -16,9 +17,16 @@ const Login = () => {
             })
     }
 
-
-
     return (
+        <div
+        style={{
+            backgroundImage: `url(${BackgroundImage})`,
+            backgroundSize: '100% 100%',
+            top: 0,
+            left: 0,
+            width: '100vw', 
+            height: '100vh',
+            zIndex: -1}}>
         <Container maxWidth="xs">
             <Grid
                 container
@@ -29,7 +37,7 @@ const Login = () => {
             >
                 <Grid item style={{ marginBottom: '20px' }}>
                     <Typography variant="h4" gutterBottom>
-                        Welcome to My App
+                        Welcome to Chiron
                     </Typography>
                 </Grid>
                 <Grid item style={{ marginBottom: '20px' }}>
@@ -58,6 +66,8 @@ const Login = () => {
                 </Grid>
             </Grid>
         </Container>
+
+        </div>
     )
 }
 
