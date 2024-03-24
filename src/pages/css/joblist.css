@@ -81,7 +81,7 @@ job-description {
     justify-content: center; /* Aligns items on the main axis (horizontally) */
     align-items: center; /* Aligns items on the cross axis (vertically) */
     flex-wrap: wrap; /* Allows items to wrap onto multiple lines */
-    gap: 10px; /* Space between items */
+    /* gap: 10px; Space between items */
     padding-bottom: 10px;
 }
 
