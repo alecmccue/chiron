@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { getJob } from "../jobListing";
 import './css/joblist.css';
+import 'tailwindcss/tailwind.css'; // Tailwind utilities come after
 
 const JobList = () => {
     const [country, setCountry] = useState('us');
-    const [resultsPerPage, setResultsPerPage] = useState('10');
+    const [resultsPerPage, setResultsPerPage] = useState('30');
     const [page, setPage] = useState('1');
     const [what, setWhat] = useState(''); // For job title or category
     const [fullTime, setFullTime] = useState(false); // Boolean to indicate full-time jobs
@@ -30,9 +31,9 @@ const JobList = () => {
 
     return (
         <>
-            <h1>Job List Query</h1>
-        
-            <div className="filter-container">
+            <h1 style={{ fontFamily: 'Arial, sans-serif' }} className='text-3xl font-bold bg-isabelline text-onyx' >Chiron</h1>
+            
+            <div style={{ fontFamily: 'Arial, sans-serif' }} className='filter-container font-bold bg-isabelline text-onyx' >
                 <div>
                 <label htmlFor="countryInput">Country:</label>
                 <input 
@@ -44,27 +45,7 @@ const JobList = () => {
                 </div>
 
                 <div>
-                    <label htmlFor="resultsPerPage">Results per page:</label>
-                    <input 
-                        type="text" 
-                        id="resultsPerPage" 
-                        value={resultsPerPage}
-                        onChange={(e) => setResultsPerPage(e.target.value)}
-                    />
-                </div>
-
-                <div>
-                    <label htmlFor="pageInput">Page number:</label>
-                    <input 
-                        type="text" 
-                        id="pageInput" 
-                        value={page}
-                        onChange={(e) => setPage(e.target.value)}
-                    />
-                </div>
-
-                <div>
-                    <label htmlFor="whatInput">What:</label>
+                    <label htmlFor="whatInput">Job Title:</label>
                     <input 
                         type="text" 
                         id="whatInput" 
@@ -84,24 +65,29 @@ const JobList = () => {
                     </label>
                 </div>
 
-                <button onClick={handleGetJobs}>Fetch Jobs</button>
+                <button onClick={handleGetJobs} style={{ fontFamily: 'Arial, sans-serif' }} className = "border-2 border-current bg-sienna text-seasalt font-bold px-3 py-1" >Fetch Jobs</button>
             </div>            
             
-            <div className="main-container">
-            <div className="job-listings">
-                {jobs.map((job, index) => (
-                    <div key={index} className="job" onClick={() => handleSelectJob(job)}>
-                        <h2>{job.title}</h2>
-                        <h3>{job.company.display_name}</h3>
-                        <p>Location: {job.location.display_name}</p>
-                        <p>Salary Range: ${job.salary_min} - ${job.salary_max}</p>
-                        <p>Type: {job.contract_time} / {job.contract_type}</p>                        
-                        <a href={job.redirect_url} target="_blank" rel="noopener noreferrer" className="view-job-button">View Job</a>
-                    </div>
-            ))}
-            </div>
+            <div className="main-container bg-isabelline">
+                <div className="job-listings bg-white border-t-4 border-r-8 border-sienna">
+                    {jobs.map((job, index) => (
+                        <div key={index} className="job border border-b-7 border-onyx rounded-none" onClick={() => handleSelectJob(job)}>
+                            <h2 className="text-onyx text-3xl font-bold">{job.title}</h2>
+                            <h3 className = "text-current text-2xl font-bold">{job.company.display_name}</h3>
+                            <p className = "text-onyx font-bold">Location: {job.location.display_name}</p>
+                            <p className="text-onyx font-bold text-sm">
+                                {job.salary_min !== job.salary_max ? (
+                                    `Salary Range: ${new Intl.NumberFormat('en-US').format(Math.round(job.salary_min))} - ${new Intl.NumberFormat('en-US').format(Math.round(job.salary_max))}`
+                                ) : (
+                                    `Salary: $${new Intl.NumberFormat('en-US').format(Math.round(job.salary_min))}`
+                                )}
+                            </p>
+                                                                            
+                        </div>
+                ))}
+                </div>
                 {selectedJob && (
-                    <div className="job-details">
+                    <div className="job-details border-t-4 border-l-8 border-sienna">
                         <h2>{selectedJob.title}</h2>
                         <h3>{selectedJob.company.display_name}</h3>
                         <p className="job-description">
@@ -118,9 +104,15 @@ const JobList = () => {
                             )}
                         </p>
                         
-                        <p>Location: {selectedJob.location.display_name}</p>
-                        <p>Salary Range: ${selectedJob.salary_min} - ${selectedJob.salary_max}</p>
-                        <p>Type: {selectedJob.contract_time} / {selectedJob.contract_type}</p>
+                        <p>Location: {selectedJob.location.display_name}</p>                        
+                        <p className="text-onyx font-bold text-sm">
+                                {selectedJob.salary_min !== selectedJob.salary_max ? (
+                                    `Salary Range: ${new Intl.NumberFormat('en-US').format(Math.round(selectedJob.salary_min))} - ${new Intl.NumberFormat('en-US').format(Math.round(selectedJob.salary_max))}`
+                                ) : (
+                                    `Salary: $${new Intl.NumberFormat('en-US').format(Math.round(selectedJob.salary_min))}`
+                                )}
+                            </p>  
+                        <p>Type: {selectedJob.contract_time} </p>
                         <a href={selectedJob.redirect_url} target="_blank" rel="noopener noreferrer">Apply Now</a>
                     </div>
                 )}

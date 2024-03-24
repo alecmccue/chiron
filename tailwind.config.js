@@ -13,7 +13,22 @@ module.exports = {
         onyx: "#32373B"
       }
     },
+    borderWidth: {
+      '1': '1px',
+      '2': '2px',
+      '3': '3px',
+      '4': '4px',
+      '5': '5px',
+      '6': '6px',
+      '7': '7px',
+      '8': '8px',
+      '9': '9px',
+      '10': '10px',
+      '20': '20px',
+      '20': '20px',
+    },
   },
   plugins: [],
+  important: true,
 }
 

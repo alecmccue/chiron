@@ -1,7 +1,5 @@
 .job-listings .job {
-    border: 1px solid #ddd;
-    padding: 20px;
-    margin-bottom: 20px;
+    padding: 20px;    
     border-radius: 5px;
 }
 
@@ -10,14 +8,13 @@
     color: #333;
 }
 
-.job h3 {
-    margin: 10px 0 0;
+.job h3 {    
     color: #666;
 }
 
-.job p {
+/* .job p {
     margin: 5px 0;
-}
+} */
 
 .job a {
     display: inline-block;
@@ -33,12 +30,14 @@
 }
   
 .job-listings {
+    text-align: left;
     flex: 1; /* Takes up 1 fraction of the available space */
     overflow-y: scroll; /* Makes this part scrollable */
     border-right: 1px solid #ccc; /* Just for visual separation */
 }
 
 .job-details {
+    text-align: left;
     flex: 2; /* Takes up 2 fractions of the available space */
     padding: 20px;
 }
@@ -87,8 +86,7 @@ html, body {
     overflow: hidden; /* This prevents the main container from scrolling */
 }
 
-.job-listings {
-    border: 1px solid black; /* add a black border */
+.job-listings {    
     margin-top: 0; /* move it higher up */
     width: 50%; /* Adjust the width as needed */
     height: 100%; /* This will make the job listings container take up the full height of its parent */
