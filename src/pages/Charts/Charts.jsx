@@ -17,13 +17,23 @@ import { getAuth } from "firebase/auth";
 const Charts = () => {
     const auth = getAuth()
     const user = auth.currentUser
-   const d = getDoc(doc(firestore, "feedback", user.uid))
-   console.log(d)
-  const data = [
-    { Date: "Jan", Score: 80 },
-    { Date: "Feb", Score: 70 },
-    { Date: "Mar", Score: 100 },
-  ];
+    const getData = async () => {
+        const d = await getDoc(doc(firestore, "feedback", user.uid))
+        console.log(d.data().feedbackJSON)
+        return {
+            Clarity: d.data().feedbackJSON.clarity,
+            Score: d.data().feedbackJSON.score
+        }
+    }
+
+    const data = [
+    { Clarity: 10, Score: 80 },
+    { Clarity: 15, Score: 70 },
+    { Clarity: 20, Score: 100 },
+    ];
+    data.push(getData())
+    data.sort()
+    console.log(data)
 
   return (
     <>
@@ -51,7 +61,7 @@ const Charts = () => {
             
           >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="Date" style={{ fontSize: "1.25rem", stroke: "black" }} />
+            <XAxis dataKey="Clarity" style={{ fontSize: "1.25rem", stroke: "black" }} />
             <YAxis style={{ stroke: "black" }} />
             <Tooltip />
             <Legend

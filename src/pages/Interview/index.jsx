@@ -395,6 +395,7 @@ const Interview = ({ setChatHistory }) => {
                       const feedback = gradingFeedback.gradingFeedback;
                       const str = feedback.substring(8, feedback.length - 3)
                       const feedbackJSON = JSON.parse(str)
+                      feedbackJSON.time = serverTimestamp()
                       setDoc(doc(firestore, "feedback", user.uid), { feedbackJSON });
                   })
                 }
