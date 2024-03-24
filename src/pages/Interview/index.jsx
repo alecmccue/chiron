@@ -249,7 +249,6 @@ const Interview = ({ questions, message, setChatHistory }) => {
             return emotion;
           });
           // console.log("Emotions detected:", emotions);
-          console.log(previousEmotions)
           previousEmotions.push(emotions[0]); // Add the new emotion to the array
           if (previousEmotions.length > 3) {
             previousEmotions.shift(); // Remove the oldest emotion if the array exceeds 3
@@ -259,21 +258,22 @@ const Interview = ({ questions, message, setChatHistory }) => {
           ).length;
           const sadCount = previousEmotions.filter((e) => e === "sad" || e !== "angry").length;
 
-          clearTimeout(toastTimeout); // Clear previous timeout if it exists
+          clearTimeout(toastTimeout); 
 
           if (sadCount > 2  && happyCount === 0) {
             toastTimeout = setTimeout(() => {
               toast.warning("Try to Smile More!", {toastId:'anger1'});
-              previousEmotions = previousEmotions.filter((e) => e !== "sad" || e !== "angry");
+              previousEmotions = [];
             }, 3000); // Delay the warning toast by 3 seconds
-          } else if (happyCount >= 2 && sadCount === 0) {
+          } else if (happyCount ===3) {
             toastTimeout = setTimeout(() => {
               toast.success("Great job! You've been smiling a lot!", {toastId:'smile1'});
-              previousEmotions = previousEmotions.filter((e) => e !== "happy");
+              previousEmotions = [];
 
             }, 3000); // Delay the happy toast by 3 seconds
           }
         }
+        console.log(previousEmotions)
 
         canvasRef.current
           .getContext("2d")
