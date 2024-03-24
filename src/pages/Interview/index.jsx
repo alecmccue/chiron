@@ -9,14 +9,27 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { sendMessageToChat } from "../../chat";
+import MicIcon from "@mui/icons-material/Mic";
+import MicOffIcon from "@mui/icons-material/MicOff";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import PauseIcon from "@mui/icons-material/Pause";
+import StopIcon from "@mui/icons-material/Stop";
+import { useNavigate } from "react-router-dom";
 
-const questions = [
+const q = [
   "Given the emphasis on cloud-based solution development in this role, can you describe a project where you designed, developed, and deployed a software solution on a cloud platform such as AWS, GCP, or Azure? Please walk us through your decision-making process in choosing the technology stack, how you ensured the application's scalability and security, and any challenges you faced during the deployment.",
   "One of the key responsibilities of this position is full-stack development with a focus on JavaScript, React, HTML/CSS, and other tools. Can you provide an example of a full-stack application you have worked on? Please detail your role in the development process, the technologies you used, how you separated concerns between the client and server-side, and how you contributed to the application's design and user experience.",
   "Considering the importance of Agile development practices and team collaboration for this role, how have you contributed to a positive team dynamic in a past software engineering project? Discuss how you participated in Agile processes, any challenges you and your team faced, how you overcame them, and how you have mentored or shared knowledge with fellow team members to improve project outcomes.",
 ];
 
-const Interview = ({ questions, job, company, message, requirements, setChatHistory }) => {
+const Interview = ({
+  questions,
+  job,
+  company,
+  message,
+  requirements,
+  setChatHistory,
+}) => {
   const auth = getAuth();
   const user = auth.currentUser;
   const [modelsLoaded, setModelsLoaded] = useState(false);
@@ -26,16 +39,20 @@ const Interview = ({ questions, job, company, message, requirements, setChatHist
   const [recognizedText, setRecognizedText] = useState("");
   const [listening, setListening] = useState(false);
 
-  const {
-    transcript,
-    resetTranscript,
-    browserSupportsSpeechRecognition,
-  } = useSpeechRecognition();
+  const { transcript, resetTranscript, browserSupportsSpeechRecognition } =
+    useSpeechRecognition();
   useEffect(() => {
     setRecognizedText(transcript);
     console.log(transcript); // Log the transcript when it changes
   }, [transcript]);
 
+  const toggleListening = () => {
+    if (listening) {
+      stopListening();
+    } else {
+      startListening();
+    }
+  };
   const startListening = () => {
     SpeechRecognition.startListening({ continuous: true });
     setListening(true);
@@ -45,6 +62,8 @@ const Interview = ({ questions, job, company, message, requirements, setChatHist
     SpeechRecognition.stopListening();
     setListening(false);
   };
+  const navigate = useNavigate();
+
 
   const videoRef = React.useRef();
   const canvasRef = React.useRef();
@@ -55,8 +74,8 @@ const Interview = ({ questions, job, company, message, requirements, setChatHist
 
   useEffect(() => {
     const synth = window.speechSynthesis;
-    console.log(questions[questionDisplayIndex])
-    const u = new SpeechSynthesisUtterance(questions[questionDisplayIndex]);
+    console.log(q[questionDisplayIndex]);
+    const u = new SpeechSynthesisUtterance(q[questionDisplayIndex]);
 
     setUtterance(u);
 
@@ -89,10 +108,10 @@ const Interview = ({ questions, job, company, message, requirements, setChatHist
     synth.cancel();
 
     setIsPaused(false);
-  };    
+  };
 
   const isLastQuestion = () => {
-    return questionDisplayIndex === questions.length - 1;
+    return questionDisplayIndex === q.length - 1;
   };
 
   useEffect(() => {
@@ -111,12 +130,12 @@ const Interview = ({ questions, job, company, message, requirements, setChatHist
 
     loadModels();
 
-        return () => {
-            if (intervalRef.current) {
-                clearInterval(intervalRef.current);
-            }
-        };
-    }, []);
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, []);
 
   // Inside startVideo function
   const startVideo = () => {
@@ -195,8 +214,8 @@ const Interview = ({ questions, job, company, message, requirements, setChatHist
     }, 3000);
   };
 
-  if(!browserSupportsSpeechRecognition){
-    return<span>your browser doesnt support speech recognition</span>
+  if (!browserSupportsSpeechRecognition) {
+    return <span>your browser doesnt support speech recognition</span>;
   }
 
   return (
@@ -214,14 +233,12 @@ const Interview = ({ questions, job, company, message, requirements, setChatHist
                 fontSize: "0.75rem",
               }}
             >
-              {questions[questionDisplayIndex]}
+              {q[questionDisplayIndex]}
             </Typography>
           </Card>
           <div style={{ marginTop: "auto" }}>
             <Chip
-              label={`Questions Left: ${
-                questions.length - questionDisplayIndex - 1
-              }`}
+              label={`Questions Left: ${q.length - questionDisplayIndex - 1}`}
               sx={{
                 backgroundColor: "#C8E6C9",
                 color: "black",
@@ -292,31 +309,48 @@ const Interview = ({ questions, job, company, message, requirements, setChatHist
             ></Chip>
           </Grid>
         </Grid>
+        <div>
+          <button
+            onClick={toggleListening}
+            className="rounded-full bg-blue-500 p-2 m-2"
+          >
+            {listening ? <MicIcon /> : <MicOffIcon />}
+          </button>
+          <button
+            onClick={handlePlay}
+            className="bg-green-500 rounded-md text-white p-2 m-2"
+          >
+            <PlayArrowIcon />
+          </button>
+          <button
+            onClick={handlePause}
+            className="bg-yellow-500 rounded-md text-white p-2 m-2"
+          >
+            <PauseIcon />
+          </button>
+          <button
+            onClick={handleStop}
+            className="bg-red-500 rounded-md text-white p-2 m-2"
+          >
+            <StopIcon />
+          </button>
+          <p>{transcript}</p>
         <Grid item sx={{ marginLeft: "auto", marginTop: "10px" }}>
           <Button
             variant="contained"
             color="primary"
             onClick={() => {
               if (isLastQuestion()) {
-                console.log("End Call");
+                navigate("/");
               } else {
                 setQuestionDisplayIndex((prevIndex) => prevIndex + 1);
               }
-              handlePlay()
+              handlePlay();
             }}
           >
             {isLastQuestion() ? "End Call" : "Next Question"}
           </Button>
         </Grid>
-        <div>
-            <p>Microphone {listening? 'on' : 'off'}</p>
-          <button onClick={startListening}>Start</button>
-          <button onClick={stopListening}>Stop</button>
-          <button onClick={handlePlay}>Interviewer: Speak</button>
-          <button onClick={handlePause}>Interviewer: Pause</button>
-      <button onClick={handleStop}>Interviewer: Stop</button>
-
-          <p>{transcript}</p> 
         </div>
       </div>
     </div>
