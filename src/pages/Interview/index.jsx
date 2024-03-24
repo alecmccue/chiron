@@ -5,9 +5,12 @@ import "./interview.css";
 import PersonIcon from "@mui/icons-material/Person";
 import { getAuth } from "firebase/auth";
 import BubblingAvatar from "../../components/BubblingAvatar";
+import Avatar from "@mui/material/Avatar";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
+import { toast } from "react-toastify";
+
 import { sendMessageToChat } from "../../chat";
 import MicIcon from "@mui/icons-material/Mic";
 import MicOffIcon from "@mui/icons-material/MicOff";
@@ -63,7 +66,6 @@ const Interview = ({
     setListening(false);
   };
   const navigate = useNavigate();
-
 
   const videoRef = React.useRef();
   const canvasRef = React.useRef();
@@ -136,6 +138,8 @@ const Interview = ({
       }
     };
   }, []);
+  let previousEmotions = [];
+  let toastTimeout = null;
 
   // Inside startVideo function
   const startVideo = () => {
@@ -204,14 +208,37 @@ const Interview = ({
             }
             return emotion;
           });
-          console.log("Emotions detected:", emotions);
+          console.log(previousEmotions)
+          previousEmotions.push(emotions[0]); // Add the new emotion to the array
+          if (previousEmotions.length > 3) {
+            previousEmotions.shift(); // Remove the oldest emotion if the array exceeds 3
+          }
+          const happyCount = previousEmotions.filter(
+            (e) => e === "happy"
+          ).length;
+          const sadCount = previousEmotions.filter((e) => e === "sad" || e !== "angry").length;
+
+          clearTimeout(toastTimeout); // Clear previous timeout if it exists
+
+          if (sadCount > 2  && happyCount === 0) {
+            toastTimeout = setTimeout(() => {
+              toast.warning("Try to Smile More!", {toastId:'anger1'});
+              previousEmotions = previousEmotions.filter((e) => e !== "sad" || e !== "angry");
+            }, 3000); // Delay the warning toast by 3 seconds
+          } else if (happyCount >= 2 && sadCount === 0) {
+            toastTimeout = setTimeout(() => {
+              toast.success("Great job! You've been smiling a lot!", {toastId:'smile1'});
+              previousEmotions = previousEmotions.filter((e) => e !== "happy");
+
+            }, 3000); // Delay the happy toast by 3 seconds
+          }
         }
 
         canvasRef.current
           .getContext("2d")
           .clearRect(0, 0, displaySize.width, displaySize.height);
       }
-    }, 3000);
+    }, 5000);
   };
 
   if (!browserSupportsSpeechRecognition) {
@@ -261,13 +288,19 @@ const Interview = ({
                 position: "relative",
               }}
             >
-              <BubblingAvatar />
+              <Avatar
+                alt="Chiron"
+                src="https://media.istockphoto.com/id/941756036/vector/sagittarius-centaur-zodiac-horoscope-sign.jpg?s=612x612&w=0&k=20&c=SBzTUQEIfzmxxh3M8cfwUt4p9TvH5561lxwQM3zJqz8="
+                sx={{ width: "60px", height: "auto" }}
+              />
               <Chip
-                icon={
-                  <PersonIcon
-                    sx={{ "&.MuiChip-icon": { color: "#FFFFFF8A" } }}
+                avatar={
+                  <Avatar
+                    alt="Chiron"
+                    src="https://media.istockphoto.com/id/941756036/vector/sagittarius-centaur-zodiac-horoscope-sign.jpg?s=612x612&w=0&k=20&c=SBzTUQEIfzmxxh3M8cfwUt4p9TvH5561lxwQM3zJqz8="
                   />
                 }
+                variant="outlined"
                 label="Chiron"
                 sx={{
                   position: "absolute",
@@ -335,22 +368,22 @@ const Interview = ({
             <StopIcon />
           </button>
           <p>{transcript}</p>
-        <Grid item sx={{ marginLeft: "auto", marginTop: "10px" }}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              if (isLastQuestion()) {
-                navigate("/");
-              } else {
-                setQuestionDisplayIndex((prevIndex) => prevIndex + 1);
-              }
-              handlePlay();
-            }}
-          >
-            {isLastQuestion() ? "End Call" : "Next Question"}
-          </Button>
-        </Grid>
+          <Grid item sx={{ marginLeft: "auto", marginTop: "10px" }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                if (isLastQuestion()) {
+                  navigate("/");
+                } else {
+                  setQuestionDisplayIndex((prevIndex) => prevIndex + 1);
+                }
+                handlePlay();
+              }}
+            >
+              {isLastQuestion() ? "End Call" : "Next Question"}
+            </Button>
+          </Grid>
         </div>
       </div>
     </div>
