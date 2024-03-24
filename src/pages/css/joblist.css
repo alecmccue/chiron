@@ -120,3 +120,10 @@ html, body {
     flex-grow: 1; /* Button grows to fill the space */
     margin-top: auto; /* Aligns button to the bottom of the container if using wrap */
 }
+
+.icon-box {
+    display: flex; 
+    align-items: center;
+    justify-content: left;
+    gap: 40px;  
+}
