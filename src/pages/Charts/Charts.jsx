@@ -116,6 +116,7 @@ const Charts = () => {
               }}
             />
             <Line type="monotone" dataKey="Score" stroke="green" strokeWidth={3} />
+            <Line type="monotone" dataKey="Clarity" stroke="red" strokeWidth={3} />
           </LineChart>
         </div>
       </div>
