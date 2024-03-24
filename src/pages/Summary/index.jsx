@@ -12,8 +12,10 @@ const Summary = () => {
     const user = auth.currentUser;
 
     const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const data = queryParams.get('data');
+    const { feedbackArr } = location.state || {}; // feedback will be your feedbackArray
+    // Now you can use the feedback array in your Login component
+    console.log(feedbackArr);
+    console.log("ABNSJDBAHNBDSINAHELLLOOOOOOO");
     
 
     useEffect(() => {
