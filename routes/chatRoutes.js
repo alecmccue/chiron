@@ -114,7 +114,23 @@ router.post('/grade', async (req, res) => {
     ];
 
     try {
-        // Use OpenAI's API to generate a grading assessment
+        const completion = await openai.chat.completions.create({
+            model: "gpt-4-0125-preview",
+            messages: conversationHistories[userID],
+        });
+
+        const aiMessage = completion.choices[0].message.content;
+
+        // Add the AI's response to the conversation history
+        conversationHistories[userID].push({ role: "assistant", content: aiMessage });
+
+        res.json({ message: aiMessage });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error fetching response from OpenAI');
+    }
+
+    try {        
         const gradingCompletion = await openai.chat.completions.create({
             model: "gpt-4-0125-preview",
             messages: messagesWithGradingPrompt
@@ -129,6 +145,50 @@ router.post('/grade', async (req, res) => {
     } catch (error) {
         console.error("Error fetching grading response from OpenAI", error);
         res.status(500).send('Error fetching grading response from OpenAI');
+    }
+});
+
+router.post('/resume', async (req, res) => {
+    const { userID, resume } = req.body;
+    
+    // Crafting a more directive rolePrompt for the AI
+    const rolePrompt = `You are an interviewer known for your thorough and challenging questions. 
+        Your role is to simulate a tough interview environment by asking probing questions related 
+        to the users resume, and offer detailed feedback to help the candidate prepare better.`;
+    
+    // Content prompt directly instructing the AI on its role and expectations
+    const contentPrompt = `The candidate is preparing for an upcoming interview. They have provided
+        you with their resume to analyze and come up with questions that typical interviewers would ask
+        after looking at the resume. This is the resume: ${resume}. Make sure to ask exactly three questions at a time. 
+        If the user prompts something other than asking you to ask a question, then do not ask a question, just answer as the interviewer.
+        Phrase the question like this:
+        Question 1: startquestion/ *question content* endquestion/
+        Question 2: startquestion/ *question content* endquestion/
+        Question 3: startquestion/ *question content* endquestion/`;
+    
+    const messagesWithResumePrompt = [        
+        { 
+            role: "system",
+            content: rolePrompt 
+        },
+        { 
+            role: "system",
+            content: contentPrompt 
+        }
+    ];
+
+    try {
+        const completion = await openai.createChatCompletion({
+            model: "gpt-4-0125-preview",
+            messages: messagesWithResumePrompt,
+        });
+
+        const aiMessage = completion.data.choices[0].message.content;
+
+        res.json({ message: aiMessage });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error fetching response from OpenAI');
     }
 });
 
