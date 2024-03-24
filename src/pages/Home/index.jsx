@@ -7,6 +7,7 @@ import { Button, Grid, Icon, Typography } from "@mui/material";
 import { useState } from "react";
 import Navbar from "../../components/Navbar";
 import UploadResume from "../UploadResume";
+import BackgroundImage from './BackgroundImage.jpg'
 
 const Home = () => {
   const [openInterviewModal, setOpenInterviewModal] = useState(false);
@@ -26,7 +27,21 @@ const Home = () => {
     }
   };
   return (
-    <div className="container mx-auto w-[75rem]">
+      <div
+          className="container mx-auto"
+          style={{
+            backgroundImage: `url(${BackgroundImage})`,
+            backgroundSize: '100% 100%',
+            top: 0,
+            left: 0,
+            width: '100vw', // Viewport width - makes the div width equal to 100% of the viewport width
+            height: '100vh', // Viewport height - makes the div height equal to 100% of the viewport height
+            margin: 0,
+            padding: 0,
+            // overflow: 'hidden',
+            zIndex: -1 // Ensures the background is behind all other content
+          }}
+      >
       <Navbar signOut={handleLogout} auth={auth} />
       <div className="container mx-auto rounded-lg overflow-hidden">
         <div className="py-8 px-4">
