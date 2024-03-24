@@ -19,19 +19,19 @@ function Navbar({handleLogout}) {
   };
 
   return (
-    <nav className="border-isabelline">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <nav className="border-onyx bg-[#DB6C53]">
+      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-2">
         <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
           <span className="self-center text-2xl font-bold whitespace-nowra text-onyx">
-            Chiron
+            Chiron.
           </span>
         </Link>
         <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-          <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-onyx rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 ">
+          <ul className="font-medium flex flex-col p-4 md:p-0 mt-10 border border-onyx rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 ">
             <li>
               <Link
                 to="/"
-                className="block py-2 px-3 text-xl text-white bg-current rounded md:bg-transparent md:text-current md:p-0 md:dark:text-current font-bold"
+                className="block py-2 px-3 text-xl text-white bg-current rounded md:bg-transparent md:text-current md:p-0 md:dark:text-onyx font-bold"
                 aria-current="page"
               >
                 Home
@@ -40,7 +40,7 @@ function Navbar({handleLogout}) {
             <li>
               <Link
                 to="/"
-                className="block py-2 px-3 text-xl text-white bg-current rounded md:bg-transparent md:current-700 md:p-0 md:dark:text-current font-bold"
+                className="block py- px-3 text-xl text-onyx bg-current rounded md:bg-transparent md:current-700 md:p-0 md:dark:text-onyx font-bold"
                 aria-current="page"
               >
                 Charts
