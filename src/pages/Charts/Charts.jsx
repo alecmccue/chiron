@@ -70,9 +70,6 @@ const Charts = () => {
   { Clarity: 20, Score: 100 },
   { Clarity: 27, Score: 40 },
   ];
-  data.push(getData())
-  data.sort()
-  console.log(data)
 
   return (
     <>
@@ -116,6 +113,7 @@ const Charts = () => {
               }}
             />
             <Line type="monotone" dataKey="Score" stroke="green" strokeWidth={3} />
+            <Line type="monotone" dataKey="Clarity" stroke="red" strokeWidth={3} />
           </LineChart>
         </div>
       </div>
