@@ -5,6 +5,7 @@ import './interview.css';
 import PersonIcon from '@mui/icons-material/Person';
 import { getAuth } from "firebase/auth"
 import BubblingAvatar from "../../components/BubblingAvatar";
+import { sendMessageToChat } from "../../chat";
 
 const questions = [
     "Given the emphasis on cloud-based solution development in this role, can you describe a project where you designed, developed, and deployed a software solution on a cloud platform such as AWS, GCP, or Azure? Please walk us through your decision-making process in choosing the technology stack, how you ensured the application's scalability and security, and any challenges you faced during the deployment.",
@@ -12,7 +13,7 @@ const questions = [
     "Considering the importance of Agile development practices and team collaboration for this role, how have you contributed to a positive team dynamic in a past software engineering project? Discuss how you participated in Agile processes, any challenges you and your team faced, how you overcame them, and how you have mentored or shared knowledge with fellow team members to improve project outcomes."
 ];
 
-const Interview = () => {
+const Interview = ({ questions, job, company, message, requirements, setChatHistory }) => {
     const auth = getAuth();
     const user = auth.currentUser;
     const [modelsLoaded, setModelsLoaded] = useState(false);
@@ -42,6 +43,22 @@ const Interview = () => {
         };
 
         loadModels();
+
+        sendMessageToChat(user.uid, message, job, company, requirements, questions)
+            .then(response => {
+                // Assuming the response object has a message property
+                const aiMessage = response.message;
+
+                console.log(aiMessage);
+
+                // Update chat history with both the user's message and the AI's response
+                setChatHistory(prevHistory => [
+                    ...prevHistory,
+                    { sender: 'User', content: message },
+                    { sender: 'AI', content: aiMessage },
+                ]);
+            })
+            .catch(error => console.error('Error:', error));
 
         return () => {
             if (intervalRef.current) {

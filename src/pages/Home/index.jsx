@@ -12,7 +12,7 @@ import BackgroundImage from './BackgroundImage.jpg'
 
 
 
-const Home = () => {
+const Home = ({ setJob, setRequirements, setCompany }) => {
   const [openInterviewModal, setOpenInterviewModal] = useState(false);
   const [uploadResumeModal, setUploadResumeModal] = useState(false);
   const handleJobModalOpen = () => {
