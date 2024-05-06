@@ -1,70 +1,23 @@
-# Getting Started with Create React App
+## Inspiration
+The inspiration behind our AI mock interview assistant stemmed from the inspiring capabilities of AI tools like GPT-4 and Gemini. We were captivated by the potential of these technologies to revolutionize the way people work and learn. Drawing from this inspiration, we sought to harness AI's power to create a personalized tool that could help individuals prepare more effectively for job interviews while leveraging their unique experiences and career aspirations.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## What it does
+Chiron is an AI interview assistant and mentor which conducts a mock interview for you based on your resume and the job that you are applying to. You can search for jobs through Chiron’s search features or enter in a job of your own, and once you are done with the interview Chiron uses AI in order to grade your interview and display metrics on your performance and mood.
 
-## Available Scripts
+## How we built it
+We used many different types of software such as face-api, react-pdf, react-speech-recognition packages in order to perform key functionalities of Chiron such as uploading and reading resume, emotion tracking, and speech-to-text. We also integrated external APIs such as the Adzuna Job Search API to provide a job index to create mock interviews for. User Auth and Database is handled by Firebase, questions are generated and interviews are graded using OpenAI’s API.
 
-In the project directory, you can run:
+## Challenges we ran into
+Our primary challenge was time management and working on a product that implements a handful of features in a short amount of time, especially since this was our team’s ever first hackathon. Our face recognition video player was especially difficult to incorporate due to latency issues. We had also attempted to implement a LeetCode environment for mock technical interviews but got cut short on time.
 
-### `npm start`
+## Accomplishments that we're proud of
+Integrating an aesthetic UI, implementing multiple APIs and developing a complete feature list into one application in 24 hours is something we are very proud of. We are proud to have come up with solutions that were necessary to get a product complete in such a short period of time. We were able to develop good code scaling from no application to a complete application and we are proud of our outcome.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## What we learned
+We learned how to rapidly plan out, implement, test and roll out features on a very short deadline. We also learned how to solve compromises between quality, efficiency and prioritizing certain features over others. This process honed our abilities to brainstorm ideas, strategize effectively, and execute.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## What's next for Chiron
+- Speed and latency for the video player
+- A private search index can be used in order to get questions from a question bank alongside questions about resume from OpenAI
+- OpenAI Prompt refinement 
+- UI Improvements
